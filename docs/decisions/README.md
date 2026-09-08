@@ -8,7 +8,12 @@
 <!-- BEGIN:auto — bảng dưới do .claude/scripts/docs-regen.sh sinh từ các file ADR. Đừng sửa tay. -->
 | ID | Tiêu đề | Ngày | Trạng thái |
 | --- | --- | --- | --- |
-| — | _chưa có ADR nào_ | — | — |
+| [ADR-0001](0001-dung-three-js-thay-phaser.md) | Dùng Three.js với model low-poly CC0 thay vì Phaser hoặc PixiJS | 2026-09-08 | accepted |
+| [ADR-0002](0002-tach-mo-phong-khoi-hien-thi.md) | Tách mô phỏng khỏi hiển thị: `game/` không được import `three` | 2026-09-08 | accepted |
+| [ADR-0003](0003-react-chi-o-lop-ui.md) | React chỉ dùng cho lớp UI, không dùng cho cảnh 3D | 2026-09-08 | accepted |
+| [ADR-0004](0004-nhan-vat-khac-ky-nang-giong-chi-so.md) | Nhân vật khác nhau ở kỹ năng chủ động, giống nhau ở chỉ số cơ bản | 2026-09-08 | accepted |
+| [ADR-0005](0005-khoa-goc-nhin-theo-chieu-doc.md) | Khoá góc nhìn theo chiều dọc, đóng khung canvas trên màn hình rộng | 2026-09-08 | accepted |
+| [ADR-0006](0006-huong-nghe-thuat-nguoc-sang-hoang-hon.md) | Hướng nghệ thuật "ngược sáng lúc hoàng hôn", bỏ đề xuất pixel art | 2026-09-08 | accepted |
 <!-- END:auto -->
 
 Trạng thái: `accepted` · `superseded by ADR-00xx` · `deprecated`
