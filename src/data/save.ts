@@ -9,7 +9,15 @@
  * Khong chong gian lan — Non-Goal trong overview.md. Khong co server de xac
  * thuc, nen moi no luc lam kho viec sua localStorage chi ton cong.
  */
-export const SAVE_KEY = 'duskrun.save.v1'
+export const SAVE_KEY = 'duck-runner.save.v1'
+/**
+ * Khoa cu, tu thoi game con ten `Duskrun`.
+ *
+ * Chi doc, khong bao gio ghi. Khi game doi ten, mot ban luu duoi khoa cu se tro
+ * thanh vo hinh — nguoi choi mat ky luc va vi xu ma khong co gi giai thich. Ba
+ * dong doc du phong re hon rat nhieu so voi cai an tuong do.
+ */
+export const LEGACY_SAVE_KEYS = ['duskrun.save.v1'] as const
 export const SAVE_VERSION = 1
 
 export interface SaveData {
@@ -44,7 +52,7 @@ function browserStorage(): Storage | null {
   try {
     // Che do rieng tu cua vai trinh duyet nem ngay o buoc truy cap
     const s = globalThis.localStorage
-    const probe = '__duskrun_probe__'
+    const probe = '__duck_runner_probe__'
     s.setItem(probe, '1')
     s.removeItem(probe)
     return s
@@ -67,6 +75,14 @@ export function load(storage: Storage | null = browserStorage()): SaveData {
   let raw: string | null = null
   try {
     raw = store.getItem(SAVE_KEY)
+    // Chua co ban luu duoi khoa moi: thu cac khoa cu truoc khi ket luan la nguoi
+    // choi moi. Lan `save()` ke tiep se ghi sang khoa moi.
+    if (raw === null) {
+      for (const legacy of LEGACY_SAVE_KEYS) {
+        raw = store.getItem(legacy)
+        if (raw !== null) break
+      }
+    }
   } catch {
     return { ...DEFAULT_SAVE }
   }

@@ -16,60 +16,76 @@ import { ScreenHeader } from './Screens'
 function Silhouette({ id }: { id: string }) {
   const s = SILHOUETTES[id] ?? SILHOUETTES.runner!
   const H = 100
-  const headZone = 0.18
+  const HEAD_ZONE = 0.24
   const torsoH = H * s.torso
-  const legH = H * (1 - headZone) - torsoH
-  const cx = 50
-  // Hinh bong phai to du de PHAN BIET duoc nhan vat — do la ca ly do the ton tai.
-  // Scale 46 cho ra vai rong 19px tren viewBox 100, hai nhan vat trong nhu mot.
+  const legH = H * (1 - HEAD_ZONE) - torsoH
+  const cx = 46
   const scale = 92
-  const legW = s.hip * scale * 0.38
+  const legW = s.hip * scale * 0.34
   const y = (v: number) => H - v
 
   const headH = s.headR * scale * 1.8
   const headW = s.headR * scale * 1.7
-  /**
-   * Phu kien tinh theo DINH DAU, khong theo scale.
-   * Tinh theo scale thi tai va mu bi day ra ngoai viewBox va bien mat — dung luc
-   * chung la thu duy nhat phan biet hai nhan vat co cung ti le nguoi.
-   */
+  const bodyW = s.shoulder * scale
   const headBottom = legH + torsoH
   const headTop = headBottom + headH
+  /**
+   * Mo huong sang PHAI, khong huong ve nguoi xem.
+   *
+   * The trong cua hang la hinh chieu phang. Mot cai mo chi ve phia truoc se bi
+   * chinh cai dau che mat, va con vit se doc ra nhu mot hinh nguoi — dung cai
+   * mau thuan ma ten "Duck Runner" tao ra.
+   */
+  const beakLen = s.headR * scale * s.beak * 0.5
+  const beakH = s.headR * scale * 0.5
 
   return (
-    <svg viewBox="-6 -14 112 124" width="100%" height="100%" aria-hidden focusable="false">
+    <svg viewBox="-8 -14 116 124" width="100%" height="100%" aria-hidden focusable="false">
       <g fill="var(--world-ink)" stroke="var(--sky-low)" strokeWidth="1.6">
-        <rect x={cx - s.hip * scale * 0.34 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
-        <rect x={cx + s.hip * scale * 0.34 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
+        <rect x={cx - s.hip * scale * 0.3 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
+        <rect x={cx + s.hip * scale * 0.3 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
+
+        {/* Than vit: rong va bo goc manh — day la net doc ra "vit" ro nhat */}
         <rect
-          x={cx - (s.shoulder * scale) / 2}
+          x={cx - bodyW / 2}
           y={y(legH + torsoH)}
-          width={s.shoulder * scale}
+          width={bodyW}
           height={torsoH}
-          rx="2"
+          rx={Math.min(bodyW, torsoH) * 0.42}
         />
-        <rect x={cx - headW / 2} y={y(headTop)} width={headW} height={headH} rx="2" />
+
+        {s.tail && (
+          <rect
+            x={cx - bodyW / 2 - 13}
+            y={y(legH + torsoH * 0.78)}
+            width="16"
+            height={torsoH * 0.34}
+            rx="4"
+            transform={`rotate(-18 ${cx - bodyW / 2 - 5} ${y(legH + torsoH * 0.62)})`}
+          />
+        )}
+
+        <rect x={cx - headW / 2} y={y(headTop)} width={headW} height={headH} rx={headW * 0.34} />
+
+        <rect
+          x={cx + headW / 2 - 2}
+          y={y(headBottom + headH * 0.62)}
+          width={beakLen}
+          height={beakH}
+          rx={beakH * 0.35}
+        />
 
         {s.crown === 'cap' && (
-          <rect x={cx - headW * 0.78} y={y(headTop + 5)} width={headW * 1.56} height="5" rx="2" />
+          <rect x={cx - headW * 0.72} y={y(headTop + 5)} width={headW * 1.44} height="5" rx="2" />
         )}
-        {s.crown === 'ears' && (
+        {s.crown === 'crest' && (
           <>
-            <rect x={cx - headW * 0.42} y={y(headTop + 11)} width="5" height="12" rx="2.5" />
-            <rect x={cx + headW * 0.42 - 5} y={y(headTop + 11)} width="5" height="12" rx="2.5" />
+            <rect x={cx - headW * 0.4} y={y(headTop + 11)} width="5" height="12" rx="2.5" />
+            <rect x={cx + headW * 0.4 - 5} y={y(headTop + 11)} width="5" height="12" rx="2.5" />
           </>
         )}
         {s.crown === 'tuft' && (
           <rect x={cx - 3} y={y(headTop + 10)} width="6" height="11" rx="3" />
-        )}
-        {s.tail && (
-          <rect
-            x={cx + (s.shoulder * scale) / 2 - 2}
-            y={y(legH + torsoH * 0.5)}
-            width="16"
-            height="6"
-            rx="3"
-          />
         )}
       </g>
     </svg>

@@ -6,7 +6,17 @@
  * chung trong tung component.
  */
 export const S = {
-  gameTitle: 'DUSKRUN',
+  gameTitle: 'DUCK RUNNER',
+  /**
+   * Wordmark tach thanh hai dong.
+   *
+   * "DUCK RUNNER" mot dong o khung 375 rong ~355px, ma cot noi dung chi co 327px.
+   * Hai dong khong phai giai phap chua chay — voi mot font display nang 800 no la
+   * bo cuc manh hon mot dong bi bop nho lai.
+   */
+  gameTitleLines: ['DUCK', 'RUNNER'],
+  /** Dong noi ro game LA GI — thu ma khong mot tu don nao tai duoc. */
+  tagline: 'Ba làn. Một kỹ năng. Chạy về phía mặt trời lặn.',
 
   menu: {
     play: 'CHƠI',

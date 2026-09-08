@@ -66,17 +66,32 @@ export interface Silhouette {
   shoulder: number
   hip: number
   headR: number
-  /** Phu kien tren dau: mu luoi trai, tai, hoac khong. */
-  crown: 'none' | 'cap' | 'ears' | 'tuft'
+  /** Phu kien tren dau: mu luoi trai, mao, chom long, hoac khong. */
+  crown: 'none' | 'cap' | 'crest' | 'tuft'
   /** Duoi phia sau — them mot net nhan dang o hinh bong. */
   tail: boolean
+  /**
+   * Do dai mo, tinh theo ban kinh dau. 0 la khong co mo.
+   *
+   * Camera dung sau lung nen mo gan nhu khong thay khi chay thang — no doc duoc
+   * khi nhan vat nghieng luc doi lan, va doc rat ro o the trong cua hang. Do la
+   * ly do no la mot THAM SO chu khong phai mot co bat/tat.
+   */
+  beak: number
 }
 
+/**
+ * Bon con vit, phan biet nhau BANG HINH BONG.
+ *
+ * Than day hon va chan ngan hon so voi ti le nguoi o ban truoc: mot con vit doc
+ * ra o dang thap-tron, khong o dang cao-gay. Tat ca deu co mo va co duoi — do la
+ * hai net khien hinh bong doc ra la vit chu khong la nguoi.
+ */
 export const SILHOUETTES: Record<string, Silhouette> = {
-  runner: { torso: 0.36, shoulder: 0.42, hip: 0.34, headR: 0.155, crown: 'cap', tail: false },
-  bruiser: { torso: 0.38, shoulder: 0.58, hip: 0.44, headR: 0.15, crown: 'none', tail: false },
-  drifter: { torso: 0.34, shoulder: 0.34, hip: 0.28, headR: 0.14, crown: 'tuft', tail: true },
-  glider: { torso: 0.35, shoulder: 0.46, hip: 0.3, headR: 0.145, crown: 'ears', tail: true },
+  runner: { torso: 0.44, shoulder: 0.5, hip: 0.42, headR: 0.16, crown: 'cap', tail: true, beak: 1.5 },
+  bruiser: { torso: 0.46, shoulder: 0.66, hip: 0.54, headR: 0.155, crown: 'none', tail: true, beak: 1.8 },
+  drifter: { torso: 0.42, shoulder: 0.42, hip: 0.34, headR: 0.15, crown: 'tuft', tail: true, beak: 1.3 },
+  glider: { torso: 0.43, shoulder: 0.56, hip: 0.38, headR: 0.155, crown: 'crest', tail: true, beak: 1.6 },
 }
 
 export interface PlayerRig {
@@ -116,7 +131,8 @@ export function buildPlayer(silhouette: Silhouette): PlayerRig {
    * Cong thuc cu (1 - torso - headR*2) cho ra chan dai 36cm tren nguoi cao
    * 1.7m — hinh bong trong nhu mot cai tu, khong nhu mot nguoi dang chay.
    */
-  const HEAD_ZONE = 0.18
+  // Vit: dau va co chiem nhieu hon, chan ngan hon nguoi
+  const HEAD_ZONE = 0.24
   const torsoH = H * s.torso
   const legH = H * (1 - HEAD_ZONE) - torsoH
   const torsoY = legH + torsoH / 2
@@ -131,14 +147,22 @@ export function buildPlayer(silhouette: Silhouette): PlayerRig {
 
   if (s.crown === 'cap') {
     body.add(part(s.headR * 2.4, 0.07, s.headR * 2.6, 0, headY + s.headR, -s.headR * 0.5))
-  } else if (s.crown === 'ears') {
+  } else if (s.crown === 'crest') {
     body.add(part(0.09, 0.24, 0.06, -s.headR * 0.6, headY + s.headR * 1.5))
     body.add(part(0.09, 0.24, 0.06, s.headR * 0.6, headY + s.headR * 1.5))
   } else if (s.crown === 'tuft') {
     body.add(part(0.1, 0.2, 0.1, 0, headY + s.headR * 1.4, -0.05))
   }
+  if (s.beak > 0) {
+    // Mo huong ve phia truoc (+z): thay duoc khi nhan vat nghieng luc doi lan
+    const len = s.headR * s.beak * 0.42
+    body.add(part(s.headR * 0.72, s.headR * 0.46, len, 0, headY - s.headR * 0.18, len / 2 + s.headR * 0.6))
+  }
   if (s.tail) {
-    body.add(part(0.12, 0.12, 0.5, 0, torsoY - torsoH * 0.2, -0.34))
+    // Duoi vit: ngan, chech len — khac han cai duoi dai o ban truoc
+    const tail = part(s.hip * 0.5, s.hip * 0.36, 0.34, 0, torsoY - torsoH * 0.28, -0.3)
+    tail.rotation.x = -0.5
+    body.add(tail)
   }
 
   const legW = s.hip * 0.38
