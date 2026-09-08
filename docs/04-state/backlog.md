@@ -18,12 +18,11 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 
 ## Đang làm
 
-**Mốc M1 xong** (nhánh `feat/core-run`). Chạy được một lượt từ đầu đến chết, chơi
-lại được, kỷ lục lưu trên máy. 67 test xanh, `tsc` và `eslint` sạch, đã xem tận mắt
-ở 375 / 768 / 1440.
+**Mốc M2 xong** (nhánh `feat/coins-and-skills`). Xu nạp thanh, ba kỹ năng, ba
+power-up, tạm dừng đóng băng mô phỏng thật. 90 test xanh.
 
-**Bước kế tiếp:** mốc M2 — `docs/specs/coins-and-skills/`. Ví xu, thanh nạp, ba kỹ
-năng nhân vật, ba power-up, tạm dừng.
+**Bước kế tiếp:** mốc M3 — `docs/specs/character-shop/`. Cửa hàng, mua và đổi
+nhân vật.
 
 ## Việc tiếp theo
 

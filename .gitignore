@@ -8,3 +8,4 @@ coverage/
 .claude/.doc-state/
 .playwright-mcp/
 *.png
+.vite/

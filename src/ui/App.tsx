@@ -4,9 +4,11 @@ import { load as loadSave, save as writeSave, type SaveData } from '../data/save
 import { S } from '../data/strings'
 import { Hud, type HudHandle } from './hud/Hud'
 import { GameHost, type RunResult } from './GameHost'
-import { ErrorScreen, GameOverScreen, LoadingScreen, MenuScreen } from './screens/Screens'
+import {
+  ErrorScreen, GameOverScreen, LoadingScreen, MenuScreen, PauseScreen,
+} from './screens/Screens'
 
-type Screen = 'loading' | 'menu' | 'playing' | 'over' | 'error'
+type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'error'
 
 export function App() {
   const [screen, setScreen] = useState<Screen>('loading')
@@ -22,6 +24,23 @@ export function App() {
   const hudRef = useRef<HudHandle>(null)
   const hostRef = useRef<GameHost | null>(null)
   const reducedMotion = useRef(prefersReducedMotion())
+
+  // Doc `screen` qua ref: `togglePause` duoc GameHost giu lai tu luc khoi tao,
+  // nen no khong duoc phu thuoc vao closure cua mot lan render cu the.
+  const screenRef = useRef<Screen>('loading')
+  screenRef.current = screen
+
+  const togglePause = useCallback(() => {
+    const host = hostRef.current
+    if (!host) return
+    if (screenRef.current === 'playing') {
+      host.pause()
+      setScreen('paused')
+    } else if (screenRef.current === 'paused') {
+      host.resume()
+      setScreen('playing')
+    }
+  }, [])
 
   const handleRunEnd = useCallback((r: RunResult) => {
     setSaveData((prev) => {
@@ -56,7 +75,7 @@ export function App() {
         characterId: saveData.selectedCharacter,
         reducedMotion: reducedMotion.current,
         onRunEnd: handleRunEnd,
-        onPause: () => undefined,
+        onPause: () => togglePause(),
         onContextLost: () => {
           setErrorMessage(S.error.lost)
           setScreen('error')
@@ -79,7 +98,12 @@ export function App() {
 
   const play = useCallback(() => {
     setScreen('playing')
-    hostRef.current?.start(Math.floor(Math.random() * 0x7fffffff))
+    hostRef.current?.start(Math.floor(Math.random() * 0x7fffffff), saveData.selectedCharacter)
+  }, [saveData.selectedCharacter])
+
+  const goHome = useCallback(() => {
+    hostRef.current?.abandon()
+    setScreen('menu')
   }, [])
 
   return (
@@ -89,8 +113,16 @@ export function App() {
 
         {/* HUD luon o trong cay DOM: thao ra lap vao moi luot se lam mat ref,
             va no phai san sang truoc khi vong lap chay buoc dau tien. */}
-        <div className="layer" style={{ display: screen === 'playing' ? 'block' : 'none' }}>
-          <Hud ref={hudRef} onPause={() => undefined} onSkill={() => undefined} skillEnabled={false} />
+        <div
+          className="layer"
+          style={{ display: screen === 'playing' || screen === 'paused' ? 'block' : 'none' }}
+        >
+          <Hud
+            ref={hudRef}
+            onPause={() => togglePause()}
+            onSkill={() => hostRef.current?.useSkill()}
+            skillEnabled
+          />
         </div>
 
         {screen === 'loading' && <LoadingScreen progress={0.35} />}
@@ -105,6 +137,10 @@ export function App() {
           />
         )}
 
+        {screen === 'paused' && (
+          <PauseScreen onResume={() => togglePause()} onHome={goHome} />
+        )}
+
         {screen === 'over' && (
           <GameOverScreen
             distanceM={result.distanceM}
@@ -113,7 +149,7 @@ export function App() {
             wallet={saveData.coins}
             isRecord={result.isRecord}
             onRetry={play}
-            onHome={() => setScreen('menu')}
+            onHome={goHome}
           />
         )}
 

@@ -1,12 +1,18 @@
 import * as THREE from 'three'
 import type { Game } from '../game/Game'
-import { LANE_CENTER, LANE_WIDTH_M, OBSTACLE_POOL_SIZE, COIN_POOL_SIZE } from '../game/constants'
-import type { ObstacleKind } from '../game/types'
+import {
+  LANE_CENTER, LANE_WIDTH_M, OBSTACLE_POOL_SIZE, COIN_POOL_SIZE, POWERUP_POOL_SIZE,
+} from '../game/constants'
+import type { ObstacleKind, PowerUpKind } from '../game/types'
 import { SceneRig } from './Scene'
-import { coinGeometry, buildPlayer, inkMaterial, obstacleGeometry, SILHOUETTES, type PlayerRig } from './Shapes'
-import { COIN } from './palette'
+import {
+  coinGeometry, buildPlayer, inkMaterial, obstacleGeometry, powerUpGeometry, SILHOUETTES,
+  type PlayerRig,
+} from './Shapes'
+import { COIN, SKILL } from './palette'
 
 const KINDS: readonly ObstacleKind[] = ['low', 'high', 'block']
+const POWERUPS: readonly PowerUpKind[] = ['magnet', 'shield', 'rush']
 /**
  * Dong bo trang thai mo phong sang canh 3D.
  *
@@ -19,6 +25,7 @@ export class GameRenderer {
   private readonly renderer: THREE.WebGLRenderer
   private readonly obstacleMeshes = new Map<ObstacleKind, THREE.InstancedMesh>()
   private readonly coinMesh: THREE.InstancedMesh
+  private readonly powerUpMeshes = new Map<PowerUpKind, THREE.InstancedMesh>()
   private player: PlayerRig
   private readonly dummy = new THREE.Object3D()
   private readonly reducedMotion: boolean
@@ -55,6 +62,18 @@ export class GameRenderer {
     this.coinMesh.frustumCulled = false
     this.rig.world.add(this.coinMesh)
 
+    for (const kind of POWERUPS) {
+      const mesh = new THREE.InstancedMesh(
+        powerUpGeometry(kind),
+        new THREE.MeshBasicMaterial({ color: SKILL }),
+        POWERUP_POOL_SIZE,
+      )
+      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+      mesh.frustumCulled = false
+      this.powerUpMeshes.set(kind, mesh)
+      this.rig.world.add(mesh)
+    }
+
     this.player = buildPlayer(SILHOUETTES[characterId] ?? SILHOUETTES.runner!)
     this.rig.world.add(this.player.root)
   }
@@ -62,6 +81,18 @@ export class GameRenderer {
   setCharacter(characterId: string): void {
     this.rig.world.remove(this.player.root)
     disposeTree(this.player.root)
+    for (const kind of POWERUPS) {
+      const mesh = new THREE.InstancedMesh(
+        powerUpGeometry(kind),
+        new THREE.MeshBasicMaterial({ color: SKILL }),
+        POWERUP_POOL_SIZE,
+      )
+      mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+      mesh.frustumCulled = false
+      this.powerUpMeshes.set(kind, mesh)
+      this.rig.world.add(mesh)
+    }
+
     this.player = buildPlayer(SILHOUETTES[characterId] ?? SILHOUETTES.runner!)
     this.rig.world.add(this.player.root)
   }
@@ -81,6 +112,7 @@ export class GameRenderer {
     this.syncPlayer(game)
     this.syncObstacles(game)
     this.syncCoins(game)
+    this.syncPowerUps(game)
     if (live) this.rig.setScroll(game.scoring.distanceM)
     this.applyShake(dtS)
     this.renderer.render(this.rig.scene, this.rig.camera)
@@ -88,7 +120,10 @@ export class GameRenderer {
 
   private syncPlayer(game: Game): void {
     const p = game.player
-    this.player.root.position.set(p.x, p.y, 0)
+    // Bay nang nhan vat len. Day la HIEN THI thuan tuy: `game/` khong doi vi tri,
+    // vi bat tu da lo phan luat choi roi.
+    const lift = game.effects.has('fly') ? 2.4 : 0
+    this.player.root.position.set(p.x, p.y + lift, 0)
     // Nghieng theo huong doi lan — dau hieu thi giac re tien nhat bao "dang re"
     const drift = (p.laneTo - p.laneFrom) * (1 - easeOut(p.laneT))
     this.player.body.rotation.z = -drift * 0.32
@@ -151,6 +186,29 @@ export class GameRenderer {
     this.coinMesh.instanceMatrix.needsUpdate = true
   }
 
+  private syncPowerUps(game: Game): void {
+    const spin = this.reducedMotion ? 0 : this.runTimeS * 1.8
+    const counts = new Map<PowerUpKind, number>(POWERUPS.map((k) => [k, 0]))
+    for (const p of game.track.powerUps) {
+      if (!p.active) continue
+      const mesh = this.powerUpMeshes.get(p.kind)
+      if (!mesh) continue
+      const i = counts.get(p.kind)!
+      counts.set(p.kind, i + 1)
+      this.dummy.position.set((p.lane - LANE_CENTER) * LANE_WIDTH_M, 1.15, p.z)
+      this.dummy.rotation.set(0, spin, 0)
+      this.dummy.scale.setScalar(1)
+      this.dummy.updateMatrix()
+      mesh.setMatrixAt(i, this.dummy.matrix)
+    }
+    for (const [kind, n] of counts) {
+      const mesh = this.powerUpMeshes.get(kind)
+      if (!mesh) continue
+      mesh.count = n
+      mesh.instanceMatrix.needsUpdate = true
+    }
+  }
+
   private applyShake(dtS: number): void {
     if (this.shakeS <= 0) {
       this.rig.camera.position.x = 0
@@ -167,6 +225,10 @@ export class GameRenderer {
     }
     this.coinMesh.geometry.dispose()
     ;(this.coinMesh.material as THREE.Material).dispose()
+    for (const mesh of this.powerUpMeshes.values()) {
+      mesh.geometry.dispose()
+      ;(mesh.material as THREE.Material).dispose()
+    }
     disposeTree(this.player.root)
     this.rig.dispose()
     this.renderer.dispose()

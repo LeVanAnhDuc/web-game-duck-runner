@@ -338,6 +338,19 @@ a:hover {
   box-shadow: var(--glow-skill);
 }
 
+/* MASTER §7.5 — bấm khi chưa sẵn sàng phải có phản hồi, không được im lặng */
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.skill-btn.nudge button {
+  animation: nudge 120ms ease-in-out;
+  border-color: var(--alert);
+  color: var(--alert);
+}
+
 .skill-btn .lbl {
   font-size: 14px;
   letter-spacing: 0.14em;

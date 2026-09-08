@@ -43,6 +43,22 @@ export function coinGeometry(): THREE.BufferGeometry {
   return new THREE.OctahedronGeometry(0.34, 0)
 }
 
+/**
+ * Power-up: mau aqua (MASTER §2.1 cho phep aqua cho "power-up dang chay"), va moi
+ * loai mot HINH KHAC — nguoi choi phai doc duoc no trong mot phan giay, ma mau thi
+ * chung nhau.
+ */
+export function powerUpGeometry(kind: 'magnet' | 'shield' | 'rush'): THREE.BufferGeometry {
+  switch (kind) {
+    case 'magnet':
+      return new THREE.TorusGeometry(0.34, 0.12, 8, 14)
+    case 'shield':
+      return new THREE.IcosahedronGeometry(0.42, 0)
+    case 'rush':
+      return new THREE.ConeGeometry(0.34, 0.8, 6)
+  }
+}
+
 /** Ti le hinh bong cua mot nhan vat. Nhan vat phan biet nhau BANG HINH BONG. */
 export interface Silhouette {
   /** Ti le chieu cao than tren tong chieu cao. */

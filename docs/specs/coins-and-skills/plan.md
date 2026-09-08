@@ -1,0 +1,21 @@
+# M2 · Xu, kỹ năng, power-up — kế hoạch
+
+- [x] A1 · `game/ActiveEffects.ts` — mọi hiệu ứng có thời hạn, đọc `SimClock`
+- [x] A2 · Test: tạm dừng 10 giây thì thời gian còn lại không đổi (`invariants.md` §5)
+- [x] A3 · Khiên đếm **lần**, không đếm giờ; vỡ khiên cho bất tử ngắn
+- [x] A4 · `invincible` gộp mọi nguồn vào **một** câu hỏi
+- [x] B1 · `data/catalog.ts` — nhân vật, kỹ năng, giá. Dữ liệu, không phải code
+- [x] B2 · Thanh nạp: `CHARGE_COINS` xu thì đầy
+- [x] B3 · `Game.useSkill()` — reset thanh, **không trừ ví** (`invariants.md` §11)
+- [x] B4 · Ba kỹ năng: Ủi · Chậm · Bay, cùng thời lượng và cùng chi phí (`ADR-0004`)
+- [x] C1 · Pool power-up trong `Track`, sinh theo khoảng cách
+- [x] C2 · Ba power-up: nam châm · khiên · tua nhanh
+- [x] C3 · Điểm tính theo tốc độ **thế giới** — Chậm phải đánh đổi quãng đường
+- [x] D1 · `Game.pause()/resume()` — `FR-22`
+- [x] D2 · HUD: chip hiệu ứng, thanh nạp, nút kỹ năng đổi trạng thái
+- [x] D3 · Bấm kỹ năng khi chưa sẵn sàng → một nhịp rung (`MASTER §7.5`)
+- [x] D4 · Màn tạm dừng
+- [x] E1 · Vẽ power-up: mỗi loại một hình, cùng màu aqua
+- [x] E2 · Bay nâng nhân vật lên — hiển thị thuần, `game/` không đổi vị trí
+- [x] F1 · 23 test mới; tất định vẫn giữ khi có kỹ năng trong chuỗi input
+- [x] F2 · Xem tận mắt: nhịp rung khi chưa đầy, tạm dừng đóng băng mô phỏng

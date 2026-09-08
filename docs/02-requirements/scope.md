@@ -55,16 +55,16 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 | ID | Chức năng | Thuộc luồng | Mốc | Trạng thái |
 | --- | --- | --- | --- | --- |
 | FR-12 | Nhặt xu rơi trên đường | US-03 | M1 | xong |
-| FR-13 | Ví xu tích luỹ qua các lượt, cộng vào cuối lượt | US-04 | M2 | chưa |
-| FR-14 | Thanh nạp kỹ năng, đầy dần theo xu nhặt trong lượt | US-03 | M2 | chưa |
-| FR-15 | Kích hoạt kỹ năng (nút chạm · phím Space) | US-03 | M2 | chưa |
-| FR-16 | Kỹ năng **Ủi** — húc vỡ chướng ngại trong thời gian giới hạn | US-03 | M2 | chưa |
-| FR-17 | Kỹ năng **Chậm** — giảm tốc độ thế giới trong thời gian giới hạn | US-03 | M2 | chưa |
-| FR-18 | Kỹ năng **Bay** — bay qua chướng ngại và tự hút xu | US-03 | M2 | chưa |
-| FR-19 | Power-up nam châm — hút xu trong bán kính | US-01 | M2 | chưa |
-| FR-20 | Power-up khiên — bỏ qua một lần va chạm | US-01 | M2 | chưa |
-| FR-21 | Power-up tua nhanh — bất tử và tăng tốc có hạn giờ | US-01 | M2 | chưa |
-| FR-22 | Tạm dừng và tiếp tục | US-03 | M2 | chưa |
+| FR-13 | Ví xu tích luỹ qua các lượt, cộng vào cuối lượt | US-04 | M2 | xong |
+| FR-14 | Thanh nạp kỹ năng, đầy dần theo xu nhặt trong lượt | US-03 | M2 | xong |
+| FR-15 | Kích hoạt kỹ năng (nút chạm · phím Space) | US-03 | M2 | xong |
+| FR-16 | Kỹ năng **Ủi** — húc vỡ chướng ngại trong thời gian giới hạn | US-03 | M2 | xong |
+| FR-17 | Kỹ năng **Chậm** — giảm tốc độ thế giới trong thời gian giới hạn | US-03 | M2 | xong |
+| FR-18 | Kỹ năng **Bay** — bay qua chướng ngại và tự hút xu | US-03 | M2 | xong |
+| FR-19 | Power-up nam châm — hút xu trong bán kính | US-01 | M2 | xong |
+| FR-20 | Power-up khiên — bỏ qua một lần va chạm | US-01 | M2 | xong |
+| FR-21 | Power-up tua nhanh — bất tử và tăng tốc có hạn giờ | US-01 | M2 | xong |
+| FR-22 | Tạm dừng và tiếp tục | US-03 | M2 | xong |
 
 ## Cửa hàng và nhân vật
 
