@@ -33,6 +33,20 @@ export interface CharacterDef {
 export const SKILL_DURATION_MS = 5200
 export const CHARGE_COINS = 18
 
+/**
+ * Giá được ĐẶT TỪ SỐ ĐO, không từ cảm giác.
+ *
+ * `npx vite-node scripts/measure-economy.ts` (2026-09-08, 120 lượt, autopilot tham
+ * lam) cho **29.8 xu/phút** và 5.9 xu/lượt. Quy ra:
+ *
+ *   Thợ ủi   80 xu → ~2.7 phút  ~14 lượt
+ *   Kẻ lượn 200 xu → ~6.7 phút  ~34 lượt
+ *   Kẻ trôi 360 xu → ~12.1 phút ~61 lượt
+ *
+ * Bộ giá đầu tiên (320 / 640 / 980) khiến nhân vật thứ hai mất 10.7 phút. Người xem
+ * portfolio chơi 1–3 phút, nên với bộ giá đó cửa hàng sẽ không bao giờ được thấy
+ * hoạt động. Chạy lại script sau khi đổi bất cứ thứ gì ảnh hưởng nhịp rơi xu.
+ */
 export const CHARACTERS: readonly CharacterDef[] = [
   {
     id: 'runner',
@@ -47,7 +61,7 @@ export const CHARACTERS: readonly CharacterDef[] = [
   {
     id: 'bruiser',
     name: 'Thợ ủi',
-    price: 320,
+    price: 80,
     skill: {
       effect: 'ram',
       name: 'Ủi',
@@ -57,7 +71,7 @@ export const CHARACTERS: readonly CharacterDef[] = [
   {
     id: 'glider',
     name: 'Kẻ lượn',
-    price: 640,
+    price: 200,
     skill: {
       effect: 'fly',
       name: 'Bay',
@@ -67,7 +81,7 @@ export const CHARACTERS: readonly CharacterDef[] = [
   {
     id: 'drifter',
     name: 'Kẻ trôi',
-    price: 980,
+    price: 360,
     skill: {
       effect: 'slow',
       name: 'Chậm',

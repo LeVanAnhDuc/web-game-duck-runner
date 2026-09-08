@@ -544,7 +544,7 @@ a:hover {
 }
 
 .card-figure {
-  height: 96px;
+  height: 132px;
   display: grid;
   place-items: center;
   background: linear-gradient(180deg, #2b1b4d 0%, #8e3b6b 60%, #f5a15c 100%);

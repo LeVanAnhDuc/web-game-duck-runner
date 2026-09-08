@@ -70,10 +70,10 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 
 | ID | Chức năng | Thuộc luồng | Mốc | Trạng thái |
 | --- | --- | --- | --- | --- |
-| FR-23 | Danh mục nhân vật kèm giá và kỹ năng đi kèm | US-04 | M3 | chưa |
-| FR-24 | Mua nhân vật bằng xu trong ví | US-04 | M3 | chưa |
-| FR-25 | Chọn nhân vật đang dùng | US-04 | M3 | chưa |
-| FR-26 | Màn cửa hàng | US-04 | M3 | chưa |
+| FR-23 | Danh mục nhân vật kèm giá và kỹ năng đi kèm | US-04 | M3 | xong |
+| FR-24 | Mua nhân vật bằng xu trong ví | US-04 | M3 | xong |
+| FR-25 | Chọn nhân vật đang dùng | US-04 | M3 | xong |
+| FR-26 | Màn cửa hàng | US-04 | M3 | xong |
 
 ## Âm thanh, hoàn thiện, phát hành
 
