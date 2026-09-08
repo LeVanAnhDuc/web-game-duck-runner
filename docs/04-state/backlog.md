@@ -18,24 +18,12 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 
 ## Đang làm
 
-**Giai đoạn: brainstorm xong, đang dựng nền tài liệu.** Nhánh
-`docs/project-foundation`.
+**Mốc M1 xong** (nhánh `feat/core-run`). Chạy được một lượt từ đầu đến chết, chơi
+lại được, kỷ lục lưu trên máy. 67 test xanh, `tsc` và `eslint` sạch, đã xem tận mắt
+ở 375 / 768 / 1440.
 
-Đã xong: toàn bộ tier-1 (`overview`, `journeys`, `scope`, `nfr`, `architecture`,
-`invariants`) và `ADR-0001`…`0005`.
-
-**Bước kế tiếp, theo đúng thứ tự:**
-1. Chạy skill `design-bootstrap` → sinh `docs/design-system/endless-runner/MASTER.md`
-   + một ADR ghi lại cái gì của bước 1 bị ghi đè. Chưa có file này thì **không viết
-   một dòng UI nào**.
-2. Mockup trên canvas Artifact — các màn của mốc M1, mỗi màn ba khổ 375 / 768 / 1440,
-   thiết kế từ 375 trước. Wireframe ASCII của màn chơi đã được duyệt trong phiên
-   2026-09-08.
-3. Người dùng duyệt canvas. Đây là cổng duyệt cuối của giai đoạn brainstorm.
-4. `superpowers:writing-plans` cho **mốc M1** → `docs/specs/core-run/plan.md`.
-
-**Chưa có code.** Repo mới chỉ có tài liệu; chưa có `package.json`, chưa cài
-dependency nào.
+**Bước kế tiếp:** mốc M2 — `docs/specs/coins-and-skills/`. Ví xu, thanh nạp, ba kỹ
+năng nhân vật, ba power-up, tạm dừng.
 
 ## Việc tiếp theo
 
@@ -53,6 +41,9 @@ dependency nào.
 
 | Chỗ nào | Đã đánh đổi gì | Vì sao chấp nhận | Khi nào buộc phải trả |
 | --- | --- | --- | --- |
-| `docs/02-requirements/nfr.md` §Performance | `NFR-PERF-05`…`08` là **mục tiêu đặt ra, chưa đo lần nào** | Chưa có code để đo. Đặt số bây giờ là bịa | Mốc M4 — đo thật bằng DevTools rồi sửa số và chuyển file sang 🟢 |
-| `data/catalog` — giá nhân vật, tỉ lệ rơi xu, chi phí nạp thanh kỹ năng | Chưa có con số nào | Phải chơi thật rồi đo xu/phút mới đặt được. Đặt trước là bịa | Cuối mốc M3, sau khi chơi đủ để đo tốc độ tích xu |
-| `docs/01-product/glossary.md` | Vẫn ⚪ chưa áp dụng | Chưa có code nên chưa có tên trong code để đối chiếu với tên trên UI | Khi mốc M1 có `Player`, `Track`, `Spawner` thật — lúc đó khoá tên |
+| `docs/02-requirements/nfr.md` §Performance | `NFR-PERF-05`…`08` là **mục tiêu đặt ra, chưa đo lần nào** | Chưa đủ vật thể trên cảnh để số đo có nghĩa | Mốc M4 — đo bằng DevTools rồi sửa số, chuyển file sang 🟢 |
+| `src/game/constants.ts` — `REACTION_MIN_MS = 620` | Con số **chọn**, không phải đo | Chưa có ai chơi thật để biết 620ms là dễ hay khó | Cuối M2, sau khi chơi đủ lâu ở tốc độ trần |
+| `src/data/catalog.ts` — giá nhân vật, tỉ lệ rơi xu, chi phí nạp thanh | Chưa có con số nào | Phải chơi thật rồi đo xu/phút mới đặt được | Cuối M3 |
+| `docs/01-product/glossary.md` | Vẫn ⚪ chưa áp dụng | Giờ đã có `Player`, `Track`, `Spawner` thật để đối chiếu | Đầu M3, khi cửa hàng thêm khái niệm "nhân vật" và "kỹ năng" |
+| Khổ 1024 chưa được soi tận mắt | Chỉ mới chụp 375 / 768 / 1440 | 1024 nằm giữa hai khổ đã kiểm, rủi ro thấp | Mốc M4, cùng lượt đo hiệu năng |
+| Không dùng worktree cho từng mốc | Mỗi mốc là một nhánh thường, rẽ từ `main` | Không có remote, một người làm, và mỗi worktree cần một `node_modules` riêng | Khi có người thứ hai, hoặc khi hai mốc chạy song song |

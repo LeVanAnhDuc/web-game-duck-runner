@@ -1,6 +1,10 @@
-/.claude/
-
-# Bí mật — `.env.example` là bản mẫu và ĐƯỢC commit; `.env` là bản thật và không bao giờ commit.
+node_modules/
+dist/
+coverage/
 .env
-.env.*
-!.env.example
+.env.local
+*.local
+.DS_Store
+.claude/.doc-state/
+.playwright-mcp/
+*.png
