@@ -7,5 +7,10 @@ coverage/
 .DS_Store
 .claude/.doc-state/
 .playwright-mcp/
-*.png
+# Anh chup thu o goc repo (tu Playwright/devtools) khong duoc vao git...
+/*.png
 .vite/
+
+# ...nhung anh cua README thi PHAI vao. `readme-game` sinh no tu site live,
+# va README tro thang toi duong dan nay.
+!docs/assets/screenshot.png

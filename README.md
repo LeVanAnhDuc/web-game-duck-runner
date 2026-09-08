@@ -15,7 +15,6 @@ blindness. The one silhouette with a rim light is you.
 
 **Play**: https://levananhduc.github.io/web-game-duck-runner/
 
-<!-- screenshot: pending first deploy -->
 ![Duck Runner gameplay](docs/assets/screenshot.png)
 
 ## Features
