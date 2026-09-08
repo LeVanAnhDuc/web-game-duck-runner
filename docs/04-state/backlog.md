@@ -18,23 +18,28 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 
 ## Đang làm
 
-**Mốc M3 xong** (nhánh `feat/character-shop`). Cửa hàng bốn nhân vật, mua và chọn
-được, hình bóng phân biệt được. 106 test xanh.
+**Cả bốn mốc M1–M4 xong.** Game chơi được từ đầu đến cuối: chạy, kỹ năng, power-up,
+cửa hàng, âm thanh, cài đặt. 121 test xanh · `tsc` và `eslint` sạch · các ngưỡng hiệu
+năng có số đo thật kèm điều kiện đo.
 
-**Bước kế tiếp:** mốc M4 — `docs/specs/polish-and-audio/`. Âm thanh, màn cài đặt,
-đo hiệu năng và chốt `nfr.md`, deploy tĩnh.
+**Hai việc còn chặn, không phải do code:**
+
+1. **`FR-33` deploy** — workflow GitHub Actions đã có và có cổng kiểm, nhưng repo
+   **chưa có remote** nên chưa deploy lần nào.
+2. **Xác nhận fps trên máy mobile thật** — CPU throttle của DevTools không thay được
+   một GPU mobile thật. Ngưỡng "≥45fps trên mobile tầm trung" ở `NFR-PERF-05` vì vậy
+   vẫn là suy ra, chưa phải đo.
 
 ## Việc tiếp theo
 
 | Việc | Liên quan | Ưu tiên | Vì sao ưu tiên đó |
 | --- | --- | --- | --- |
-| `design-bootstrap` → `MASTER.md` | FR-08 · FR-11 | cao | Chặn mọi việc UI. Không có token thì mỗi màn hình sẽ tự bịa màu và font |
-| Mốc M1 — vòng chơi chạy được | FR-01…FR-11 · FR-32 | cao | Là thứ duy nhất chứng minh được kiến trúc ở `ADR-0002` có đứng vững không |
-| Dựng khung dự án: Vite + TS + Vitest + lint chặn import | — | cao | Quy tắc lint là thứ ép `invariants.md` §4; thiếu nó thì ranh giới sẽ thủng ngay tuần đầu |
-| Chọn và tải bộ model Kenney, chốt danh sách file dùng | FR-05 · FR-23 | trung bình | Kích thước model quyết định `NFR-PERF-07`; biết sớm thì đỡ phải làm lại |
-| Mốc M2 — xu, thanh nạp, kỹ năng, power-up | FR-12…FR-22 | trung bình | Phụ thuộc M1 |
-| Mốc M3 — cửa hàng nhân vật | FR-23…FR-26 | thấp | Phụ thuộc M2 |
-| Mốc M4 — âm thanh, hoàn thiện, đo hiệu năng, deploy | FR-27…FR-33 | thấp | Phần đo hiệu năng phải làm cuối, khi cảnh đã đủ dày để số đo có nghĩa |
+| Tạo repo trên GitHub và push | FR-33 | cao | Đang chặn deploy. Không có nó thì mục tiêu portfolio chưa đạt — không ai xem được |
+| Chơi thật trên một điện thoại | NFR-PERF-05 · NFR-A11Y-03 · NFR-A11Y-06 | cao | Vuốt, vùng bấm 44px và fps đều chỉ đúng khi thử trên ngón tay thật |
+| Cho 5 người chơi thử, không giải thích trước | overview.md §6 | cao | Tiêu chí thành công số 1 nói rõ phải đo bằng cách này |
+| Rà lại `REACTION_MIN_MS = 620` | invariants.md §3 | trung bình | Con số chọn, chưa đo. Autopilot cho trung vị 6.4 giây/lượt — có thể là bot yếu, có thể là game khó |
+| Thêm pattern cho tier 2 và 3 | FR-05 | trung bình | 14 cụm là ít; chơi lâu sẽ thấy lặp |
+| Chia bundle: Three.js thành chunk riêng | NFR-PERF-09 | thấp | 180.8 KB gzip đã đạt ngưỡng, nên đây là tối ưu chứ không phải sửa lỗi |
 
 ## Nợ kỹ thuật — cố ý làm tạm
 

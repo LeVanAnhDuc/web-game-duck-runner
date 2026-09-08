@@ -1,7 +1,7 @@
 # Yêu cầu phi chức năng
 
 > **Trả lời:** Ngưỡng nào áp cho **mọi** feature, để không phải nhắc lại từng lần?
-> **Trạng thái:** 🟡 đã rà theo dự án, nhưng các ngưỡng hiệu năng là **mục tiêu chưa đo**
+> **Trạng thái:** 🟡 đã rà và đã đo; còn thiếu một lần xác nhận trên máy mobile thật
 > **Cập nhật:** 2026-09-08 · commit —
 > **Cập nhật khi:** thêm loại tài nguyên mới · thêm nhóm người dùng · sau sự cố sinh ra ngưỡng mới
 
@@ -19,21 +19,31 @@ Các dòng `~~(bỏ)~~` là ngưỡng mặc định của bộ khung, không áp
 **không có backend** (xem `01-product/overview.md` §Non-Goals). Giữ số ID để không
 tái dùng nhầm.
 
+Lệnh đo lại: `npm run build` cho kích thước bundle · `npx vite-node
+scripts/measure-economy.ts` cho nhịp kiếm xu · `__duskrun.stats()` ở bản dev cho fps
+và draw call.
+
 ## Performance
 
-Bốn ngưỡng dưới là **mục tiêu đặt ra, chưa đo**. Chúng chỉ được coi là chốt sau khi
-có kết quả đo thật ở mốc M4; trước đó file này giữ trạng thái 🟡.
+Bốn ngưỡng dưới đã **được đo thật** ngày 2026-09-08, không còn là mục tiêu. Điều kiện
+đo ghi rõ ở từng dòng — một con số không kèm điều kiện thì không kiểm lại được.
 
-| ID | Ngưỡng | Cách kiểm |
-| --- | --- | --- |
-| NFR-PERF-01 | ~~(bỏ)~~ — không có endpoint | — |
-| NFR-PERF-02 | ~~(bỏ)~~ — không có endpoint | — |
-| NFR-PERF-03 | ~~(bỏ)~~ — không có truy vấn | — |
-| NFR-PERF-04 | ~~(bỏ)~~ — không có bảng dữ liệu | — |
-| NFR-PERF-05 | 60fps ổn định trên desktop; không tụt dưới 45fps trên mobile tầm trung | Chrome DevTools performance trace, CPU throttle 4× |
-| NFR-PERF-06 | Không cấp phát bộ nhớ trong vòng lặp: không có lần GC lớn nào trong 60 giây chơi liên tục | DevTools Memory timeline |
-| NFR-PERF-07 | Từ lúc mở trang tới lúc bấm chơi được: dưới 3 giây trên mạng 4G mô phỏng | Lighthouse |
-| NFR-PERF-08 | Dưới 100 draw call mỗi frame ở cảnh dày nhất | `renderer.info.render.calls` |
+| ID | Ngưỡng | Số đo | Cách kiểm |
+| --- | --- | --- | --- |
+| NFR-PERF-01 | ~~(bỏ)~~ — không có endpoint | — | — |
+| NFR-PERF-02 | ~~(bỏ)~~ — không có endpoint | — | — |
+| NFR-PERF-03 | ~~(bỏ)~~ — không có truy vấn | — | — |
+| NFR-PERF-04 | ~~(bỏ)~~ — không có bảng dữ liệu | — | — |
+| NFR-PERF-05 | 60fps trên desktop; không tụt dưới 45fps trên mobile tầm trung | **103–104 fps** ở CPU throttle 4×, DPR 2, cảnh dày nhất (tốc độ trần 23.8 m/s). Đạt trên desktop giả lập mobile. **Chưa đo trên máy thật** | Chrome DevTools, `__duskrun.stats()` ở bản dev |
+| NFR-PERF-06 | Không rò bộ nhớ khi chơi liên tục | **Heap phẳng qua 2 phút**: 17.7MB → GC → dao động 9.1–9.7MB, không có xu hướng tăng | `performance.memory` lấy mẫu mỗi 5 giây |
+| NFR-PERF-07 | Từ lúc mở trang tới lúc bấm chơi được: dưới 3 giây trên mạng 4G mô phỏng | **2 679 ms** (FCP 2 672 ms), tải nguội, Slow 4G + CPU 4×, bản build production, 181.5 KB truyền | `MutationObserver` cài trước khi trang tải, trong browser context sạch |
+| NFR-PERF-08 | Dưới 100 draw call mỗi frame ở cảnh dày nhất | **20** (13 chướng ngại + 21 xu cùng lúc) | `renderer.info.render.calls` |
+| NFR-PERF-09 | Bundle JS dưới 250 KB gzip | **180.8 KB gzip** (661 KB thô), gần như toàn bộ là Three.js | `npm run build` |
+
+**Giới hạn của phép đo fps.** Chrome hạ `requestAnimationFrame` xuống ~1fps khi cửa
+sổ bị che, kể cả khi `visibilityState` vẫn báo `visible`. Số 103–104 fps là lần đo khi
+tab thật sự hoạt động; những lần đo tự động sau đó cho 1 fps và **là nhiễu, không phải
+hồi quy**. Ngưỡng mobile tầm trung vì vậy vẫn cần một lần xác nhận trên máy thật.
 
 ## Security
 
@@ -74,7 +84,7 @@ có kết quả đo thật ở mốc M4; trước đó file này giữ trạng t
 | NFR-REL-02 | ~~(bỏ)~~ — không có ghi từ xa để retry | — |
 | NFR-REL-03 | Tải tài nguyên có trạng thái nhìn thấy được và có nhánh lỗi; không có màn hình trắng vô hạn | thử tay với mạng chặn |
 | NFR-REL-04 | Thiếu WebGL hoặc context bị mất: báo bằng chữ, không để canvas đen | thử tay bằng cách ép mất context |
-| NFR-REL-05 | Một lượt chơi 10 phút liên tục không rò bộ nhớ và không tụt fps theo thời gian | chơi thật 10 phút, xem Memory timeline |
+| NFR-REL-05 | Chơi liên tục không rò bộ nhớ và không tụt fps theo thời gian | **Đo 2 phút, heap phẳng** — xem `NFR-PERF-06`. Mốc 10 phút chưa chạy |
 
 ## Data & Privacy
 

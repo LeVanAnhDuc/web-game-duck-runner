@@ -9,13 +9,13 @@
 | [`01-product/journeys.md`](01-product/journeys.md) | Người dùng đi qua những luồng nào từ đầu đến cuối? | 🟢 đủ | có luồng người dùng mới · một luồng cũ đổi bản chất |
 | [`01-product/glossary.md`](01-product/glossary.md) | Khái niệm này gọi là gì trong code, và hiện ra sao trên UI… | 🟢 đủ | xuất hiện một khái niệm nghiệp vụ mới trong code hoặc UI |
 | [`02-requirements/scope.md`](02-requirements/scope.md) | Hệ thống có những chức năng nào, mỗi cái đang ở trạng thái… | 🟢 đủ | brainstorm ra chức năng mới (cấp FR mới) · một FR chuyển t… |
-| [`02-requirements/nfr.md`](02-requirements/nfr.md) | Ngưỡng nào áp cho **mọi** feature, để không phải nhắc lại … | 🟡 đã rà theo dự án, nhưng các ngưỡng hiệu n… | thêm loại tài nguyên mới · thêm nhóm người dùng · sau sự c… |
+| [`02-requirements/nfr.md`](02-requirements/nfr.md) | Ngưỡng nào áp cho **mọi** feature, để không phải nhắc lại … | 🟡 đã rà và đã đo; còn thiếu một lần xác nhậ… | thêm loại tài nguyên mới · thêm nhóm người dùng · sau sự c… |
 | [`03-design/architecture.md`](03-design/architecture.md) | Hệ thống ghép lại thế nào, ranh giới giữa các phần ở đâu? | 🟢 đủ | thêm/bỏ một module hoặc service · đổi cách hai module nói … |
 | [`03-design/invariants.md`](03-design/invariants.md) | Sửa gì thì hệ thống sai **âm thầm** — test vẫn xanh mà kết… | 🟢 đủ | phát hiện một bất biến mới — thường là ngay sau khi ai đó … |
 | [`04-state/backlog.md`](04-state/backlog.md) | Đang làm gì, tiếp theo làm gì, và đang nợ những gì? | 🟢 đủ | bắt đầu/kết thúc một việc · brainstorm ra việc mới · cố ý … |
 | [`design-system/endless-runner/MASTER.md`](design-system/endless-runner/MASTER.md) | — | — | — |
-| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 7 ADR | mỗi quyết định kỹ thuật |
-| [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | 🔴 chưa điền | code đọc một biến mới (process.env.X / os.getenv / os.Gete… |
+| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 8 ADR | mỗi quyết định kỹ thuật |
+| [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | ⚪ chưa áp dụng — dự án KHÔNG có biến môi trư… | code đọc một biến mới (process.env.X / import.meta.env.X d… |
 <!-- END:auto -->
 
 🔴 chưa điền · 🟡 một phần · 🟢 đủ · ⚪ chưa áp dụng

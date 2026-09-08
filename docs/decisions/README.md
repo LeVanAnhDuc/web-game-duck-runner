@@ -15,6 +15,7 @@
 | [ADR-0005](0005-khoa-goc-nhin-theo-chieu-doc.md) | Khoá góc nhìn theo chiều dọc, đóng khung canvas trên màn hình rộng | 2026-09-08 | accepted |
 | [ADR-0006](0006-huong-nghe-thuat-nguoc-sang-hoang-hon.md) | Hướng nghệ thuật "ngược sáng lúc hoàng hôn", bỏ đề xuất pixel art | 2026-09-08 | accepted |
 | [ADR-0007](0007-dung-hinh-khoi-thay-model-tai-ve.md) | Dựng vật thể bằng hình khối trong code, không tải model ngoài | 2026-09-08 | accepted |
+| [ADR-0008](0008-am-thanh-tong-hop-thay-file.md) | Tổng hợp âm thanh bằng Web Audio, không dùng file và không dùng Howler | 2026-09-08 | accepted |
 <!-- END:auto -->
 
 Trạng thái: `accepted` · `superseded by ADR-00xx` · `deprecated`
