@@ -57,6 +57,10 @@ export const SEGMENT_COUNT = 14
 /** Tran so chuong ngai song cung luc — quyet dinh kich thuoc pool. */
 export const OBSTACLE_POOL_SIZE = 48
 export const COIN_POOL_SIZE = 96
+export const POWERUP_POOL_SIZE = 6
+
+/** Khoang cach trung binh giua hai power-up, met. Thua thi het y nghia phan thuong. */
+export const POWERUP_EVERY_M = 620
 
 // ── Kich thuoc vat the ─────────────────────────────────────────────────────
 export const OBSTACLE_LOW_H_M = 0.95

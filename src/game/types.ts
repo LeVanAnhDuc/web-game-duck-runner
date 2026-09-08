@@ -28,6 +28,16 @@ export interface Coin {
   z: number
 }
 
+/** Power-up nam tren duong. Khac ky nang: khong chon duoc thoi diem. */
+export type PowerUpKind = 'magnet' | 'shield' | 'rush'
+
+export interface PowerUp {
+  active: boolean
+  kind: PowerUpKind
+  lane: number
+  z: number
+}
+
 export type PlayerAction = 'jump' | 'slide'
 
 export interface InputIntent {

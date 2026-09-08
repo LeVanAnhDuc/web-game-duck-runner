@@ -1,5 +1,7 @@
-import { COIN_POOL_SIZE, OBSTACLE_POOL_SIZE, PATTERN_SLOT_GAP_M } from './constants'
-import type { Coin, Obstacle, Pattern } from './types'
+import {
+  COIN_POOL_SIZE, OBSTACLE_POOL_SIZE, PATTERN_SLOT_GAP_M, POWERUP_POOL_SIZE,
+} from './constants'
+import type { Coin, Obstacle, Pattern, PowerUp, PowerUpKind } from './types'
 
 /**
  * Duong chay: pool chuong ngai va pool xu.
@@ -14,6 +16,7 @@ import type { Coin, Obstacle, Pattern } from './types'
 export class Track {
   readonly obstacles: Obstacle[] = []
   readonly coins: Coin[] = []
+  readonly powerUps: PowerUp[] = []
   /**
    * Vat the lui ra sau nguoi choi qua nguong nay thi tra ve pool.
    *
@@ -30,11 +33,28 @@ export class Track {
     for (let i = 0; i < COIN_POOL_SIZE; i++) {
       this.coins.push({ active: false, lane: 1, z: 0 })
     }
+    for (let i = 0; i < POWERUP_POOL_SIZE; i++) {
+      this.powerUps.push({ active: false, kind: 'shield', lane: 1, z: 0 })
+    }
   }
 
   reset(): void {
     for (const o of this.obstacles) o.active = false
     for (const c of this.coins) c.active = false
+    for (const p of this.powerUps) p.active = false
+  }
+
+  /** Dat mot power-up. Tra ve false neu pool day — bo qua con hon lam tut frame. */
+  spawnPowerUp(kind: PowerUpKind, lane: number, z: number): boolean {
+    for (const p of this.powerUps) {
+      if (p.active) continue
+      p.active = true
+      p.kind = kind
+      p.lane = lane
+      p.z = z
+      return true
+    }
+    return false
   }
 
   /** Dat mot cum tai `atZ` met truoc mat. Tra ve do dai cum, hoac -1 neu tran pool. */
@@ -76,6 +96,11 @@ export class Track {
       if (!c.active) continue
       c.z -= dz
       if (c.z < Track.DESPAWN_Z) c.active = false
+    }
+    for (const p of this.powerUps) {
+      if (!p.active) continue
+      p.z -= dz
+      if (p.z < Track.DESPAWN_Z) p.active = false
     }
   }
 

@@ -2,7 +2,17 @@ import { FixedStepAccumulator } from '../core/loop'
 import { InputController } from '../core/input'
 import { Game } from '../game/Game'
 import { GameRenderer } from '../render/Renderer'
+import { S } from '../data/strings'
+import type { EffectKind } from '../game/ActiveEffects'
 import type { HudHandle } from './hud/Hud'
+
+const EFFECT_LABELS: Record<EffectKind, string> = {
+  magnet: S.hud.magnet,
+  rush: S.hud.rush,
+  ram: 'Ủi',
+  slow: 'Chậm',
+  fly: 'Bay',
+}
 
 export interface RunResult {
   distanceM: number
@@ -48,7 +58,10 @@ export class GameHost {
       onPause: () => opts.onPause(),
     })
 
-    this.game.events.on('coinCollected', (p) => this.hud.setCoins(p.total))
+    this.game.events.on('coinCollected', (p) => {
+      this.hud.setCoins(p.total)
+      this.hud.setCharge(p.chargePct)
+    })
 
     this.game.events.on('runEnded', (p) => {
       this.renderer.shake()
@@ -65,28 +78,47 @@ export class GameHost {
     this.loop(0)
   }
 
-  start(seed: number): void {
-    this.game.start(seed)
+  start(seed: number, characterId?: string): void {
+    this.game.start(seed, characterId)
     this.lastDistance = -1
     this.hud.setDistance(0)
     this.hud.setCoins(0)
     this.hud.setCharge(0)
+    this.hud.setEffects([])
     this.running = true
     this.game.clock.resume()
   }
 
   pause(): void {
     if (!this.running) return
-    this.game.clock.pause()
+    this.game.pause()
     this.running = false
   }
 
   resume(): void {
     if (this.game.phase !== 'running') return
-    this.game.clock.resume()
+    this.game.resume()
     this.lastMs = 0
     this.acc.reset()
     this.running = true
+  }
+
+  /** Bo luot dang choi va ve man hinh chinh. */
+  abandon(): void {
+    this.running = false
+    this.game.resume()
+    this.game.phase = 'idle'
+  }
+
+  /**
+   * Dung ky nang. Tra ve false neu thanh chua day — luc do HUD rung mot nhip,
+   * vi im lang la cach chac nhat de nguoi choi tuong nut bi hong (MASTER §7.5).
+   */
+  useSkill(): boolean {
+    const ok = this.game.useSkill()
+    if (ok) this.hud.setCharge(0)
+    else this.hud.nudge()
+    return ok
   }
 
   setCharacter(id: string): void {
@@ -104,6 +136,16 @@ export class GameHost {
     this.resizeObserver.disconnect()
     this.input.dispose()
     this.renderer.dispose()
+  }
+
+  private effectLabels(): string[] {
+    const out: string[] = []
+    for (const e of this.game.effects.list()) {
+      const label = EFFECT_LABELS[e.kind]
+      if (label) out.push(`${label} ${Math.ceil(e.remainingMs / 1000)}s`)
+    }
+    if (this.game.effects.hasShield) out.push(S.hud.shield)
+    return out
   }
 
   private readonly onContextLost = (e: Event): void => {
@@ -144,6 +186,8 @@ export class GameHost {
         this.lastDistance = d
         this.hud.setDistance(d)
       }
+      // setEffects tu bo qua khi tap nhan khong doi, nen goi moi frame la re
+      this.hud.setEffects(this.effectLabels())
     }
 
     this.renderer.render(this.game, Math.min(dtMs, 100) / 1000, this.running)

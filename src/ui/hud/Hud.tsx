@@ -17,6 +17,10 @@ export interface HudHandle {
   setDistance(metres: number): void
   setCoins(n: number): void
   setCharge(pct: number): void
+  /** Chip hiệu ứng đang chạy. Nhận sẵn nhãn để HUD không phải biết luật chơi. */
+  setEffects(labels: readonly string[]): void
+  /** Một nhịp rung khi bấm kỹ năng lúc chưa sẵn sàng — MASTER §7.5. */
+  nudge(): void
 }
 
 interface Props {
@@ -35,6 +39,7 @@ export const Hud = forwardRef<HudHandle, Props>(function Hud(
   const chargeRef = useRef<HTMLDivElement>(null)
   const skillRef = useRef<HTMLDivElement>(null)
   const labelRef = useRef<HTMLSpanElement>(null)
+  const effectsRef = useRef<HTMLDivElement>(null)
 
   useImperativeHandle(
     ref,
@@ -46,6 +51,30 @@ export const Hud = forwardRef<HudHandle, Props>(function Hud(
       setCoins(n) {
         const el = coinsRef.current
         if (el) el.textContent = String(n)
+      },
+      setEffects(labels) {
+        const box = effectsRef.current
+        if (!box) return
+        // Chỉ dựng lại khi tập nhãn THỰC SỰ đổi — hàm này được gọi mỗi frame
+        const key = labels.join('|')
+        if (box.dataset.key === key) return
+        box.dataset.key = key
+        box.replaceChildren(
+          ...labels.map((text) => {
+            const chip = document.createElement('div')
+            chip.className = 'effect-chip'
+            chip.textContent = text
+            return chip
+          }),
+        )
+      },
+      nudge() {
+        const btn = skillRef.current
+        if (!btn) return
+        btn.classList.remove('nudge')
+        // Buộc trình duyệt tính lại layout để animation chạy lại từ đầu
+        void btn.offsetWidth
+        btn.classList.add('nudge')
       },
       setCharge(pct) {
         const fill = chargeRef.current
@@ -85,6 +114,8 @@ export const Hud = forwardRef<HudHandle, Props>(function Hud(
           </span>
         </div>
       </div>
+
+      <div className="effects" ref={effectsRef} />
 
       <div className="charge">
         <div className="charge-fill" ref={chargeRef} />
