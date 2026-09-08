@@ -18,23 +18,28 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 
 ## Đang làm
 
-**Cả bốn mốc M1–M4 xong.** Game chơi được từ đầu đến cuối: chạy, kỹ năng, power-up,
-cửa hàng, âm thanh, cài đặt. 121 test xanh · `tsc` và `eslint` sạch · các ngưỡng hiệu
-năng có số đo thật kèm điều kiện đo.
+**Cả bốn mốc M1–M4 xong, và đã phát hành.** Game đổi tên thành **Duck Runner**, hình
+bóng nhân vật đổi thành vịt cho khớp tên.
 
-**Hai việc còn chặn, không phải do code:**
+- **Live:** <https://levananhduc.github.io/web-game-duck-runner/>
+- **Repo:** `LeVanAnhDuc/web-game-duck-runner` · release `v0.1.1`
+- 121 test xanh · `tsc` và `eslint` sạch · README đạt hợp đồng 13 mục của skill
+  `readme-game` (audit exit 0)
 
-1. **`FR-33` deploy** — workflow GitHub Actions đã có và có cổng kiểm, nhưng repo
-   **chưa có remote** nên chưa deploy lần nào.
-2. **Xác nhận fps trên máy mobile thật** — CPU throttle của DevTools không thay được
-   một GPU mobile thật. Ngưỡng "≥45fps trên mobile tầm trung" ở `NFR-PERF-05` vì vậy
-   vẫn là suy ra, chưa phải đo.
+**Lệch tên có ý thức:** thư mục vẫn là `web-game-endless-runner` còn repo là
+`web-game-duck-runner`. Thư mục giữ tên **thể loại** cho khớp 12 game bên cạnh
+(`web-game-tetris`, `web-game-sokoban`…) — nhìn danh sách là biết game gì; repo giữ
+tên **sản phẩm**. Script `capture-screenshots.mjs` lấy tên repo từ `git remote` chứ
+không từ basename, nên nó xử lý đúng trường hợp này.
+
+**Việc còn chặn duy nhất, không phải do code:** xác nhận fps trên **máy mobile thật**.
+CPU throttle của DevTools không thay được một GPU mobile, nên ngưỡng "≥45fps trên
+mobile tầm trung" ở `NFR-PERF-05` vẫn là suy ra.
 
 ## Việc tiếp theo
 
 | Việc | Liên quan | Ưu tiên | Vì sao ưu tiên đó |
 | --- | --- | --- | --- |
-| Tạo repo trên GitHub và push | FR-33 | cao | Đang chặn deploy. Không có nó thì mục tiêu portfolio chưa đạt — không ai xem được |
 | Chơi thật trên một điện thoại | NFR-PERF-05 · NFR-A11Y-03 · NFR-A11Y-06 | cao | Vuốt, vùng bấm 44px và fps đều chỉ đúng khi thử trên ngón tay thật |
 | Cho 5 người chơi thử, không giải thích trước | overview.md §6 | cao | Tiêu chí thành công số 1 nói rõ phải đo bằng cách này |
 | Rà lại `REACTION_MIN_MS = 620` | invariants.md §3 | trung bình | Con số chọn, chưa đo. Autopilot cho trung vị 6.4 giây/lượt — có thể là bot yếu, có thể là game khó |

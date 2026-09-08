@@ -84,4 +84,4 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 | FR-29 | Màn cài đặt: âm lượng và tắt tiếng, nhớ giữa các phiên | US-05 | M4 | xong |
 | FR-30 | Tôn trọng `prefers-reduced-motion` — giảm hiệu ứng trang trí | US-05 | M4 | xong |
 | FR-31 | Đóng khung canvas theo tỉ lệ dọc trên màn hình rộng | US-01 | M1 | xong |
-| FR-33 | Deploy tĩnh công khai | — | M4 | đang — workflow xong, chờ remote |
+| FR-33 | Deploy tĩnh công khai | — | M4 | xong |
