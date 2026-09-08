@@ -1,4 +1,4 @@
-# Tài liệu dự án `web-game/web-game-endless-runner`
+# Tài liệu dự án `web-game-endless-runner`
 
 ## Bản đồ
 
