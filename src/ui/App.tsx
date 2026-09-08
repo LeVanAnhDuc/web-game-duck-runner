@@ -7,8 +7,10 @@ import { GameHost, type RunResult } from './GameHost'
 import {
   ErrorScreen, GameOverScreen, LoadingScreen, MenuScreen, PauseScreen,
 } from './screens/Screens'
+import { ShopScreen } from './screens/Shop'
+import { buy as buyCharacter, equip as equipCharacter } from '../data/shop'
 
-type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'error'
+type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'shop' | 'error'
 
 export function App() {
   const [screen, setScreen] = useState<Screen>('loading')
@@ -101,6 +103,27 @@ export function App() {
     hostRef.current?.start(Math.floor(Math.random() * 0x7fffffff), saveData.selectedCharacter)
   }, [saveData.selectedCharacter])
 
+  const handleBuy = useCallback((id: string) => {
+    setSaveData((prev) => {
+      // `buy` idempotent theo id: bam hai lan that nhanh khong tru tien hai lan
+      const next = buyCharacter(prev, id)
+      if (next !== prev) writeSave(next)
+      return next
+    })
+  }, [])
+
+  const handleEquip = useCallback((id: string) => {
+    setSaveData((prev) => {
+      const next = equipCharacter(prev, id)
+      if (next !== prev) {
+        writeSave(next)
+        // Doi hinh bong trong canh ngay; ky nang moi ap tu luot KE TIEP
+        hostRef.current?.setCharacter(id)
+      }
+      return next
+    })
+  }, [])
+
   const goHome = useCallback(() => {
     hostRef.current?.abandon()
     setScreen('menu')
@@ -132,8 +155,17 @@ export function App() {
             bestDistanceM={saveData.bestDistanceM}
             coins={saveData.coins}
             onPlay={play}
-            onShop={() => undefined}
+            onShop={() => setScreen('shop')}
             onSettings={() => undefined}
+          />
+        )}
+
+        {screen === 'shop' && (
+          <ShopScreen
+            save={saveData}
+            onBuy={handleBuy}
+            onEquip={handleEquip}
+            onBack={() => setScreen('menu')}
           />
         )}
 

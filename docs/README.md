@@ -7,7 +7,7 @@
 | --- | --- | --- | --- |
 | [`01-product/overview.md`](01-product/overview.md) | Sản phẩm này là gì, cho ai, và **KHÔNG** làm gì? | 🟢 đủ | định vị đổi · thêm/bớt một Non-Goal · trần chi phí đổi |
 | [`01-product/journeys.md`](01-product/journeys.md) | Người dùng đi qua những luồng nào từ đầu đến cuối? | 🟢 đủ | có luồng người dùng mới · một luồng cũ đổi bản chất |
-| [`01-product/glossary.md`](01-product/glossary.md) | Khái niệm này gọi là gì trong code, và hiện ra sao trên UI… | ⚪ chưa áp dụng | xuất hiện một khái niệm nghiệp vụ mới trong code hoặc UI |
+| [`01-product/glossary.md`](01-product/glossary.md) | Khái niệm này gọi là gì trong code, và hiện ra sao trên UI… | 🟢 đủ | xuất hiện một khái niệm nghiệp vụ mới trong code hoặc UI |
 | [`02-requirements/scope.md`](02-requirements/scope.md) | Hệ thống có những chức năng nào, mỗi cái đang ở trạng thái… | 🟢 đủ | brainstorm ra chức năng mới (cấp FR mới) · một FR chuyển t… |
 | [`02-requirements/nfr.md`](02-requirements/nfr.md) | Ngưỡng nào áp cho **mọi** feature, để không phải nhắc lại … | 🟡 đã rà theo dự án, nhưng các ngưỡng hiệu n… | thêm loại tài nguyên mới · thêm nhóm người dùng · sau sự c… |
 | [`03-design/architecture.md`](03-design/architecture.md) | Hệ thống ghép lại thế nào, ranh giới giữa các phần ở đâu? | 🟢 đủ | thêm/bỏ một module hoặc service · đổi cách hai module nói … |
