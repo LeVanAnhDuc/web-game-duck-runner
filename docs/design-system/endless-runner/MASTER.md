@@ -35,9 +35,19 @@ Ba lý do chọn hướng này, theo thứ tự quan trọng:
 3. **Ăn ảnh.** Ảnh chụp portfolio có một dải hoàng hôn và các bóng đen cắt trên đó —
    khác hẳn ảnh chụp một runner sáng đều.
 
-**Yếu tố đặc trưng — "đường chân trời".** Một dải gradient tím→hổ phách cao 3px,
-dùng đúng ba chỗ: thanh nạp kỹ năng, gạch chân tiêu đề mỗi màn, và đường chia trong
-panel. Một hình dạng, lặp lại, nối UI với thế giới trong game.
+**Yếu tố đặc trưng — "đường chân trời".** Một dải gradient tím→hổ phách, dùng đúng
+bốn chỗ và không chỗ nào khác:
+
+| Dùng ở | Cao |
+| --- | --- |
+| Gạch chân tiêu đề mỗi màn | 3px |
+| Đường chia trong panel | 3px |
+| Thanh nạp kỹ năng (phần đã nạp) | 6px |
+| Thanh tiến trình khi tải (phần đã tải) | 6px |
+
+Hai cái đầu là **đường kẻ**, hai cái sau là **phần đầy của một thanh** — cùng một
+gradient, hai vai trò. Không dùng nó làm hoạ tiết trang trí ở bất kỳ đâu khác; dùng
+loãng là mất hết tác dụng.
 
 ---
 
@@ -247,8 +257,17 @@ là nút Chơi. Thứ tự khối của mẫu đó áp cho màn chính:
 Các màn còn lại không thuộc mẫu đó và không bị ép theo: cửa hàng là lưới, cài đặt là
 danh sách, tạm dừng và kết thúc lượt là hộp thoại.
 
-**Khổ màn hình** — *Ràng buộc:* 375 · 768 · 1024 · 1440. Thiết kế từ **375 trước**.
+**Khổ màn hình.** Phân biệt hai việc khác nhau:
+
+- **Vẽ mockup: ba khổ** — 375 · 768 · 1440, thiết kế từ **375 trước** (theo skill
+  `feature-flow`).
+- **Kiểm trên app thật: bốn khổ** — 375 · 768 · **1024** · 1440 (*ràng buộc bước 1*).
+  1024 không có artboard riêng vì nó nằm giữa hai khổ đã vẽ; nhưng nó **phải được
+  chụp và soi** ở bước "xem trên app đang chạy".
+
 Trên khổ rộng, canvas giữ tỉ lệ dọc ở giữa, hai bên là `--surface` (xem `ADR-0005`).
+Màn báo thiếu WebGL là ngoại lệ: không có cảnh 3D nào để cân góc nhìn, nên nó dùng
+hết chiều rộng.
 
 ---
 
@@ -261,7 +280,7 @@ Trên khổ rộng, canvas giữ tỉ lệ dọc ở giữa, hai bên là `--sur
 - ❌ Hover làm dịch chuyển layout.
 - ❌ Style không nhất quán giữa các màn.
 - ❌ **Dùng aqua cho bất cứ thứ gì không phải trạng thái kỹ năng.**
-- ❌ **Dùng vàng kim cho bất cứ thứ gì không phải xu hoặc CTA chính.**
+- ❌ **Dùng vàng kim cho bất cứ thứ gì không phải xu, CTA chính, hoặc dấu kỷ lục mới.**
 - ❌ **Tô màu cho chướng ngại vật.** Chúng là bóng đen.
 - ❌ **Đặt thành phần HUD vào 1/3 giữa màn hình.**
 - ❌ Font pixel, chữ viền dày, gradient cầu vồng — mặc định của "game indie", và là
@@ -280,7 +299,7 @@ Trên khổ rộng, canvas giữ tỉ lệ dọc ở giữa, hai bên là `--sur
 - [ ] Đủ 375 / 768 / 1024 / 1440, không cuộn ngang ở 375
 - [ ] Vùng bấm ≥ 44×44px, gồm cả nút kỹ năng và nút tạm dừng
 - [ ] Không có nội dung nào bị vùng an toàn của thiết bị che
-- [ ] Aqua chỉ xuất hiện ở trạng thái kỹ năng; vàng chỉ ở xu và CTA chính
+- [ ] Aqua chỉ xuất hiện ở trạng thái kỹ năng; vàng chỉ ở xu, CTA chính và dấu kỷ lục mới
 
 **Không có light mode.** Game này chỉ có một chế độ tối. Đây là lựa chọn có ý thức,
 không phải thiếu sót: cảnh 3D là hoàng hôn ngược sáng, và một bản sáng của nó sẽ là
