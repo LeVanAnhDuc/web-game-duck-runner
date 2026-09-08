@@ -79,9 +79,9 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 
 | ID | Chức năng | Thuộc luồng | Mốc | Trạng thái |
 | --- | --- | --- | --- | --- |
-| FR-27 | Hiệu ứng âm thanh cho nhảy, nhặt xu, va chạm, kỹ năng | US-05 | M4 | chưa |
-| FR-28 | Nhạc nền lặp, chỉ phát sau tương tác đầu tiên | US-05 | M4 | chưa |
-| FR-29 | Màn cài đặt: âm lượng và tắt tiếng, nhớ giữa các phiên | US-05 | M4 | chưa |
-| FR-30 | Tôn trọng `prefers-reduced-motion` — giảm hiệu ứng trang trí | US-05 | M4 | chưa |
+| FR-27 | Hiệu ứng âm thanh cho nhảy, nhặt xu, va chạm, kỹ năng | US-05 | M4 | xong |
+| FR-28 | Nhạc nền lặp, chỉ phát sau tương tác đầu tiên | US-05 | M4 | xong |
+| FR-29 | Màn cài đặt: âm lượng và tắt tiếng, nhớ giữa các phiên | US-05 | M4 | xong |
+| FR-30 | Tôn trọng `prefers-reduced-motion` — giảm hiệu ứng trang trí | US-05 | M4 | xong |
 | FR-31 | Đóng khung canvas theo tỉ lệ dọc trên màn hình rộng | US-01 | M1 | xong |
-| FR-33 | Deploy tĩnh công khai | — | M4 | chưa |
+| FR-33 | Deploy tĩnh công khai | — | M4 | đang — workflow xong, chờ remote |

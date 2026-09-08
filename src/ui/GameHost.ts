@@ -2,6 +2,7 @@ import { FixedStepAccumulator } from '../core/loop'
 import { InputController } from '../core/input'
 import { Game } from '../game/Game'
 import { GameRenderer } from '../render/Renderer'
+import type { AudioEngine } from '../audio/Audio'
 import { S } from '../data/strings'
 import type { EffectKind } from '../game/ActiveEffects'
 import type { HudHandle } from './hud/Hud'
@@ -22,6 +23,7 @@ export interface RunResult {
 export interface HostOptions {
   characterId: string
   reducedMotion: boolean
+  audio: AudioEngine
   onRunEnd: (result: RunResult) => void
   onPause: () => void
   onContextLost: () => void
@@ -54,14 +56,25 @@ export class GameHost {
   ) {
     this.renderer = new GameRenderer(canvas, opts.characterId, opts.reducedMotion)
     this.input = new InputController(canvas.parentElement ?? canvas, {
-      onIntent: (i) => this.game.queue(i),
+      onIntent: (i) => {
+        if (i.jump) opts.audio.play('jump')
+        if (i.slide) opts.audio.play('slide')
+        this.game.queue(i)
+      },
       onPause: () => opts.onPause(),
     })
 
+    const audio = opts.audio
     this.game.events.on('coinCollected', (p) => {
       this.hud.setCoins(p.total)
       this.hud.setCharge(p.chargePct)
+      audio.play('coin')
     })
+    this.game.events.on('chargeFull', () => audio.play('shield'))
+    this.game.events.on('skillActivated', () => audio.play('skill'))
+    this.game.events.on('powerUpStarted', () => audio.play('powerup'))
+    this.game.events.on('shieldBroken', () => audio.play('shield'))
+    this.game.events.on('playerHit', () => audio.play('hit'))
 
     this.game.events.on('runEnded', (p) => {
       this.renderer.shake()
@@ -75,6 +88,7 @@ export class GameHost {
     this.resizeObserver = new ResizeObserver(() => this.applySize())
     this.resizeObserver.observe(canvas.parentElement ?? canvas)
     this.applySize()
+    this.installDevStats()
     this.loop(0)
   }
 
@@ -116,8 +130,12 @@ export class GameHost {
    */
   useSkill(): boolean {
     const ok = this.game.useSkill()
-    if (ok) this.hud.setCharge(0)
-    else this.hud.nudge()
+    if (ok) {
+      this.hud.setCharge(0)
+    } else {
+      this.hud.nudge()
+      this.opts.audio.play('deny')
+    }
     return ok
   }
 
@@ -160,6 +178,46 @@ export class GameHost {
     const w = host?.clientWidth ?? this.canvas.width
     const h = host?.clientHeight ?? this.canvas.height
     this.renderer.resize(w, h)
+  }
+
+  /**
+   * Moc do hieu nang — chi ton tai o ban dev.
+   *
+   * NFR-PERF-05 va NFR-PERF-08 doi so do THAT, khong doi uoc luong. Khong co moc
+   * nay thi cach duy nhat de dem draw call la mo devtools va doc bang tay, va khong
+   * ai lam viec do mot cach deu dan.
+   */
+  private installDevStats(): void {
+    if (!import.meta.env.DEV) return
+    let frames = 0
+    let last = 0
+    let fps = 0
+    const sample = (t: number): void => {
+      frames++
+      if (last === 0) last = t
+      if (t - last >= 1000) {
+        fps = Math.round((frames * 1000) / (t - last))
+        frames = 0
+        last = t
+      }
+      requestAnimationFrame(sample)
+    }
+    requestAnimationFrame(sample)
+    ;(globalThis as unknown as { __duskrun?: unknown }).__duskrun = {
+      stats: () => ({
+        fps,
+        drawCalls: this.renderer.drawCalls,
+        activeObstacles: this.game.track.activeObstacleCount,
+        activeCoins: this.game.track.activeCoinCount,
+        speedMps: Number(this.game.speedMps.toFixed(2)),
+        distanceM: this.game.scoring.displayDistance,
+      }),
+      /** Bat bat tu de do o canh day nhat ma khong chet. */
+      immortal: () => this.game.effects.start('rush', 10 * 60 * 1000),
+      warp: (seconds: number) => {
+        for (let i = 0; i < seconds * 60; i++) this.game.step()
+      },
+    }
   }
 
   private readonly loop = (nowMs: number): void => {

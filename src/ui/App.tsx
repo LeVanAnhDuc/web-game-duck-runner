@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { hasWebGL, prefersReducedMotion } from '../core/input'
-import { load as loadSave, save as writeSave, type SaveData } from '../data/save'
+import { DEFAULT_SAVE, load as loadSave, save as writeSave, type SaveData } from '../data/save'
 import { S } from '../data/strings'
 import { Hud, type HudHandle } from './hud/Hud'
 import { GameHost, type RunResult } from './GameHost'
@@ -8,9 +8,11 @@ import {
   ErrorScreen, GameOverScreen, LoadingScreen, MenuScreen, PauseScreen,
 } from './screens/Screens'
 import { ShopScreen } from './screens/Shop'
+import { SettingsScreen } from './screens/Settings'
+import { AudioEngine } from '../audio/Audio'
 import { buy as buyCharacter, equip as equipCharacter } from '../data/shop'
 
-type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'shop' | 'error'
+type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'shop' | 'settings' | 'error'
 
 export function App() {
   const [screen, setScreen] = useState<Screen>('loading')
@@ -26,6 +28,7 @@ export function App() {
   const hudRef = useRef<HudHandle>(null)
   const hostRef = useRef<GameHost | null>(null)
   const reducedMotion = useRef(prefersReducedMotion())
+  const audio = useRef(new AudioEngine())
 
   // Doc `screen` qua ref: `togglePause` duoc GameHost giu lai tu luc khoi tao,
   // nen no khong duoc phu thuoc vao closure cua mot lan render cu the.
@@ -76,6 +79,7 @@ export function App() {
       host = new GameHost(canvas, hud, {
         characterId: saveData.selectedCharacter,
         reducedMotion: reducedMotion.current,
+        audio: audio.current,
         onRunEnd: handleRunEnd,
         onPause: () => togglePause(),
         onContextLost: () => {
@@ -90,8 +94,10 @@ export function App() {
     }
     hostRef.current = host
     setScreen('menu')
+    const engine = audio.current
     return () => {
       host.dispose()
+      engine.dispose()
       hostRef.current = null
     }
     // Mang phu thuoc rong la CO Y: tao lai host la mat ca canh 3D va ca luot
@@ -99,9 +105,35 @@ export function App() {
   }, [])
 
   const play = useCallback(() => {
+    /**
+     * Tuong tac dau tien la cho DUY NHAT duoc phep tao AudioContext — moi trinh
+     * duyet hien dai chan tu dong phat, va tao som se de lai mot context
+     * `suspended` ma khong co gi bao. ADR-0008.
+     */
+    audio.current.unlock()
+    audio.current.setSettings(saveData)
+    audio.current.setMusicEnabled(!saveData.muted)
     setScreen('playing')
     hostRef.current?.start(Math.floor(Math.random() * 0x7fffffff), saveData.selectedCharacter)
   }, [saveData.selectedCharacter])
+
+  const patchSettings = useCallback((patch: Partial<SaveData>) => {
+    setSaveData((prev) => {
+      const next = { ...prev, ...patch }
+      writeSave(next)
+      audio.current.setSettings(next)
+      audio.current.setMusicEnabled(!next.muted)
+      return next
+    })
+  }, [])
+
+  const resetProgress = useCallback(() => {
+    const fresh = { ...DEFAULT_SAVE }
+    writeSave(fresh)
+    setSaveData(fresh)
+    hostRef.current?.setCharacter(fresh.selectedCharacter)
+    audio.current.setSettings(fresh)
+  }, [])
 
   const handleBuy = useCallback((id: string) => {
     setSaveData((prev) => {
@@ -156,7 +188,7 @@ export function App() {
             coins={saveData.coins}
             onPlay={play}
             onShop={() => setScreen('shop')}
-            onSettings={() => undefined}
+            onSettings={() => setScreen('settings')}
           />
         )}
 
@@ -165,6 +197,16 @@ export function App() {
             save={saveData}
             onBuy={handleBuy}
             onEquip={handleEquip}
+            onBack={() => setScreen('menu')}
+          />
+        )}
+
+        {screen === 'settings' && (
+          <SettingsScreen
+            save={saveData}
+            reducedMotion={reducedMotion.current}
+            onChange={patchSettings}
+            onReset={resetProgress}
             onBack={() => setScreen('menu')}
           />
         )}
