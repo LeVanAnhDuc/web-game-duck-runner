@@ -425,9 +425,23 @@ a:hover {
 }
 
 .menu-title {
-  font-size: clamp(44px, 13vw, 72px);
-  letter-spacing: 0.06em;
+  font-size: clamp(44px, 15vw, 78px);
+  letter-spacing: 0.04em;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  /* Hai dong sat nhau: wordmark phai doc nhu MOT khoi, khong nhu hai tu roi */
+  line-height: 0.86;
+}
+
+.menu-tagline {
+  margin: 0;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 24em;
+  text-wrap: pretty;
 }
 
 .menu-stats {

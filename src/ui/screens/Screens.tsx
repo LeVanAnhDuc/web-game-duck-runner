@@ -15,8 +15,13 @@ export function MenuScreen({
   return (
     <div className="screen screen-dim">
       <div className="menu-bottom">
-        <h1 className="disp menu-title">{S.gameTitle}</h1>
+        <h1 className="disp menu-title">
+          {S.gameTitleLines.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
+        </h1>
         <div className="rule" style={{ width: '50%' }} />
+        <p className="menu-tagline">{S.tagline}</p>
 
         <div className="menu-stats">
           <div className="menu-stat">
@@ -153,7 +158,11 @@ export function LoadingScreen({ progress }: { progress: number }) {
   return (
     <div className="screen screen-modal" style={{ background: 'var(--surface)' }}>
       <div className="centre-panel" style={{ boxShadow: 'none' }}>
-        <h1 className="disp menu-title">{S.gameTitle}</h1>
+        <h1 className="disp menu-title">
+          {S.gameTitleLines.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
+        </h1>
         <div className="loading-bar">
           {/* Yếu tố đặc trưng dùng làm phần đầy của thanh tiến trình — MASTER §1 */}
           <div className="rule" style={{ height: 6, width: `${Math.round(progress * 100)}%` }} />

@@ -203,7 +203,7 @@ export class GameHost {
       requestAnimationFrame(sample)
     }
     requestAnimationFrame(sample)
-    ;(globalThis as unknown as { __duskrun?: unknown }).__duskrun = {
+    ;(globalThis as unknown as { __duckRunner?: unknown }).__duckRunner = {
       stats: () => ({
         fps,
         drawCalls: this.renderer.drawCalls,

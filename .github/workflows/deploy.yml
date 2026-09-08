@@ -1,8 +1,4 @@
-# Deploy tinh len GitHub Pages — FR-33.
-#
-# `vite.config.ts` dat `base: './'` nen bundle chay duoc o bat ky duong dan con,
-# khong phai sua config theo ten repo.
-name: deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -28,11 +24,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Cong kiem tra chay TRUOC khi deploy: mot ban hong khong duoc len song
       - run: npm run lint
-      - run: npm run typecheck
       - run: npm test
+      # Khong co bien GITHUB_PAGES o day: `vite.config.ts` dat `base: './'` nen
+      # cung mot ban build chay duoc ca o goc ten mien va duoi duong dan con cua
+      # Pages. Do cung la ly do `.env.example` noi du an khong doc bien moi truong
+      # nao — `base` la cau hinh build, khong phai bien moi truong.
       - run: npm run build
+      # `enablement` KHONG thay cho viec bat Pages mot lan cho repo. GITHUB_TOKEN
+      # khong tao duoc Pages site. Giu lai vi no khong ton gi va giup mot fork ma
+      # chu no da bat Pages san. Buoc bat mot lan nam o README §Releases and versioning.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

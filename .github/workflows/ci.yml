@@ -1,0 +1,87 @@
+name: CI
+
+# Chay tren moi pull request. Khong co no thi mot nhanh co the duoc gop vao khi
+# dang do, va thu dau tien phat hien ra se la job deploy tren `main` — sau khi gop.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` chu khong `npm install`: lockfile la cau tra loi, va workspace
+      # nay da tung bi mot cay dependency khac lam hong (xem CLAUDE.md cua workspace).
+      - run: npm ci
+
+      - run: npm run lint
+      - run: npm test
+
+      # `npm run build` la `tsc --noEmit && vite build`, nen buoc nay bao luon typecheck.
+      - run: npm run build
+
+      # Chuong nay bao ve bien gioi cua ADR-0002: `src/game/` khong duoc phu thuoc
+      # Three.js, DOM, hay dong ho thuc. ESLint da chan bang `no-restricted-imports`,
+      # nhung mot dong `import * as THREE from "three"` viet trong mot file moi ma
+      # chua kip vao cau hinh thi se lot. Grep o day la lop thu hai, va no re.
+      - name: Bien gioi mo phong / hien thi — ADR-0002
+        run: |
+          if grep -rn "from 'three'\|from \"three\"" src/game src/data; then
+            echo "::error::src/game hoac src/data dang import Three.js — vi pham ADR-0002"
+            exit 1
+          fi
+          echo "src/game va src/data khong phu thuoc Three.js: dung"
+
+      - name: Kich thuoc bundle so voi NFR-PERF-09
+        run: |
+          # Nguong nam o docs/02-requirements/nfr.md: 250 KB gzip. In ra chu khong
+          # chan cung — so do hien tai la 180.8 KB, nen mot cong cung chi bao dong
+          # dung luc co sai sot ma log nay da chi ra roi.
+          echo "kich thuoc gzip cua cac file da build:"
+          for f in dist/assets/*.js dist/assets/*.css; do
+            [ -f "$f" ] || continue
+            printf '  %-40s %s\n' "$(basename "$f")" "$(gzip -c "$f" | wc -c | awk '{printf "%.1f kB", $1/1024}')"
+          done
+
+  # Mot job RIENG, de audit chay CANH cac test thay vi dung truoc chung. `npm audit`
+  # doc package-lock.json roi hoi registry — no khong can node_modules, nen job nay
+  # bo qua buoc cai dat hoan toan.
+  #
+  # NFR-SEC-05 chi dinh CI la noi kiem nguong nay; day la cho do.
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Co thu lai, va registry khong voi tra duoc thi KHONG tinh la that bai. Mot
+      # su co ben ngoai khong duoc bien mot cong bao mat thanh mot cai chan gop
+      # ngau nhien. Mot canh bao that thi van lam do job.
+      - name: npm audit (high tro len)
+        run: |
+          for attempt in 1 2 3; do
+            out=$(npm audit --audit-level=high 2>&1) && { echo "$out"; exit 0; }
+            code=$?
+            if echo "$out" | grep -qiE 'audit endpoint returned an error|Service Unavailable|ENOTFOUND|ETIMEDOUT|ECONNRESET'; then
+              echo "::warning::lan thu $attempt khong voi duoc registry"
+              sleep $((attempt * 15))
+              continue
+            fi
+            echo "$out"
+            exit $code
+          done
+          echo "::warning::npm audit khong voi duoc registry sau 3 lan; khong lam do build vi su co cua ben khac"
