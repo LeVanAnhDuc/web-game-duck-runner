@@ -49,6 +49,15 @@ Hai cái đầu là **đường kẻ**, hai cái sau là **phần đầy của m
 gradient, hai vai trò. Không dùng nó làm hoạ tiết trang trí ở bất kỳ đâu khác; dùng
 loãng là mất hết tác dụng.
 
+**Viền sáng của nhân vật.** Nhân vật cũng là bóng đen như chướng ngại, nên trong một
+khung hình tĩnh hai thứ dễ lẫn. Giải: **nhân vật là bóng duy nhất có viền sáng
+`--sky-low` `#F5A15C`.** Mặt trời ở phía trước nên viền sáng ngược là đúng vật lý, và
+nó tách nhân vật khỏi mọi thứ khác mà không thêm màu nào vào bảng.
+
+Không vật thể nào khác được có viền sáng. Vi phạm quy tắc này thì tín hiệu "đâu là
+tôi" biến mất, và người chơi mất khoảng một phần giây để tìm lại nhân vật — đúng
+khoảng thời gian đủ để chết.
+
 ---
 
 ## 2. Màu — *Lựa chọn*

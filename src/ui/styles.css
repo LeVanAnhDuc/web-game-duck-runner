@@ -1,0 +1,629 @@
+/*
+ * Token lay tu docs/design-system/endless-runner/MASTER.md.
+ * Khong viet hex truc tiep o bat ky file nao khac — moi mau di qua bien o day.
+ */
+:root {
+  /* §2.1 — y nghia trong the gioi game */
+  --world-ink: #120e1f;
+  --world-coin: #ffc94a;
+  --world-skill: #5be0c8;
+  --sky-high: #2b1b4d;
+  --sky-mid: #8e3b6b;
+  --sky-low: #f5a15c;
+
+  /* §2.2 — giao dien */
+  --surface: #151221;
+  --surface-raised: #1e1930;
+  --text: #f5f1ea;
+  --text-muted: #a79fb5;
+  --gold: #ffc94a;
+  --aqua: #5be0c8;
+  --alert: #ff8a80;
+  --ink: #120e1f;
+
+  /* §2.4 — yeu to dac trung */
+  --rule-horizon: linear-gradient(90deg, #2b1b4d 0%, #8e3b6b 45%, #f5a15c 100%);
+
+  /* §4 — khoang cach */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* §5 — do noi */
+  --elev-overlay: 0 16px 48px rgba(0, 0, 0, 0.55);
+  --glow-gold: 0 0 24px rgba(255, 201, 74, 0.35);
+  --glow-skill: 0 0 32px rgba(91, 224, 200, 0.45);
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  font-family: 'Chivo', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* Chan cuon dan hoi va keo-de-tai-lai — F3 */
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  height: 100%;
+}
+
+a {
+  color: var(--sky-low);
+}
+a:hover {
+  color: #ffe9a8;
+}
+
+/* ── Khung choi ────────────────────────────────────────────────────────────
+ * ADR-0005: tren man hinh rong, canvas giu ti le doc o giua, hai ben la nen
+ * hoang hon toi. Khong keo dan full-width — nguoi choi man hinh rong khong
+ * duoc nhin xa hon. */
+.stage {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #191330 0%, #221a3a 55%, #2a1e38 100%);
+  overflow: hidden;
+}
+
+.frame {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  max-width: calc(100vh * 9 / 16);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--elev-overlay);
+  touch-action: none;
+}
+
+.frame canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* ── Chu ────────────────────────────────────────────────────────────────── */
+.disp {
+  font-family: 'Bricolage Grotesque', 'Chivo', sans-serif;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.mono {
+  font-family: 'Chivo Mono', ui-monospace, monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.lbl {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── Nut — MASTER §7.1 ────────────────────────────────────────────────────
+ * Cao toi thieu 48px, vung bam >= 44x44px (NFR-A11Y-03). */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-height: 48px;
+  padding: 0 var(--space-lg);
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  font-family: 'Chivo', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--aqua);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow: var(--glow-gold);
+}
+.btn-primary:hover {
+  background: #ffd76e;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text-muted);
+}
+.btn-ghost:hover {
+  border-color: var(--text);
+  background: rgba(245, 241, 234, 0.06);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--alert);
+  border: 1px solid var(--alert);
+}
+
+.btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-icon {
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  border-radius: 12px;
+  background: rgba(30, 25, 48, 0.72);
+  color: var(--text);
+  border: 1px solid rgba(167, 159, 181, 0.35);
+}
+
+/* ── Yeu to dac trung: duong chan troi ──────────────────────────────────── */
+.rule {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--rule-horizon);
+}
+
+.panel {
+  background: var(--surface-raised);
+  border-radius: 16px;
+  padding: var(--space-lg);
+}
+
+/* ── HUD — MASTER §7.3 ────────────────────────────────────────────────────
+ * Scrim alpha >= 0.45: chu tren chan troi sang nhat chi dat 1.84:1 neu khong
+ * co scrim; o alpha 0.45 dat 4.81:1. Day la rang buoc do duoc, khong phai goi y. */
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 132px;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 31, 0.82) 0%,
+    rgba(18, 14, 31, 0.62) 55%,
+    rgba(18, 14, 31, 0) 100%
+  );
+}
+
+.hud-row {
+  position: absolute;
+  left: calc(var(--space-md) + var(--safe-l));
+  right: calc(var(--space-md) + var(--safe-r));
+  top: calc(var(--space-md) + var(--safe-t));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.hud-row > * {
+  pointer-events: auto;
+}
+
+.hud-distance {
+  font-size: clamp(22px, 6vw, 30px);
+  text-shadow: 0 1px 8px rgba(18, 14, 31, 0.9);
+}
+
+.hud-distance span {
+  font-size: 0.62em;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
+.hud-coins {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--gold);
+  font-size: clamp(18px, 5vw, 22px);
+}
+
+/* MASTER §7.4 — tran het chieu ngang */
+.charge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--space-md) + var(--safe-t) + 52px);
+  height: 6px;
+  background: rgba(18, 14, 31, 0.45);
+  overflow: hidden;
+}
+
+.charge-fill {
+  height: 100%;
+  width: 0;
+  background: var(--rule-horizon);
+  transition: width 120ms linear;
+}
+
+.charge-fill.ready {
+  background: var(--world-skill);
+  box-shadow: 0 0 18px rgba(91, 224, 200, 0.55);
+}
+
+/* MASTER §7.5 */
+.skill-btn {
+  position: absolute;
+  right: calc(var(--space-md) + var(--safe-r));
+  bottom: calc(var(--space-lg) + var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  /* Can phai, khong can giua: nhan rong hon nut 56px, can giua thi tran ra
+     ngoai mep khung va bi cat. */
+  align-items: flex-end;
+  gap: var(--space-sm);
+  pointer-events: auto;
+}
+
+.skill-btn .lbl {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.skill-btn button {
+  width: 56px;
+  height: 56px;
+  min-height: 56px;
+  padding: 0;
+  border-radius: 16px;
+  background: rgba(18, 14, 31, 0.55);
+  border: 2px solid var(--text-muted);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.skill-btn.ready button {
+  border-color: var(--world-skill);
+  color: var(--world-skill);
+  box-shadow: var(--glow-skill);
+}
+
+.skill-btn .lbl {
+  font-size: 14px;
+  letter-spacing: 0.14em;
+}
+
+.skill-btn.ready .lbl {
+  color: var(--world-skill);
+}
+
+/* Hieu ung dang chay */
+.effects {
+  position: absolute;
+  left: calc(var(--space-md) + var(--safe-l));
+  bottom: calc(var(--space-lg) + var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  pointer-events: none;
+}
+
+.effect-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(18, 14, 31, 0.72);
+  border: 1px solid var(--world-skill);
+  color: var(--world-skill);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ── Man hinh phu ─────────────────────────────────────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--space-lg) + var(--safe-t)) var(--space-lg)
+    calc(var(--space-lg) + var(--safe-b));
+  overflow-y: auto;
+}
+
+.screen-dim {
+  background: linear-gradient(
+    180deg,
+    rgba(21, 18, 33, 0) 0%,
+    rgba(21, 18, 33, 0.88) 45%,
+    rgba(21, 18, 33, 0.97) 100%
+  );
+}
+
+.screen-solid {
+  background: var(--surface);
+}
+
+.screen-modal {
+  background: rgba(18, 14, 31, 0.72);
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: min(100%, 420px);
+  align-self: center;
+}
+
+.menu-title {
+  font-size: clamp(44px, 13vw, 72px);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.menu-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.menu-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 17px;
+}
+
+.menu-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(167, 159, 181, 0.4);
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.row > .btn {
+  flex: 1;
+  /* Nhan phu phai gon tren mot dong o khung 375 — "CUA HANG" vo doi neu de 17px */
+  font-size: 15px;
+  padding: 0 var(--space-md);
+  white-space: nowrap;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.centre-panel {
+  width: min(100%, 380px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  box-shadow: var(--elev-overlay);
+}
+
+.score-big {
+  font-size: clamp(48px, 15vw, 64px);
+}
+
+.score-big span {
+  font-size: 0.34em;
+  color: var(--text-muted);
+  margin-left: 0.12em;
+}
+
+.split {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+}
+
+.split > div:not(.split-sep) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.split-sep {
+  width: 1px;
+  flex: 0 0 1px;
+  background: rgba(167, 159, 181, 0.25);
+}
+
+.screen-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.screen-head h2 {
+  font-size: clamp(24px, 6vw, 32px);
+  margin: 0;
+  font-family: 'Bricolage Grotesque', 'Chivo', sans-serif;
+  font-weight: 800;
+}
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-md);
+}
+
+.card {
+  background: var(--surface-raised);
+  border-radius: 16px;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  border: 1px solid transparent;
+}
+
+.card.selected {
+  border-color: var(--world-skill);
+}
+
+.card-figure {
+  height: 96px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #2b1b4d 0%, #8e3b6b 60%, #f5a15c 100%);
+  border-radius: 12px;
+}
+
+.card-name {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.card-skill {
+  color: var(--world-skill);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.45;
+  flex: 1;
+}
+
+.card-price {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+}
+
+.setting-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid rgba(167, 159, 181, 0.18);
+}
+
+.setting-row label {
+  font-size: 16px;
+}
+
+.setting-row input[type='range'] {
+  width: 100%;
+  accent-color: var(--gold);
+  height: 32px;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 48px;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--aqua);
+  cursor: pointer;
+}
+
+.note {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.loading-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(18, 14, 31, 0.55);
+  overflow: hidden;
+}
+
+/* NFR-A11Y-05 — vong choi giu nguyen, chi tat trang tri */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .btn-primary,
+  .skill-btn.ready button,
+  .charge-fill.ready {
+    box-shadow: none;
+  }
+  .skill-btn.ready button {
+    border-width: 3px;
+  }
+}
