@@ -41,7 +41,7 @@ function Silhouette({ id }: { id: string }) {
 
   return (
     <svg viewBox="-8 -14 116 124" width="100%" height="100%" aria-hidden focusable="false">
-      <g fill="var(--world-ink)" stroke="var(--sky-low)" strokeWidth="1.6">
+      <g fill="var(--world-canopy)" stroke="var(--player-rim)" strokeWidth="1.6">
         <rect x={cx - s.hip * scale * 0.3 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
         <rect x={cx + s.hip * scale * 0.3 - legW / 2} y={y(legH)} width={legW} height={legH} rx="1.5" />
 

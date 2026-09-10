@@ -1,7 +1,12 @@
 # ADR-0006 · Hướng nghệ thuật "ngược sáng lúc hoàng hôn", bỏ đề xuất pixel art
 
 > **Ngày:** 2026-09-08
-> **Trạng thái:** accepted
+> **Trạng thái:** superseded bởi `ADR-0009` (2026-09-10)
+>
+> Lý do bị thay: quy tắc "nguy hiểm đọc bằng độ sáng" ở đây chỉ đúng **trên nền trời**.
+> Đo được chướng ngại trên mặt đường gần chỉ đạt **1.16:1**, tức gần như vô hình đúng
+> trong 1,5 giây cuối trước va chạm. `ADR-0009` thay bằng **luật hai lớp**. Nội dung
+> dưới đây giữ nguyên, không sửa: nó là căn cứ của mọi thứ đã dựng trước 2026-09-10.
 > **Liên quan:** FR-08 · FR-30 · FR-31 · NFR-A11Y-01 · NFR-A11Y-03 · ADR-0001 · ADR-0005
 
 ## 1. Bối cảnh

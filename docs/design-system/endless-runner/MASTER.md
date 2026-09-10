@@ -5,38 +5,50 @@
 > **Không chạy lại `design-bootstrap` cho từng feature** — kết quả đổi theo cách viết
 > brief, và token trôi là đúng cái file này sinh ra để chặn.
 > **Đổi khi:** thêm một ý nghĩa màu mới trong game · đổi hướng nghệ thuật (cần ADR mới)
+> **Sửa lớn:** 2026-09-10 — hướng nghệ thuật đổi từ "ngược sáng lúc hoàng hôn" sang
+> "rừng sương sớm", `ADR-0009`. Bảng màu, scrim và yếu tố đặc trưng đều đổi theo.
 
 Phần **Ràng buộc** đến từ `ui-ux-pro-max` và **không được ghi đè**. Phần **Lựa chọn**
-là quyết định thẩm mỹ, đã ghi đè đề xuất bước 1 — lý do ở `ADR-0006`.
+là quyết định thẩm mỹ, đã ghi đè đề xuất bước 1 — lý do ở `ADR-0006`, rồi `ADR-0009`.
 
 ---
 
-## 1. Hướng nghệ thuật — "ngược sáng lúc hoàng hôn"
+## 1. Hướng nghệ thuật — "rừng rậm lúc sương sớm"
 
-Một quy tắc duy nhất, và nó vừa là thẩm mỹ vừa là chức năng:
+Một quy tắc duy nhất, và nó vừa là thẩm mỹ vừa là chức năng — **luật hai lớp**:
 
-> **Thứ người chơi phải tránh là bóng đen. Thứ người chơi muốn thì phát sáng.**
+> **Mọi vật thể người chơi phải đọc trong một phần giây đều có thân tối và cạnh sáng.**
+> Nền tối thì cạnh đọc được; nền sáng thì thân đọc được; không tồn tại nền nào làm nó
+> biến mất.
 
-Camera nhìn về phía mặt trời đang lặn. Bầu trời là dải chuyển từ tím than trên cao
-xuống hổ phách ở chân trời. Chướng ngại vật là **khối đen không màu** cắt trên nền
-trời sáng đó. Xu là vật **duy nhất** màu vàng kim. Kỹ năng sẵn sàng là thứ **duy
-nhất** màu aqua.
+Xu đi theo chiều ngược lại vì thân xu vốn đã sáng: **thân vàng + vòng tối**. Cùng một
+luật, đảo hai lớp.
+
+Camera chạy trên một cây cầu đá qua vực, giữa rừng rậm lúc rạng đông. Sương dày sáng
+màu lấp mọi khoảng trống giữa các tầng cây. Chướng ngại là **khối tối có cạnh bắt
+sáng**. Xu là vật **duy nhất** màu vàng kim. Kỹ năng sẵn sàng là thứ **duy nhất** màu
+aqua.
 
 Ba lý do chọn hướng này, theo thứ tự quan trọng:
 
-1. **Đọc được tức thì.** Phân biệt nguy hiểm bằng *độ sáng* chứ không bằng *sắc màu*,
-   nên nó đúng với mọi loại mù màu. Đo thử: khi giả lập mù màu đỏ-lục, khối đen giữ
-   độ sáng 0.6% còn vàng lên 82% — tách nhau tuyệt đối. Vàng và aqua tách nhau 2.28:1
-   về độ sáng, đủ để phân biệt mà không cần nhìn kỹ.
-2. **Làm model miễn phí trông có chủ đích.** Model CC0 của Kenney có bảng màu riêng
-   của chúng và ghép lại thường lộn xộn. Chiếu sáng ngược biến chúng thành bóng —
-   hình khối của model còn nguyên, màu gốc biến mất. Cả cảnh trở nên nhất quán mà
-   không phải sửa một file model nào.
-3. **Ăn ảnh.** Ảnh chụp portfolio có một dải hoàng hôn và các bóng đen cắt trên đó —
+1. **Sương sáng nằm sau mọi thứ ở mọi khoảng cách.** Đây là lý do kỹ thuật, không phải
+   thẩm mỹ. Cấu trúc cảnh **tự** bảo đảm mọi vật thể có nền sáng để in bóng lên, thay
+   vì phải áp một nội quy lên từng vật thể và hy vọng không ai quên. Hướng cũ —
+   "chướng ngại là bóng đen cắt trên nền trời" — chỉ đúng **nửa cảnh**: đo được chướng
+   ngại trên mặt đường gần chỉ đạt **1.16:1**, gần như vô hình đúng trong 1,5 giây
+   cuối. Xem `ADR-0009`.
+2. **Nguy hiểm mã hoá bằng độ sáng, không bằng sắc màu** — đúng với mọi loại mù màu, và
+   giờ đúng ở **cả hai** loại nền. 13 cặp đo đạt, cặp yếu nhất 3.32:1;
+   `tests/render/contrast.test.ts` giữ nó không tụt.
+3. **Ăn ảnh.** Một dải sương sáng, một hàng thân cây tối, một con đường bắc qua vực —
    khác hẳn ảnh chụp một runner sáng đều.
 
-**Yếu tố đặc trưng — "đường chân trời".** Một dải gradient tím→hổ phách, dùng đúng
-bốn chỗ và không chỗ nào khác:
+**Ngôn ngữ hình khối.** Nguy hiểm = cạnh thẳng, đối xứng, chắn ngang. Trang trí = cạnh
+mềm, bất đối xứng. Bắt buộc, vì rừng rậm là môi trường ồn nhất về thị giác và đây là
+môi trường ta tự chọn. Mắt phải tách chướng ngại khỏi cây cối **không cần đọc màu**.
+
+**Yếu tố đặc trưng — "dải sương".** Một dải gradient mực rừng→sương, dùng đúng bốn chỗ
+và không chỗ nào khác:
 
 | Dùng ở | Cao |
 | --- | --- |
@@ -49,14 +61,20 @@ Hai cái đầu là **đường kẻ**, hai cái sau là **phần đầy của m
 gradient, hai vai trò. Không dùng nó làm hoạ tiết trang trí ở bất kỳ đâu khác; dùng
 loãng là mất hết tác dụng.
 
-**Viền sáng của nhân vật.** Nhân vật cũng là bóng đen như chướng ngại, nên trong một
-khung hình tĩnh hai thứ dễ lẫn. Giải: **nhân vật là bóng duy nhất có viền sáng
-`--sky-low` `#F5A15C`.** Mặt trời ở phía trước nên viền sáng ngược là đúng vật lý, và
-nó tách nhân vật khỏi mọi thứ khác mà không thêm màu nào vào bảng.
+**Viền ấm của nhân vật.** Nhân vật cũng là hình bóng tối như chướng ngại, nên trong một
+khung hình tĩnh hai thứ dễ lẫn. Giải: **nhân vật là hình bóng duy nhất có viền
+`--player-rim` `#FFD9A8`, và đó là màu ẤM duy nhất trong cả cảnh.**
 
-Không vật thể nào khác được có viền sáng. Vi phạm quy tắc này thì tín hiệu "đâu là
-tôi" biến mất, và người chơi mất khoảng một phần giây để tìm lại nhân vật — đúng
-khoảng thời gian đủ để chết.
+Con số này đo được, không chọn: `#F5A15C` của hướng cũ chỉ đạt **2.60:1** trên mặt
+đường mới, còn `#FFD9A8` đạt **4.04:1**.
+
+Không vật thể nào khác được có viền ấm. Vi phạm quy tắc này thì tín hiệu "đâu là tôi"
+biến mất, và người chơi mất khoảng một phần giây để tìm lại nhân vật — đúng khoảng thời
+gian đủ để chết.
+
+**Ảnh thật.** Chỉ ở hai chỗ, và cả hai đều **ngoài** vùng phải đọc nhanh: tầng lá xa
+**trên** đường chân trời, và nền các màn hình 2D đặc. Không bao giờ vẽ ảnh vào vùng
+dưới đường chân trời — xem `ADR-0010`.
 
 ---
 
@@ -68,53 +86,82 @@ chốt file, không phải ước lượng.
 ### 2.1 Ý nghĩa trong thế giới game
 
 Đây là bảng quan trọng nhất trong file. Màu ở đây mang **nghĩa**, không phải trang trí.
+Mọi con số tương phản đo bằng công thức WCAG 2.1, ngày 2026-09-10.
 
 | Token | Hex | Nghĩa | Quy tắc |
 | --- | --- | --- | --- |
-| `--world-ink` | `#120E1F` | chướng ngại, mọi thứ gây chết | **Không sắc màu.** Không vật thể nguy hiểm nào được tô màu khác |
-| `--world-coin` | `#FFC94A` | xu | Vật **duy nhất** trong cảnh mang màu vàng kim |
-| `--world-skill` | `#5BE0C8` | kỹ năng đã sẵn sàng, power-up đang chạy | Thứ **duy nhất** mang màu aqua |
-| `--sky-high` | `#2B1B4D` | đỉnh trời | dải trên |
-| `--sky-mid` | `#8E3B6B` | giữa trời | dải giữa |
-| `--sky-low` | `#F5A15C` | chân trời | dải dưới — nền sáng nhất, xem §2.3 |
+| `--hazard` | `#191410` | **thân** chướng ngại | **Không sắc màu.** Không vật thể nguy hiểm nào được tô màu khác |
+| `--hazard-edge` | `#EAF0E6` | **cạnh** chướng ngại | Đặt đúng ở đường biên người chơi phải vượt: đỉnh khúc gỗ, đáy chùm dây leo |
+| `--world-coin` | `#FFC94A` | xu | Vật **duy nhất** mang màu vàng kim |
+| `--coin-ring` | `#171208` | vòng tối quanh xu | Lớp thứ hai của xu — không có nó thì xu biến mất trên dải sương |
+| `--world-skill` | `#5BE0C8` | kỹ năng sẵn sàng, power-up đang chạy | Thứ **duy nhất** mang màu aqua |
+| `--player-rim` | `#FFD9A8` | viền nhân vật | Màu **ấm** duy nhất trong cảnh. Không vật thể nào khác được dùng |
+| `--mist-far` | `#CBD6C6` | sương xa, chân trời | **Điểm sáng nhất của cảnh.** Fog cũng dùng màu này |
+| `--mist-near` | `#93A896` | sương giữa các tầng cây | dải giữa |
+| `--canopy` | `#0D1512` | tán lá, thân cây | Tối nhất của phần rừng |
+| `--road-near` | `#6F6A5D` | đá ướt dưới chân | **Bị ràng buộc hai đầu**, xem dưới |
+| `--road-far` | `#A8AC9E` | mặt đường hoà vào sương | — |
+| `--chasm` | `#05070A` | vực | Tối tuyệt đối |
+
+**`--road-near` là token khó đổi nhất trong bảng.** Sáng hơn thì xu và kỹ năng tụt dưới
+3:1; tối hơn thì chướng ngại tụt dưới 3:1. Khoảng độ sáng hợp lệ chỉ là **13%–16.7%**, và
+`#6F6A5D` nằm giữa ở 14.5%. Texture mặt đường nhân vào nó bị khoá biên độ **±8%** vì
+cùng lý do.
+
+Mười ba cặp đo đạt, cặp yếu nhất **3.32:1** (kỹ năng trên mặt đường). Cặp từng hỏng —
+chướng ngại trên mặt đường gần — từ **1.16:1** lên **3.39:1**.
+`tests/render/contrast.test.ts` giữ cả mười ba cặp không tụt.
 
 ### 2.2 Giao diện
 
 | Token | Hex | Dùng ở đâu | Đo được |
 | --- | --- | --- | --- |
-| `--surface` | `#151221` | nền màn hình, nền hai bên khung dọc trên desktop | — |
-| `--surface-raised` | `#1E1930` | panel, thẻ nhân vật, hộp thoại | — |
-| `--text` | `#F5F1EA` | chữ thường | **16.36:1** trên `--surface` · **15.08:1** trên `--surface-raised` |
-| `--text-muted` | `#A79FB5` | chữ phụ, nhãn | **7.25:1** trên `--surface` · **6.69:1** trên `--surface-raised` |
-| `--gold` | `#FFC94A` | số xu, nút chính, kỷ lục mới | **12.02:1** trên `--surface` |
-| `--aqua` | `#5BE0C8` | trạng thái sẵn sàng, focus ring | **11.35:1** trên `--surface` |
-| `--alert` | `#FF8A80` | kết thúc lượt, không đủ xu | **8.07:1** trên `--surface` |
-| `--ink` | `#120E1F` | chữ trên nút màu đặc | **12.37:1** trên `--gold` · **11.68:1** trên `--aqua` |
+| `--surface` | `#101A16` | nền màn hình, nền hai bên khung dọc trên desktop | — |
+| `--surface-raised` | `#1C2B25` | panel, thẻ nhân vật, hộp thoại | — |
+| `--text` | `#F5F1EA` | chữ thường | **15.79:1** trên `--surface` · **13.12:1** trên `--surface-raised` |
+| `--text-muted` | `#9DAEA3` | chữ phụ, nhãn | **7.63:1** trên `--surface` · **6.34:1** trên `--surface-raised` |
+| `--gold` | `#FFC94A` | số xu, nút chính, kỷ lục mới | **11.60:1** trên `--surface` |
+| `--aqua` | `#5BE0C8` | trạng thái sẵn sàng, focus ring | **10.95:1** trên `--surface` |
+| `--alert` | `#FF8A80` | kết thúc lượt, không đủ xu | **7.79:1** trên `--surface` |
+| `--ink` | `#0D1512` | chữ trên nút màu đặc | **12.10:1** trên `--gold` · **11.42:1** trên `--aqua` |
 
-Chữ trắng tinh bị loại: `#F5F1EA` hơi ngả ấm, hợp với trời hoàng hôn. Trắng tinh
-trên nền này trông như giao diện công cụ.
+Chữ trắng tinh bị loại: `#F5F1EA` hơi ngả ấm, và nó là thứ giữ một chút hơi ấm trong
+một cảnh gần như không còn màu ấm nào ngoài viền nhân vật.
+
+Khi ảnh nền rừng đã tải (`ADR-0010`), nó phủ `--surface` ở opacity `0.5`. Đo trên
+**toàn bộ** ảnh: chỗ sáng nhất sau khi composite là **8.6% độ sáng**, cho `--text`
+**6.85:1**. Đo toàn ảnh chứ không chỉ chỗ chữ đang đứng, vì bố cục còn đổi.
 
 ### 2.3 Scrim của HUD — ràng buộc bắt buộc, có số đo
 
 HUD nằm chồng trên cảnh 3D, mà cảnh 3D đổi độ sáng liên tục. Đo `--text` trên từng
-dải trời:
+dải:
 
 | Nền | Tỉ lệ | Kết quả |
 | --- | --- | --- |
-| `--sky-high` `#2B1B4D` | 13.65:1 | đạt |
-| `--sky-mid` `#8E3B6B` | 6.24:1 | đạt |
-| `--sky-low` `#F5A15C` | **1.84:1** | **trượt** |
+| `--canopy` `#0D1512` | 16.46:1 | đạt |
+| `--mist-near` `#93A896` | 2.25:1 | **trượt** |
+| `--mist-far` `#CBD6C6` | **1.33:1** | **trượt** |
 
-Nên: **mọi chữ HUD phải nằm trên scrim `#120E1F` ở alpha tối thiểu `0.45`.** Đó là
-điểm đo được đầu tiên đạt 4.5:1 (chính xác 4.81:1). Dùng dạng gradient từ scrim ở
-mép xuống trong suốt để không thành một thanh đen cứng. Đây là cách `NFR-A11Y-01`
-được thoả trên nền động.
+Nên: **mọi chữ HUD phải nằm trên scrim `#0D1512` ở alpha tối thiểu `0.55`.**
 
-### 2.4 Đường chân trời
+Con số này **đổi từ `0.45`** của `ADR-0006`, và đó là hệ quả trực tiếp của việc nền
+sáng lên: trên dải sương, alpha `0.45` chỉ còn **3.75:1** — dưới `NFR-A11Y-01` — còn
+`0.55` đạt **4.99:1**. Dùng dạng gradient từ scrim ở mép xuống trong suốt để không
+thành một thanh đen cứng.
+
+`tests/render/contrast.test.ts` kiểm **cả hai chiều**: 0.55 phải đạt, và 0.45 phải
+trượt. Cái thứ hai quan trọng hơn — nó là thứ ghi lại *vì sao* con số đổi, ở dạng chạy
+được.
+
+### 2.4 Dải sương
 
 ```css
---rule-horizon: linear-gradient(90deg, #2B1B4D 0%, #8E3B6B 45%, #F5A15C 100%);
+--rule-mist: linear-gradient(90deg, #0D1512 0%, #93A896 48%, #CBD6C6 100%);
 ```
+
+Thay `--rule-horizon` (tím→hổ phách) của `ADR-0006`. Giữ nguyên **cấu trúc**: cùng bốn
+chỗ dùng, cùng 3px cho đường kẻ và 6px cho phần đầy của thanh. Chỉ màu đổi.
 
 ---
 
@@ -219,12 +266,12 @@ Quầng aqua chỉ được xuất hiện khi thanh nạp đầy. Nó là tín h
 ### 7.2 Panel
 
 Nền `--surface-raised`, bo `16px`, padding `--space-lg`, không viền. Tiêu đề dùng
-`--text-title` với gạch chân `--rule-horizon`.
+`--text-title` với gạch chân `--rule-mist`.
 
 ### 7.3 HUD
 
 - Nằm trong vùng an toàn: `env(safe-area-inset-*)` cộng `--space-md`.
-- Nền là scrim gradient, alpha đỉnh tối thiểu `0.45` — xem §2.3.
+- Nền là scrim gradient, alpha đỉnh tối thiểu `0.55` — xem §2.3.
 - Số dùng `Chivo Mono`.
 - Không có thành phần HUD nào đặt ở **1/3 giữa màn hình theo chiều dọc** — đó là vùng
   người chơi đang nhìn.
@@ -232,7 +279,7 @@ Nền `--surface-raised`, bo `16px`, padding `--space-lg`, không viền. Tiêu 
 ### 7.4 Thanh nạp kỹ năng
 
 Cao `6px`, tràn hết chiều ngang, ngay dưới hàng HUD trên cùng. Phần đã nạp tô
-`--rule-horizon`; phần chưa nạp là `--world-ink` ở alpha `0.45`. Khi đầy: đổi sang
+`--rule-mist`; phần chưa nạp là `--canopy` ở alpha `0.55`. Khi đầy: đổi sang
 `--world-skill` đặc và nhận một nhịp `--glow-skill`.
 
 ### 7.5 Nút kỹ năng
@@ -290,10 +337,16 @@ hết chiều rộng.
 - ❌ Style không nhất quán giữa các màn.
 - ❌ **Dùng aqua cho bất cứ thứ gì không phải trạng thái kỹ năng.**
 - ❌ **Dùng vàng kim cho bất cứ thứ gì không phải xu, CTA chính, hoặc dấu kỷ lục mới.**
-- ❌ **Tô màu cho chướng ngại vật.** Chúng là bóng đen.
+- ❌ **Tô màu cho chướng ngại vật.** Thân là `--hazard`, cạnh là `--hazard-edge`, hết.
+- ❌ **Vật thể một lớp.** Thân tối mà không có cạnh sáng, hoặc ngược lại: nó sẽ biến mất
+  trên một loại nền. Xem `invariants.md` §14.
+- ❌ **Viền ấm cho bất cứ thứ gì không phải nhân vật.**
+- ❌ **Vẽ ảnh thật vào vùng dưới đường chân trời.** Đó là vùng phải đọc trong một phần
+  giây, và một tấm ảnh nhiều chi tiết ở đấy dựng lại đúng cái nền ồn mà `ADR-0009` loại
+  bỏ. Ảnh chỉ ở tầng lá xa trên đường chân trời, và ở nền các màn 2D.
 - ❌ **Đặt thành phần HUD vào 1/3 giữa màn hình.**
 - ❌ Font pixel, chữ viền dày, gradient cầu vồng — mặc định của "game indie", và là
-  thứ `ADR-0006` cố ý tránh.
+  thứ `ADR-0006` cố ý tránh, và `ADR-0009` giữ nguyên việc tránh.
 
 ---
 
@@ -311,6 +364,6 @@ hết chiều rộng.
 - [ ] Aqua chỉ xuất hiện ở trạng thái kỹ năng; vàng chỉ ở xu, CTA chính và dấu kỷ lục mới
 
 **Không có light mode.** Game này chỉ có một chế độ tối. Đây là lựa chọn có ý thức,
-không phải thiếu sót: cảnh 3D là hoàng hôn ngược sáng, và một bản sáng của nó sẽ là
+không phải thiếu sót: cảnh 3D là rừng lúc sương sớm, và một bản sáng của nó sẽ là
 một trò chơi khác. Dòng "light mode contrast" trong checklist gốc của bước 1 vì vậy
 không áp dụng.

@@ -6,10 +6,10 @@ import {
 import type { ObstacleKind, PowerUpKind } from '../game/types'
 import { SceneRig } from './Scene'
 import {
-  coinGeometry, buildPlayer, inkMaterial, obstacleGeometry, powerUpGeometry, SILHOUETTES,
-  type PlayerRig,
+  coinGeometry, buildPlayer, flatMaterial, layeredMaterial, obstacleGeometry, powerUpGeometry,
+  SILHOUETTES, type PlayerRig,
 } from './Shapes'
-import { COIN, SKILL } from './palette'
+import { CANOPY, SKILL } from './palette'
 
 const KINDS: readonly ObstacleKind[] = ['low', 'high', 'block']
 const POWERUPS: readonly PowerUpKind[] = ['magnet', 'shield', 'rush']
@@ -39,14 +39,14 @@ export class GameRenderer {
       antialias: true,
       powerPreference: 'high-performance',
     })
-    this.renderer.setClearColor(0x151221, 1)
+    this.renderer.setClearColor(CANOPY, 1)
     // Tran devicePixelRatio: man hinh 3x tren dien thoai tam trung se giet fps
     this.renderer.setPixelRatio(Math.min(globalThis.devicePixelRatio || 1, 2))
 
     this.rig = new SceneRig(reducedMotion)
 
     for (const kind of KINDS) {
-      const mesh = new THREE.InstancedMesh(obstacleGeometry(kind), inkMaterial(), OBSTACLE_POOL_SIZE)
+      const mesh = new THREE.InstancedMesh(obstacleGeometry(kind), layeredMaterial(), OBSTACLE_POOL_SIZE)
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
       mesh.frustumCulled = false
       this.obstacleMeshes.set(kind, mesh)
@@ -55,7 +55,7 @@ export class GameRenderer {
 
     this.coinMesh = new THREE.InstancedMesh(
       coinGeometry(),
-      new THREE.MeshBasicMaterial({ color: COIN }),
+      layeredMaterial(),
       COIN_POOL_SIZE,
     )
     this.coinMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
@@ -65,7 +65,7 @@ export class GameRenderer {
     for (const kind of POWERUPS) {
       const mesh = new THREE.InstancedMesh(
         powerUpGeometry(kind),
-        new THREE.MeshBasicMaterial({ color: SKILL }),
+        flatMaterial(SKILL),
         POWERUP_POOL_SIZE,
       )
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
@@ -84,7 +84,7 @@ export class GameRenderer {
     for (const kind of POWERUPS) {
       const mesh = new THREE.InstancedMesh(
         powerUpGeometry(kind),
-        new THREE.MeshBasicMaterial({ color: SKILL }),
+        flatMaterial(SKILL),
         POWERUP_POOL_SIZE,
       )
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)

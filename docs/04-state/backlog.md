@@ -18,33 +18,48 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 
 ## Đang làm
 
-**Cả bốn mốc M1–M4 xong, và đã phát hành.** Game đổi tên thành **Duck Runner**, hình
-bóng nhân vật đổi thành vịt cho khớp tên.
+**Mốc M5 xong: hướng nghệ thuật đổi sang rừng sương sớm.** Bắt đầu từ một lỗi người
+chơi báo — "chướng ngại khó nhìn" — và lỗi đó đo được: chướng ngại trên mặt đường gần
+chỉ đạt **1.16:1**, trong khi xu trên cùng nền đó đạt 10.62:1.
 
 - **Live:** <https://levananhduc.github.io/web-game-duck-runner/>
-- **Repo:** `LeVanAnhDuc/web-game-duck-runner` · release `v0.1.4`
-- 123 test xanh · `tsc` và `eslint` sạch · README đạt hợp đồng 13 mục của skill
-  `readme-game` (`readme_audit.py` exit 0 — đây là script của skill, không phải job `audit` của CI ở dưới)
+- **Repo:** `LeVanAnhDuc/web-game-duck-runner`
+- 141 test xanh · `tsc` và `eslint` sạch · README đạt hợp đồng 13 mục
+  (`readme_audit.py` exit 0 — script của skill, không phải job `audit` của CI ở dưới)
+
+`ADR-0009` thay `ADR-0006` bằng **luật hai lớp** (thân tối + cạnh sáng), `ADR-0010`
+thay `ADR-0007` để mở đường cho ảnh CC0 thật ở đúng hai chỗ. Số đo mới:
+tương phản yếu nhất **3.32:1** · **28** draw call · **184.3 KB** gzip · ảnh bắt đầu
+tải ở **198 ms**, sau FCP **196 ms**.
+
+**Việc còn chặn, không phải do code:**
+
+1. **fps trên máy mobile thật** — vẫn là ngưỡng suy ra. Và giờ nó **quan trọng hơn
+   trước**: cảnh có thêm một mặt phẳng alpha toàn màn (tán lá) và một `InstancedMesh`
+   44 thân cây, tức thêm fill rate — đúng thứ một GPU mobile thiếu chứ không phải CPU.
+2. **Đo lại `NFR-PERF-05` ở CPU throttle 4×** — số 103–104 fps cũ là của cảnh hoàng
+   hôn. Lần đo tự động cho 1 fps vì Chrome hạ `requestAnimationFrame` khi cửa sổ bị
+   che, và đó là nhiễu chứ không phải hồi quy (xem §Giới hạn trong `nfr.md`).
+3. **Đo lại `NFR-PERF-07`** trên Slow 4G + CPU 4×. Phần việc mới trên đường tới frame
+   đầu đã đo riêng: **3.9 ms** sinh texture, tức ~16 ms ở throttle 4×, trong 321 ms dư.
 
 **Job `audit` trong CI đang đỏ, và đỏ từ trước PR #1** — 5 advisory của
 `vite`/`vitest`/`esbuild`, toàn bộ là devDependency, và bản vá là major breaking.
 Không phải do PR nào gây ra; `verify` (lint · test · build · chặn ranh giới
 ADR-0002) vẫn xanh. Đừng coi nó là hồi quy của thay đổi kế tiếp.
 
-**Bài học từ bug làn ngược (PR #2, bất biến #13):** người chơi thật tìm ra nó trong
-một phút, còn 121 test thì không — vì cả bộ test đo *luật chơi*, và luật chơi vẫn
-đúng khi màn hình lật ngược. Đó chính là lý do hai việc đầu ở mục dưới ưu tiên
-**cao**: không có test nào thay được việc ngồi chơi.
+**Bài học từ hai lỗi hình ảnh liên tiếp (PR #2 và M5):** cả hai đều do người chơi thật
+tìm ra, và cả 121 test đều không bắt được, vì tất cả đều đo **luật chơi** — mà luật
+chơi vẫn đúng khi màn hình lật ngược hoặc khi chướng ngại vô hình. Cách trả là biến
+luật thị giác thành test: `tests/render/screen-axis.test.ts` và
+`tests/render/contrast.test.ts` giờ là cổng CI. Đó cũng là lý do hai việc đầu ở mục
+dưới ưu tiên **cao**: không có test nào thay được việc ngồi chơi.
 
 **Lệch tên có ý thức:** thư mục vẫn là `web-game-endless-runner` còn repo là
 `web-game-duck-runner`. Thư mục giữ tên **thể loại** cho khớp 12 game bên cạnh
 (`web-game-tetris`, `web-game-sokoban`…) — nhìn danh sách là biết game gì; repo giữ
 tên **sản phẩm**. Script `capture-screenshots.mjs` lấy tên repo từ `git remote` chứ
 không từ basename, nên nó xử lý đúng trường hợp này.
-
-**Việc còn chặn duy nhất, không phải do code:** xác nhận fps trên **máy mobile thật**.
-CPU throttle của DevTools không thay được một GPU mobile, nên ngưỡng "≥45fps trên
-mobile tầm trung" ở `NFR-PERF-05` vẫn là suy ra.
 
 ## Việc tiếp theo
 
@@ -67,4 +82,5 @@ mobile tầm trung" ở `NFR-PERF-05` vẫn là suy ra.
 | Autopilot trong `measure-economy.ts` là người chơi trung bình-yếu | Trung vị 6.4 giây/lượt, 120m — số đo là **giới hạn dưới**, không phải nhịp thật của người | Đủ để so sánh tương đối giữa các bộ giá | Khi có số liệu từ người chơi thật |
 | `docs/01-product/glossary.md` | Vẫn ⚪ chưa áp dụng | Giờ đã có `Player`, `Track`, `Spawner` thật để đối chiếu | Đầu M3, khi cửa hàng thêm khái niệm "nhân vật" và "kỹ năng" |
 | Khổ 1024 chưa được soi tận mắt | Chỉ mới chụp 375 / 768 / 1440 | 1024 nằm giữa hai khổ đã kiểm, rủi ro thấp | Mốc M4, cùng lượt đo hiệu năng |
+| Quy trình tạo hai file ảnh CC0 là việc TAY | Các bước ghi trong `docs/assets/CREDITS.md`, không phải script trong repo | Chạy lại là việc một lần; viết script cần thêm `sharp` hoặc Playwright làm devDependency chỉ để chuẩn bị tài nguyên | Khi cần đổi hoặc thêm ảnh lần thứ hai |
 | Không dùng worktree cho từng mốc | Mỗi mốc là một nhánh thường, rẽ từ `main` | Không có remote, một người làm, và mỗi worktree cần một `node_modules` riêng | Khi có người thứ hai, hoặc khi hai mốc chạy song song |

@@ -1,7 +1,12 @@
 # ADR-0007 · Dựng vật thể bằng hình khối trong code, không tải model ngoài
 
 > **Ngày:** 2026-09-08
-> **Trạng thái:** accepted
+> **Trạng thái:** superseded bởi `ADR-0010` (2026-09-10)
+>
+> Lý do bị thay: điều kiện xem lại viết ở §4 đã xảy ra — `ADR-0006` bị `ADR-0009` thay.
+> `ADR-0010` giữ **nguyên** lập luận của file này cho vật thể trong luồng chơi (nhân vật
+> và chướng ngại vẫn là hình khối, vì dưới đường chân trời thứ quyết định là hình bóng),
+> và chỉ mở ra đúng hai chỗ ảnh thật đóng góp được. Nội dung dưới đây giữ nguyên.
 > **Liên quan:** ADR-0001 · ADR-0006 · FR-05 · FR-23 · NFR-PERF-07 · NFR-PERF-08 · NFR-SEC-07
 
 ## 1. Bối cảnh

@@ -16,7 +16,7 @@ export const S = {
    */
   gameTitleLines: ['DUCK', 'RUNNER'],
   /** Dong noi ro game LA GI — thu ma khong mot tu don nao tai duoc. */
-  tagline: 'Ba làn. Một kỹ năng. Chạy về phía mặt trời lặn.',
+  tagline: 'Ba làn. Một kỹ năng. Một con đường qua vực.',
 
   menu: {
     play: 'CHƠI',

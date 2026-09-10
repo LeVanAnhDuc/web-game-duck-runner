@@ -2,6 +2,7 @@ import { FixedStepAccumulator } from '../core/loop'
 import { InputController } from '../core/input'
 import { Game } from '../game/Game'
 import { GameRenderer } from '../render/Renderer'
+import { streamTextures } from '../render/TextureStream'
 import type { AudioEngine } from '../audio/Audio'
 import { S } from '../data/strings'
 import type { EffectKind } from '../game/ActiveEffects'
@@ -89,6 +90,12 @@ export class GameHost {
     this.resizeObserver.observe(canvas.parentElement ?? canvas)
     this.applySize()
     this.installDevStats()
+    /**
+     * Anh that nap SAU frame dau — ADR-0010, NFR-PERF-10. Dat sau `loop(0)` la
+     * khong du: `streamTextures` tu doi hai lan rAF, nen no chi chay khi frame
+     * dau da thuc su hien ra.
+     */
+    streamTextures((img) => this.renderer.rig.setFarFoliage(img))
     this.loop(0)
   }
 
