@@ -4,25 +4,26 @@
  */
 :root {
   /* §2.1 — y nghia trong the gioi game */
-  --world-ink: #120e1f;
+  --world-canopy: #0d1512;
   --world-coin: #ffc94a;
   --world-skill: #5be0c8;
-  --sky-high: #2b1b4d;
-  --sky-mid: #8e3b6b;
-  --sky-low: #f5a15c;
+  --mist-far: #cbd6c6;
+  --mist-near: #93a896;
+  --hazard-edge: #eaf0e6;
+  --player-rim: #ffd9a8;
 
   /* §2.2 — giao dien */
-  --surface: #151221;
-  --surface-raised: #1e1930;
+  --surface: #101a16;
+  --surface-raised: #1c2b25;
   --text: #f5f1ea;
-  --text-muted: #a79fb5;
+  --text-muted: #9daea3;
   --gold: #ffc94a;
   --aqua: #5be0c8;
   --alert: #ff8a80;
-  --ink: #120e1f;
+  --ink: #0d1512;
 
-  /* §2.4 — yeu to dac trung */
-  --rule-horizon: linear-gradient(90deg, #2b1b4d 0%, #8e3b6b 45%, #f5a15c 100%);
+  /* §2.4 — yeu to dac trung: dai suong, thay dai hoang hon cua ADR-0006 */
+  --rule-mist: linear-gradient(90deg, #0d1512 0%, #93a896 48%, #cbd6c6 100%);
 
   /* §4 — khoang cach */
   --space-xs: 4px;
@@ -67,7 +68,7 @@ body {
 }
 
 a {
-  color: var(--sky-low);
+  color: var(--player-rim);
 }
 a:hover {
   color: #ffe9a8;
@@ -83,7 +84,7 @@ a:hover {
   width: 100%;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #191330 0%, #221a3a 55%, #2a1e38 100%);
+  background: linear-gradient(180deg, #0f1a15 0%, #14201a 55%, #18251e 100%);
   overflow: hidden;
 }
 
@@ -199,16 +200,16 @@ a:hover {
   min-height: 48px;
   padding: 0;
   border-radius: 12px;
-  background: rgba(30, 25, 48, 0.72);
+  background: rgba(28, 43, 37, 0.72);
   color: var(--text);
-  border: 1px solid rgba(167, 159, 181, 0.35);
+  border: 1px solid rgba(157, 174, 163, 0.35);
 }
 
 /* ── Yeu to dac trung: duong chan troi ──────────────────────────────────── */
 .rule {
   height: 3px;
   border-radius: 2px;
-  background: var(--rule-horizon);
+  background: var(--rule-mist);
 }
 
 .panel {
@@ -218,8 +219,10 @@ a:hover {
 }
 
 /* ── HUD — MASTER §7.3 ────────────────────────────────────────────────────
- * Scrim alpha >= 0.45: chu tren chan troi sang nhat chi dat 1.84:1 neu khong
- * co scrim; o alpha 0.45 dat 4.81:1. Day la rang buoc do duoc, khong phai goi y. */
+ * Scrim alpha >= 0.55. Do duoc: chu tren dai suong sang nhat (#CBD6C6) chi dat
+ * 3.75:1 o alpha 0.45 — nguong cu cua ADR-0006, va no KHONG con du khi nen doi
+ * tu troi hoang hon sang suong. O 0.55 dat 4.99:1. Rang buoc do duoc, khong
+ * phai goi y; `tests/render/contrast.test.ts` kiem ca hai chieu. */
 .hud {
   position: absolute;
   inset: 0;
@@ -234,9 +237,9 @@ a:hover {
   height: 132px;
   background: linear-gradient(
     180deg,
-    rgba(18, 14, 31, 0.82) 0%,
-    rgba(18, 14, 31, 0.62) 55%,
-    rgba(18, 14, 31, 0) 100%
+    rgba(13, 21, 18, 0.86) 0%,
+    rgba(13, 21, 18, 0.7) 55%,
+    rgba(13, 21, 18, 0) 100%
   );
 }
 
@@ -257,7 +260,7 @@ a:hover {
 
 .hud-distance {
   font-size: clamp(22px, 6vw, 30px);
-  text-shadow: 0 1px 8px rgba(18, 14, 31, 0.9);
+  text-shadow: 0 1px 8px rgba(13, 21, 18, 0.92);
 }
 
 .hud-distance span {
@@ -281,14 +284,14 @@ a:hover {
   right: 0;
   top: calc(var(--space-md) + var(--safe-t) + 52px);
   height: 6px;
-  background: rgba(18, 14, 31, 0.45);
+  background: rgba(13, 21, 18, 0.55);
   overflow: hidden;
 }
 
 .charge-fill {
   height: 100%;
   width: 0;
-  background: var(--rule-horizon);
+  background: var(--rule-mist);
   transition: width 120ms linear;
 }
 
@@ -322,7 +325,7 @@ a:hover {
   min-height: 56px;
   padding: 0;
   border-radius: 16px;
-  background: rgba(18, 14, 31, 0.55);
+  background: rgba(13, 21, 18, 0.62);
   border: 2px solid var(--text-muted);
   color: var(--text-muted);
   display: flex;
@@ -377,7 +380,7 @@ a:hover {
   gap: 6px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(18, 14, 31, 0.72);
+  background: rgba(13, 21, 18, 0.78);
   border: 1px solid var(--world-skill);
   color: var(--world-skill);
   font-size: 14px;
@@ -398,9 +401,9 @@ a:hover {
 .screen-dim {
   background: linear-gradient(
     180deg,
-    rgba(21, 18, 33, 0) 0%,
-    rgba(21, 18, 33, 0.88) 45%,
-    rgba(21, 18, 33, 0.97) 100%
+    rgba(16, 26, 22, 0) 0%,
+    rgba(16, 26, 22, 0.88) 45%,
+    rgba(16, 26, 22, 0.97) 100%
   );
 }
 
@@ -409,7 +412,7 @@ a:hover {
 }
 
 .screen-modal {
-  background: rgba(18, 14, 31, 0.72);
+  background: rgba(13, 21, 18, 0.78);
   align-items: center;
   justify-content: center;
 }
@@ -460,7 +463,7 @@ a:hover {
 .menu-sep {
   width: 1px;
   height: 18px;
-  background: rgba(167, 159, 181, 0.4);
+  background: rgba(157, 174, 163, 0.4);
 }
 
 .row {
@@ -520,7 +523,7 @@ a:hover {
 .split-sep {
   width: 1px;
   flex: 0 0 1px;
-  background: rgba(167, 159, 181, 0.25);
+  background: rgba(157, 174, 163, 0.25);
 }
 
 .screen-head {
@@ -561,7 +564,9 @@ a:hover {
   height: 132px;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #2b1b4d 0%, #8e3b6b 60%, #f5a15c 100%);
+  /* Toi o dinh, sang o day: con vit dung o nua duoi nen than toi cua no in bong
+   * len dai suong sang — dung luat hai lop nhu trong luot choi. */
+  background: linear-gradient(180deg, #0d1512 0%, #93a896 45%, #cbd6c6 100%);
   border-radius: 12px;
 }
 
@@ -595,7 +600,7 @@ a:hover {
   flex-direction: column;
   gap: var(--space-sm);
   padding: var(--space-md) 0;
-  border-bottom: 1px solid rgba(167, 159, 181, 0.18);
+  border-bottom: 1px solid rgba(157, 174, 163, 0.18);
 }
 
 .setting-row label {
@@ -674,7 +679,7 @@ a:hover {
 .setting-row input[type='range']::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 3px;
-  background: rgba(167, 159, 181, 0.28);
+  background: rgba(157, 174, 163, 0.28);
 }
 
 .setting-row input[type='range']::-webkit-slider-thumb {
@@ -691,7 +696,7 @@ a:hover {
 .setting-row input[type='range']::-moz-range-track {
   height: 6px;
   border-radius: 3px;
-  background: rgba(167, 159, 181, 0.28);
+  background: rgba(157, 174, 163, 0.28);
 }
 
 .setting-row input[type='range']::-moz-range-thumb {
@@ -722,7 +727,7 @@ a:hover {
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: rgba(18, 14, 31, 0.55);
+  background: rgba(13, 21, 18, 0.62);
   overflow: hidden;
 }
 

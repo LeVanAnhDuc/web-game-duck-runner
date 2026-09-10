@@ -13,9 +13,10 @@
 | [ADR-0003](0003-react-chi-o-lop-ui.md) | React chỉ dùng cho lớp UI, không dùng cho cảnh 3D | 2026-09-08 | accepted |
 | [ADR-0004](0004-nhan-vat-khac-ky-nang-giong-chi-so.md) | Nhân vật khác nhau ở kỹ năng chủ động, giống nhau ở chỉ số cơ bản | 2026-09-08 | accepted |
 | [ADR-0005](0005-khoa-goc-nhin-theo-chieu-doc.md) | Khoá góc nhìn theo chiều dọc, đóng khung canvas trên màn hình rộng | 2026-09-08 | accepted |
-| [ADR-0006](0006-huong-nghe-thuat-nguoc-sang-hoang-hon.md) | Hướng nghệ thuật "ngược sáng lúc hoàng hôn", bỏ đề xuất pixel art | 2026-09-08 | accepted |
+| [ADR-0006](0006-huong-nghe-thuat-nguoc-sang-hoang-hon.md) | Hướng nghệ thuật "ngược sáng lúc hoàng hôn", bỏ đề xuất pixel art | 2026-09-08 | superseded bởi `ADR-0009` (2026-09-10) |
 | [ADR-0007](0007-dung-hinh-khoi-thay-model-tai-ve.md) | Dựng vật thể bằng hình khối trong code, không tải model ngoài | 2026-09-08 | accepted |
 | [ADR-0008](0008-am-thanh-tong-hop-thay-file.md) | Tổng hợp âm thanh bằng Web Audio, không dùng file và không dùng Howler | 2026-09-08 | accepted |
+| [ADR-0009](0009-rung-suong-som-thay-nguoc-sang-hoang-hon.md) | Rừng sương sớm, và luật hai lớp thay quy tắc in bóng một chiều | 2026-09-10 | accepted |
 <!-- END:auto -->
 
 Trạng thái: `accepted` · `superseded by ADR-00xx` · `deprecated`

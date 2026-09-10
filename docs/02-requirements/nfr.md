@@ -20,7 +20,7 @@ Các dòng `~~(bỏ)~~` là ngưỡng mặc định của bộ khung, không áp
 tái dùng nhầm.
 
 Lệnh đo lại: `npm run build` cho kích thước bundle · `npx vite-node
-scripts/measure-economy.ts` cho nhịp kiếm xu · `__duskrun.stats()` ở bản dev cho fps
+scripts/measure-economy.ts` cho nhịp kiếm xu · `__duckRunner.stats()` ở bản dev cho fps
 và draw call.
 
 ## Performance
@@ -34,11 +34,12 @@ Bốn ngưỡng dưới đã **được đo thật** ngày 2026-09-08, không c�
 | NFR-PERF-02 | ~~(bỏ)~~ — không có endpoint | — | — |
 | NFR-PERF-03 | ~~(bỏ)~~ — không có truy vấn | — | — |
 | NFR-PERF-04 | ~~(bỏ)~~ — không có bảng dữ liệu | — | — |
-| NFR-PERF-05 | 60fps trên desktop; không tụt dưới 45fps trên mobile tầm trung | **103–104 fps** ở CPU throttle 4×, DPR 2, cảnh dày nhất (tốc độ trần 23.8 m/s). Đạt trên desktop giả lập mobile. **Chưa đo trên máy thật** | Chrome DevTools, `__duskrun.stats()` ở bản dev |
+| NFR-PERF-05 | 60fps trên desktop; không tụt dưới 45fps trên mobile tầm trung | **120 fps** (trần màn hình) sau khi đổi sang cảnh rừng — không throttle, tab ở tiền cảnh, DPR 1.25. Số cũ **103–104 fps ở CPU throttle 4×** là của cảnh hoàng hôn và **không còn mô tả cảnh này**; lần đo lại ở throttle 4× chưa chạy được, xem §Giới hạn. **Chưa đo trên máy thật** | Chrome DevTools, `__duckRunner.stats()` ở bản dev |
 | NFR-PERF-06 | Không rò bộ nhớ khi chơi liên tục | **Heap phẳng qua 2 phút**: 17.7MB → GC → dao động 9.1–9.7MB, không có xu hướng tăng | `performance.memory` lấy mẫu mỗi 5 giây |
-| NFR-PERF-07 | Từ lúc mở trang tới lúc bấm chơi được: dưới 3 giây trên mạng 4G mô phỏng | **2 679 ms** (FCP 2 672 ms), tải nguội, Slow 4G + CPU 4×, bản build production, 181.5 KB truyền | `MutationObserver` cài trước khi trang tải, trong browser context sạch |
-| NFR-PERF-08 | Dưới 100 draw call mỗi frame ở cảnh dày nhất | **20** (13 chướng ngại + 21 xu cùng lúc) | `renderer.info.render.calls` |
-| NFR-PERF-09 | Bundle JS dưới 250 KB gzip | **180.8 KB gzip** (661 KB thô), gần như toàn bộ là Three.js | `npm run build` |
+| NFR-PERF-07 | Từ lúc mở trang tới lúc bấm chơi được: dưới 3 giây trên mạng 4G mô phỏng | **2 679 ms** (FCP 2 672 ms), tải nguội, Slow 4G + CPU 4×, bản build production, 181.5 KB truyền — **đo trên cảnh hoàng hôn, chưa đo lại**. Phần việc MỚI nằm trên đường tới frame đầu là sinh texture bằng canvas, đo được **3.9 ms** (tán lá 2.1 ms + nhiễu mặt đường 1.8 ms) không throttle, tức ~16 ms ở throttle 4× — trong 321 ms dư | `MutationObserver` cài trước khi trang tải, trong browser context sạch |
+| NFR-PERF-08 | Dưới 100 draw call mỗi frame ở cảnh dày nhất | **28** (4 chướng ngại + 8 xu, có rừng · tán lá · thành cầu), lấy max qua 96 lần lấy mẫu. Số này gần như **không tăng theo số vật thể** mà theo số LOẠI vật thể, vì mỗi loại là một `InstancedMesh`: trần lý thuyết là 3 loại chướng ngại + 1 xu + 3 power-up cùng xuất hiện, tức ~31 | `renderer.info.render.calls` |
+| NFR-PERF-10 | Ảnh tải về **không được nằm trên đường tới frame đầu**: người chơi bấm chơi được trước khi một byte ảnh nào về. Tổng payload ảnh ≤ 200 KB | chưa đo — đợt 2 của `docs/specs/jungle-dawn/plan.md` |
+| NFR-PERF-09 | Bundle JS dưới 250 KB gzip | **183.5 KB gzip** (668 KB thô), gần như toàn bộ là Three.js. Cả cảnh rừng — sương, vực, tán lá, thân cây, texture mặt đường, hai lớp màu — cộng thêm **2.7 KB gzip**, vì mọi texture đều VẼ bằng canvas chứ không tải về | `npm run build` |
 
 **Giới hạn của phép đo fps.** Chrome hạ `requestAnimationFrame` xuống ~1fps khi cửa
 sổ bị che, kể cả khi `visibilityState` vẫn báo `visible`. Số 103–104 fps là lần đo khi
@@ -67,6 +68,7 @@ hồi quy**. Ngưỡng mobile tầm trung vì vậy vẫn cần một lần xác
 | NFR-A11Y-04 | Mọi input trong màn cài đặt có label liên kết | review |
 | NFR-A11Y-05 | Tôn trọng `prefers-reduced-motion`: tắt rung camera, vệt tốc độ, particle. Vòng chơi giữ nguyên | thử tay với cờ bật |
 | NFR-A11Y-06 | Toàn bộ vòng chơi chơi được **chỉ bằng bàn phím** và **chỉ bằng cảm ứng**, không cái nào là phụ | thử tay cả hai đường |
+| NFR-A11Y-07 | **Mọi vật thể trong cảnh ≥ 3:1 so với nền nằm ngay sau nó**, ở mọi khoảng cách — không chỉ chữ. Kèm luật hai lớp: thân và cạnh phải nằm HAI PHÍA của nền về độ sáng (`ADR-0009`, bất biến #14) | **18 test trong `tests/render/contrast.test.ts`** tính tương phản WCAG trên chính các hằng trong `palette.ts`. Cặp yếu nhất **3.32:1**; cặp từng hỏng (chướng ngại/mặt đường gần) từ **1.16:1** lên **3.39:1**. CI đỏ nếu một cặp tụt |
 
 ## i18n
 
