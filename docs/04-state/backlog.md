@@ -2,7 +2,7 @@
 
 > **Trả lời:** Đang làm gì, tiếp theo làm gì, và đang nợ những gì?
 > **Trạng thái:** 🟢 đủ
-> **Cập nhật:** 2026-09-08 · commit —
+> **Cập nhật:** 2026-09-10 · commit —
 > **Cập nhật khi:** bắt đầu/kết thúc một việc · brainstorm ra việc mới · cố ý đi đường tắt
 
 <!-- CÁCH ĐIỀN
@@ -22,9 +22,19 @@ KHÔNG chứa: tính năng ngoài phạm vi (-> 01-product/overview.md §Non-Goa
 bóng nhân vật đổi thành vịt cho khớp tên.
 
 - **Live:** <https://levananhduc.github.io/web-game-duck-runner/>
-- **Repo:** `LeVanAnhDuc/web-game-duck-runner` · release `v0.1.1`
-- 121 test xanh · `tsc` và `eslint` sạch · README đạt hợp đồng 13 mục của skill
-  `readme-game` (audit exit 0)
+- **Repo:** `LeVanAnhDuc/web-game-duck-runner` · release `v0.1.4`
+- 123 test xanh · `tsc` và `eslint` sạch · README đạt hợp đồng 13 mục của skill
+  `readme-game` (`readme_audit.py` exit 0 — đây là script của skill, không phải job `audit` của CI ở dưới)
+
+**Job `audit` trong CI đang đỏ, và đỏ từ trước PR #1** — 5 advisory của
+`vite`/`vitest`/`esbuild`, toàn bộ là devDependency, và bản vá là major breaking.
+Không phải do PR nào gây ra; `verify` (lint · test · build · chặn ranh giới
+ADR-0002) vẫn xanh. Đừng coi nó là hồi quy của thay đổi kế tiếp.
+
+**Bài học từ bug làn ngược (PR #2, bất biến #13):** người chơi thật tìm ra nó trong
+một phút, còn 121 test thì không — vì cả bộ test đo *luật chơi*, và luật chơi vẫn
+đúng khi màn hình lật ngược. Đó chính là lý do hai việc đầu ở mục dưới ưu tiên
+**cao**: không có test nào thay được việc ngồi chơi.
 
 **Lệch tên có ý thức:** thư mục vẫn là `web-game-endless-runner` còn repo là
 `web-game-duck-runner`. Thư mục giữ tên **thể loại** cho khớp 12 game bên cạnh
