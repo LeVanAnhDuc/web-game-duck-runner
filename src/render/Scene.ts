@@ -131,6 +131,25 @@ export class SceneRig {
     this.camera.position.set(0, 3.15, -6.4)
     this.camera.lookAt(0, 1.2, 9)
 
+    /**
+     * BAT BIEN #13: lan 0 hien ra o NUA TRAI man hinh.
+     *
+     * Camera dung o z am va nhin ve +z, nen huong "phai cua man hinh" la −X chu
+     * khong phai +X: mot camera nam ben kia goc toa do thi thay truc X nguoc lai.
+     * Do khong phai loi cua lookAt, do la hinh hoc — khong cach nao sua bang cach
+     * xoay camera, tru khi dao chieu chay cua ca the gioi sang −z.
+     *
+     * Nen phep lat nam o DAY, dung mot lan, tren nhom chua moi vat the: `game/`
+     * giu nguyen quy uoc "0 trai, 1 giua, 2 phai" cua `constants.ts`, va tang
+     * render viet toa do mo phong y nguyen. Vat the moi them vao `world` tu dong
+     * dung chieu, khong phai nho phu dinh X o tung cho.
+     *
+     * Three.js xu ly dung scale am (`matrixWorld.determinant() < 0` → `frontFace`
+     * doi chieu), nen mat truoc van la mat truoc, ke ca vien sang BackSide cua
+     * nhan vat. Thu duy nhat se bi lat la chu — dung dat text 3D vao `world`.
+     */
+    this.world.scale.x = -1
+
     this.scene.background = skyTexture()
     this.scene.fog = new THREE.Fog(SKY_MID, 70, 215)
 

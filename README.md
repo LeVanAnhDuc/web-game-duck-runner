@@ -171,7 +171,7 @@ yarn release:notes    # what its notes would say
 
 [`docs/README.md`](docs/README.md) is the map, and the only file that talks about other
 files. Read [`docs/03-design/invariants.md`](docs/03-design/invariants.md) before
-changing any code — it lists the twelve things that break **silently**, where the code
+changing any code — it lists the thirteen things that break **silently**, where the code
 still runs and the tests still pass.
 
 Measured performance figures live in
