@@ -44,5 +44,12 @@ KHÔNG chứa: mô tả chức năng (-> 02-requirements/scope.md).
 | Đồng hồ mô phỏng | `SimClock` | — | Tạm dừng dừng nó (`invariants.md` §5) |
 | Quãng đường | `scoring.distanceM` | số kèm **m** | Tính theo tốc độ **thế giới**, không theo tốc độ danh nghĩa |
 | Kỷ lục | `SaveData.bestDistanceM` | **Kỷ lục** | Lưu trên máy, không có bảng xếp hạng |
-| Hình bóng | `Silhouette`, `SILHOUETTES` | — | Thứ duy nhất phân biệt các nhân vật (`ADR-0006`, `ADR-0007`) |
-| Viền sáng | `RIM`, `outlineOf` | — | Chỉ nhân vật được có (`MASTER §1`) |
+| Hình bóng | `Silhouette`, `SILHOUETTES` | — | Thứ duy nhất phân biệt các nhân vật (`ADR-0009`, `ADR-0010`) |
+| Viền ấm | `PLAYER_RIM`, `outlineOf` | — | Chỉ nhân vật được có; màu **ấm** duy nhất trong cảnh (`MASTER §1`) |
+| Luật hai lớp | `HAZARD` + `HAZARD_EDGE` | — | Thân tối + cạnh sáng (`invariants.md` §14, `ADR-0009`) |
+| Sương | `MIST_FAR`, `MIST_NEAR`, `THREE.Fog` | — | Điểm sáng nhất của cảnh; là thứ bảo đảm mọi vật thể có nền sáng |
+| Tán lá | `CANOPY`, `canopyTexture` | — | Mặt phẳng alpha trên đầu, cuộn chậm hơn mặt đường |
+| Vực | `CHASM` | — | **Hình ảnh, không phải luật chơi**: không rơi xuống được (`FR-34`) |
+| Gờ đường | `LIP_M`, `causewayFaces` | — | Dải sáng ở mép cộng mặt đứng — thứ khiến con đường đọc ra là một cây cầu |
+| Cạnh sáng | `HAZARD_EDGE` | — | Đặt đúng ở đường biên người chơi phải vượt |
+| Tầng lá xa | `jungle-far.webp` | — | Ảnh CC0 thật, chỉ vẽ **trên** đường chân trời (`ADR-0010`) |

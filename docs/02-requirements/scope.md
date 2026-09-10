@@ -95,5 +95,5 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 | FR-36 | Chướng ngại theo chủ đề rừng: khúc gỗ, chùm dây leo, cột đá | US-01 | M5 | xong |
 | FR-37 | Luật hai lớp — thân tối + cạnh sáng cho mọi vật thể phải đọc nhanh | US-01 | M5 | xong |
 | FR-38 | Texture mặt đường | US-01 | M5 | xong |
-| FR-39 | Ảnh CC0 tải sau frame đầu, bỏ qua khi `saveData` | US-01 | M5 | đang làm |
-| FR-40 | Ảnh nền rừng cho các màn hình 2D | US-02 | M5 | đang làm |
+| FR-39 | Ảnh CC0 tải sau frame đầu, bỏ qua khi `saveData` | US-01 | M5 | xong |
+| FR-40 | Ảnh nền rừng cho các màn hình 2D | US-02 | M5 | xong |

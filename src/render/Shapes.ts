@@ -80,8 +80,14 @@ export function obstacleGeometry(kind: 'low' | 'high' | 'block'): THREE.BufferGe
       const log = new THREE.CylinderGeometry(r, r, OBSTACLE_W, 10, 1)
       log.rotateZ(Math.PI / 2)
       log.translate(0, r, 0)
-      const edge = new THREE.BoxGeometry(OBSTACLE_W * 1.01, EDGE_M, r * 1.1)
-      edge.translate(0, OBSTACLE_LOW_H_M - EDGE_M * 0.3, 0)
+      /**
+       * Canh sang la mot SOI hep chay doc dinh khuc go, khong phai mot tam phu
+       * kin mat tren: ban dau lam no rong `r * 1.1` va ket qua doc thanh mot cai
+       * nap trang, hinh tru mat sach. Be rong o day la 0.2 chieu sau khuc go —
+       * du de thay o 50m, du hep de van con nhin ra khuc go.
+       */
+      const edge = new THREE.BoxGeometry(OBSTACLE_W * 1.01, EDGE_M, r * 0.34)
+      edge.translate(0, OBSTACLE_LOW_H_M - EDGE_M * 0.5, 0)
       // Mau go: hai dia o hai dau, sang hon than mot bac de doc ra la KHUC GO
       const capL = new THREE.CylinderGeometry(r * 0.99, r * 0.99, EDGE_M, 10, 1)
       capL.rotateZ(Math.PI / 2)
@@ -96,24 +102,36 @@ export function obstacleGeometry(kind: 'low' | 'high' | 'block'): THREE.BufferGe
       ])
     }
     case 'high': {
-      // Chum day leo ru tu tren. Moi khoi nam TRONG hop bao — mot soi day thong
-      // xuong duoi hop la mot loi hua va cham khong co that.
+      /**
+       * Chum day leo ru tu tren.
+       *
+       * Moi khoi nam TRONG hop bao — mot soi day thong xuong duoi hop la mot loi
+       * hua va cham khong co that.
+       *
+       * Ban dau thanh ngang day 0.62m va canh sang o day rong 0.64m, va ket qua
+       * doc thanh mot **cai ban go**: mot mat ban day voi bon chan deu nhau. Sua
+       * ba thu — thanh mong hon, day leo manh va lech nhau, canh sang chi con mot
+       * soi hep — thi no doc thanh mot chum day ru xuong.
+       */
       const h = OBSTACLE_HIGH_H_M
       const y0 = OBSTACLE_HIGH_CLEAR_M
+      const barH = h * 0.3
       const parts: { geo: THREE.BufferGeometry; color: number }[] = []
-      const bar = new THREE.BoxGeometry(OBSTACLE_W, h * 0.42, 0.62)
-      bar.translate(0, y0 + h - (h * 0.42) / 2, 0)
+      const bar = new THREE.BoxGeometry(OBSTACLE_W, barH, 0.34)
+      bar.translate(0, y0 + h - barH / 2, 0)
       parts.push({ geo: bar, color: HAZARD })
-      for (let i = 0; i < 5; i++) {
-        const x = (i / 4 - 0.5) * OBSTACLE_W * 0.82
-        const len = h * (0.42 + (i % 2 === 0 ? 0.34 : 0.18))
-        const vine = new THREE.CylinderGeometry(0.055, 0.04, len, 5, 1)
-        vine.translate(x, y0 + h - h * 0.42 - len / 2, 0)
+      for (let i = 0; i < 7; i++) {
+        const t = i / 6
+        // Lech nhau co y: day leo deu tam tap doc thanh chan ban
+        const x = (t - 0.5) * OBSTACLE_W * 0.88 + (i % 3 - 1) * 0.045
+        const len = (h - barH) * (0.42 + 0.58 * Math.abs(Math.sin(i * 1.7)))
+        const vine = new THREE.CylinderGeometry(0.032, 0.022, len, 4, 1)
+        vine.translate(x, y0 + h - barH - len / 2, (i % 2 - 0.5) * 0.14)
         parts.push({ geo: vine, color: HAZARD })
       }
       // Canh sang o DAY chum: no la duong bien phai truot duoi
-      const edge = new THREE.BoxGeometry(OBSTACLE_W * 1.01, EDGE_M, 0.64)
-      edge.translate(0, y0 + EDGE_M * 0.3, 0)
+      const edge = new THREE.BoxGeometry(OBSTACLE_W * 1.01, EDGE_M, 0.16)
+      edge.translate(0, y0 + EDGE_M * 0.5, 0)
       parts.push({ geo: edge, color: HAZARD_EDGE })
       return mergeColored(parts)
     }
@@ -146,11 +164,20 @@ export function obstacleGeometry(kind: 'low' | 'high' | 'block'): THREE.BufferGe
  * Khong co vong toi thi xu bien mat khi bay ngang dai suong sang o chan troi.
  */
 export function coinGeometry(): THREE.BufferGeometry {
-  const core = new THREE.OctahedronGeometry(0.3, 0)
-  const ring = new THREE.TorusGeometry(0.32, 0.055, 4, 10)
+  /**
+   * Mot cai DIA huong ve nguoi choi, khong phai mot khoi bat dien: khoi bat dien
+   * doc thanh mot hon da quy, va khi quay no cho ra mot hinh thoi det.
+   *
+   * Dia day 0.13m chu khong 0.02: `Renderer` quay xu quanh truc Y, nen mot cai
+   * dia mong se bien mat vai frame moi vong. Day nay lam luc nghieng canh no van
+   * con la mot thanh vang thay duoc.
+   */
+  const disc = new THREE.CylinderGeometry(0.31, 0.31, 0.13, 16, 1)
+  disc.rotateX(Math.PI / 2)
+  const rim = new THREE.TorusGeometry(0.325, 0.03, 5, 18)
   return mergeColored([
-    { geo: core, color: COIN },
-    { geo: ring, color: COIN_RING },
+    { geo: disc, color: COIN },
+    { geo: rim, color: COIN_RING },
   ])
 }
 
@@ -228,12 +255,27 @@ export function buildPlayer(silhouette: Silhouette): PlayerRig {
   const body = new THREE.Group()
   root.add(body)
 
-  const part = (w: number, h: number, d: number, x: number, y: number, z = 0): THREE.Mesh => {
-    const geo = new THREE.BoxGeometry(w, h, d)
+  const mount = (geo: THREE.BufferGeometry, x: number, y: number, z: number): THREE.Mesh => {
     const mesh = new THREE.Mesh(geo, flatMaterial(CANOPY))
     mesh.position.set(x, y, z)
     mesh.add(outlineOf(geo))
     return mesh
+  }
+  /** Khoi hop — dung cho chan, tay, mao: nhung thu nho va thang. */
+  const part = (w: number, h: number, d: number, x: number, y: number, z = 0): THREE.Mesh =>
+    mount(new THREE.BoxGeometry(w, h, d), x, y, z)
+  /**
+   * Khoi TRON — dung cho than va dau.
+   *
+   * Ban dau ca con vit la hop, va o khoang cach gan no doc thanh mot thung go
+   * chu khong thanh mot con vat. Than va dau la hai khoi lon nhat, nen chi can
+   * hai khoi do tron lai la hinh bong doi han; chan tay van la hop vi chung
+   * nho va thang, va lam chung tron chi ton tam giac.
+   */
+  const blob = (w: number, h: number, d: number, x: number, y: number, z = 0): THREE.Mesh => {
+    const geo = new THREE.SphereGeometry(0.5, 12, 8)
+    geo.scale(w, h, d)
+    return mount(geo, x, y, z)
   }
 
   /**
@@ -246,12 +288,12 @@ export function buildPlayer(silhouette: Silhouette): PlayerRig {
   const legH = H * (1 - HEAD_ZONE) - torsoH
   const torsoY = legH + torsoH / 2
 
-  const torso = part(s.shoulder, torsoH, 0.3, 0, torsoY)
+  const torso = blob(s.shoulder * 1.12, torsoH * 1.04, 0.62, 0, torsoY)
   body.add(torso)
 
   // Khe co: khong co no thi dau dinh thang vao vai va trong nhu mot khoi lien
   const headY = legH + torsoH + H * s.headR * 1.15
-  const head = part(s.headR * 1.7, s.headR * 1.8, s.headR * 1.7, 0, headY)
+  const head = blob(s.headR * 1.9, s.headR * 2.0, s.headR * 1.9, 0, headY)
   body.add(head)
 
   if (s.crown === 'cap') {
@@ -264,12 +306,16 @@ export function buildPlayer(silhouette: Silhouette): PlayerRig {
   }
   if (s.beak > 0) {
     // Mo huong ve phia truoc (+z): thay duoc khi nhan vat nghieng luc doi lan
-    const len = s.headR * s.beak * 0.42
-    body.add(part(s.headR * 0.72, s.headR * 0.46, len, 0, headY - s.headR * 0.18, len / 2 + s.headR * 0.6))
+    // Mo la mot hinh CHOP nam ngang, khong phai mot khoi hop: cai mo la net
+    // duy nhat khien hinh bong doc ra la vit chu khong la mot con chim nao khac.
+    const len = s.headR * s.beak * 0.52
+    const geo = new THREE.ConeGeometry(s.headR * 0.42, len, 7)
+    geo.rotateX(Math.PI / 2)
+    body.add(mount(geo, 0, headY - s.headR * 0.2, len / 2 + s.headR * 0.72))
   }
   if (s.tail) {
     // Duoi vit: ngan, chech len — khac han cai duoi dai o ban truoc
-    const tail = part(s.hip * 0.5, s.hip * 0.36, 0.34, 0, torsoY - torsoH * 0.28, -0.3)
+    const tail = blob(s.hip * 0.62, s.hip * 0.42, 0.44, 0, torsoY - torsoH * 0.26, -0.3)
     tail.rotation.x = -0.5
     body.add(tail)
   }

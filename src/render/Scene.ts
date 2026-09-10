@@ -106,21 +106,24 @@ function seeded(seed: number): () => number {
  * Vi sao khong dung shader: nen la screen-space va camera khong bao gio doi goc
  * ngang. Mot texture 256x512 lam dung viec do voi chi phi bang khong.
  */
-function backdropTexture(): THREE.Texture {
-  const w = 256
-  const h = 512
-  const canvas = document.createElement('canvas')
-  canvas.width = w
-  canvas.height = h
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return new THREE.Texture()
+const BACKDROP_W = 256
+const BACKDROP_H = 512
+
+/**
+ * Chan troi o 0.386 tinh tu dinh — xem `drawBackdrop`. De o day vi ca anh tang
+ * la xa cung phai dung chinh con so nay de biet dung o dau thi phai tat.
+ */
+const HORIZON_V = 0.386
+
+function drawBackdrop(ctx: CanvasRenderingContext2D, far?: HTMLImageElement): void {
+  const w = BACKDROP_W
+  const h = BACKDROP_H
 
   /**
    * Chan troi o 0.386 tinh tu dinh: camera nhin xuong 7.2 do, fov doc 58 do, nen
    * 0.5 - 0.5 * tan(7.2) / tan(29). Dat sai con so nay thi dai suong sang nhat
    * roi xuong duoi mat duong va bien mat.
    */
-  const HORIZON_V = 0.386
   const grad = ctx.createLinearGradient(0, 0, 0, h)
   grad.addColorStop(0, hex(CANOPY))
   grad.addColorStop(HORIZON_V * 0.42, hex(MIST_NEAR))
@@ -157,11 +160,37 @@ function backdropTexture(): THREE.Texture {
   }
   ctx.globalAlpha = 1
 
-  const tex = new THREE.CanvasTexture(canvas)
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.wrapS = THREE.ClampToEdgeWrapping
-  tex.wrapT = THREE.ClampToEdgeWrapping
-  return tex
+  /**
+   * Tang la XA bang anh that (ADR-0010), va no chi duoc ve **tren duong chan
+   * troi**, mo dan ve 0 khi cham vao dai suong.
+   *
+   * Do khong phai lua chon tham my: dai suong sang la thu bao dam moi vat the
+   * co nen sang de in bong len, va chuong ngai cao nhat (2.6m) van luon chieu
+   * xuong DUOI duong chan troi. Ve anh len phan tren la ve vao vung khong mot
+   * vat the nao can doc — them chieu sau that ma khong dong mot ngon tay vao
+   * cac cap tuong phan da do.
+   */
+  if (far) {
+    const top = Math.round(h * HORIZON_V)
+    const tmp = document.createElement('canvas')
+    tmp.width = w
+    tmp.height = top
+    const t = tmp.getContext('2d')
+    if (t) {
+      t.drawImage(far, 0, 0, w, top)
+      // Mo dan xuong duoi: dac o dinh, bang 0 dung o chan troi
+      t.globalCompositeOperation = 'destination-in'
+      const mask = t.createLinearGradient(0, 0, 0, top)
+      mask.addColorStop(0, 'rgba(0,0,0,1)')
+      mask.addColorStop(0.62, 'rgba(0,0,0,0.85)')
+      mask.addColorStop(1, 'rgba(0,0,0,0)')
+      t.fillStyle = mask
+      t.fillRect(0, 0, w, top)
+      ctx.globalAlpha = 0.9
+      ctx.drawImage(tmp, 0, 0)
+      ctx.globalAlpha = 1
+    }
+  }
 }
 
 /** Nhieu xam lap lai duoc, dung lam texture da uot cua mat duong. */
@@ -332,6 +361,8 @@ export class SceneRig {
   private readonly canopy: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>
   private readonly scenery = new Scenery()
   private readonly faces = causewayFaces()
+  private readonly backdrop = document.createElement('canvas')
+  private readonly backdropTex: THREE.Texture
 
   constructor(reducedMotion: boolean) {
     /**
@@ -362,7 +393,15 @@ export class SceneRig {
      */
     this.world.scale.x = -1
 
-    this.scene.background = backdropTexture()
+    this.backdrop.width = BACKDROP_W
+    this.backdrop.height = BACKDROP_H
+    const bctx = this.backdrop.getContext('2d')
+    if (bctx) drawBackdrop(bctx)
+    this.backdropTex = new THREE.CanvasTexture(this.backdrop)
+    this.backdropTex.colorSpace = THREE.SRGBColorSpace
+    this.backdropTex.wrapS = THREE.ClampToEdgeWrapping
+    this.backdropTex.wrapT = THREE.ClampToEdgeWrapping
+    this.scene.background = this.backdropTex
     this.scene.fog = new THREE.Fog(MIST_FAR, FOG_NEAR_M, FOG_FAR_M)
 
     const geo = new THREE.PlaneGeometry(120, 300)
@@ -440,6 +479,21 @@ export class SceneRig {
     if (map) map.offset.y = (distanceM * 0.045) % 1
   }
 
+  /**
+   * Ve lai nen voi anh tang la xa — goi khi `TextureStream` tai xong.
+   *
+   * Ve LAI ca nen chu khong chong mot lop moi len: nen la mot texture duy nhat,
+   * va ve lai la cach duy nhat de anh nam DUOI dai suong theo dung thu tu, thay
+   * vi phu len no.
+   */
+  setFarFoliage(img: HTMLImageElement): void {
+    const ctx = this.backdrop.getContext('2d')
+    if (!ctx) return
+    ctx.clearRect(0, 0, BACKDROP_W, BACKDROP_H)
+    drawBackdrop(ctx, img)
+    this.backdropTex.needsUpdate = true
+  }
+
   /** ADR-0005: chi doi aspect, KHONG doi fov. */
   resize(width: number, height: number): void {
     this.camera.aspect = width / Math.max(1, height)
@@ -456,6 +510,6 @@ export class SceneRig {
     this.scenery.dispose()
     this.faces.geometry.dispose()
     ;(this.faces.material as THREE.Material).dispose()
-    ;(this.scene.background as THREE.Texture | null)?.dispose?.()
+    this.backdropTex.dispose()
   }
 }

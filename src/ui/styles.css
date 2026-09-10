@@ -747,3 +747,22 @@ a:hover {
     border-width: 3px;
   }
 }
+
+/* ── Anh that, chi ap SAU frame dau — ADR-0010, NFR-PERF-10 ──────────────────
+ * `--screen-photo` do `TextureStream` dat vao, va no chi dat sau khi anh da tai
+ * xong. Viet `url()` thang o day thi trinh duyet tai anh ngay khi man hinh
+ * render, tuc dat no dung tro lai vao duong tai ma ADR-0010 vua don ra. */
+body[data-textures='on'] .screen-solid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--screen-photo);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+body[data-textures='on'] .screen-solid > * {
+  position: relative;
+}

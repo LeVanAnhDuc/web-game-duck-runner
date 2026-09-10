@@ -13,8 +13,9 @@
 | [`03-design/architecture.md`](03-design/architecture.md) | Hệ thống ghép lại thế nào, ranh giới giữa các phần ở đâu? | 🟢 đủ | thêm/bỏ một module hoặc service · đổi cách hai module nói … |
 | [`03-design/invariants.md`](03-design/invariants.md) | Sửa gì thì hệ thống sai **âm thầm** — test vẫn xanh mà kết… | 🟢 đủ | phát hiện một bất biến mới — thường là ngay sau khi ai đó … |
 | [`04-state/backlog.md`](04-state/backlog.md) | Đang làm gì, tiếp theo làm gì, và đang nợ những gì? | 🟢 đủ | bắt đầu/kết thúc một việc · brainstorm ra việc mới · cố ý … |
+| [`assets/CREDITS.md`](assets/CREDITS.md) | Mỗi file ảnh trong repo này từ đâu ra, giấy phép gì, và đã… | 🟢 đủ | thêm, đổi hoặc bỏ một file tài nguyên nhị phân |
 | [`design-system/endless-runner/MASTER.md`](design-system/endless-runner/MASTER.md) | — | — | — |
-| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 9 ADR | mỗi quyết định kỹ thuật |
+| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 10 ADR | mỗi quyết định kỹ thuật |
 | [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | ⚪ chưa áp dụng — dự án KHÔNG có biến môi trư… | code đọc một biến mới (process.env.X / import.meta.env.X d… |
 <!-- END:auto -->
 

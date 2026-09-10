@@ -1,4 +1,4 @@
-# 🌇 Duck Runner — three lanes into the sunset, and one skill you choose the moment for
+# 🌿 Duck Runner — three lanes across a chasm, and one skill you choose the moment for
 
 [![CI](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/ci.yml/badge.svg)](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/ci.yml)
 [![Deploy](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml/badge.svg)](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml)
@@ -8,10 +8,17 @@ A three-lane endless runner, played entirely in the browser. No backend, no acco
 no install — open the page and run. Your best distance, your coins and the ducks you
 have unlocked live in that browser's `localStorage` and nowhere else.
 
-One rule decides how everything is drawn: **what you must avoid is a silhouette, what
-you want glows.** The camera looks into the setting sun, so obstacles carry no colour
-at all — danger reads by brightness, which means it survives every kind of colour
-blindness. The one silhouette with a rim light is you.
+You run along a stone causeway over a chasm, through dense jungle at first light. One
+rule decides how everything is drawn: **anything you must read in a fraction of a
+second has a dark body and a bright edge.** A dark background reads the edge, a bright
+one reads the body, and no background makes it vanish — coins invert the two layers
+because a coin's body is already bright. Danger is encoded by brightness rather than
+hue, so it survives every kind of colour blindness, and a test measures all thirteen
+pairs on every push. The one silhouette with a warm rim is you.
+
+That rule replaced an earlier one that only held against the sky. Obstacles used to
+reach 1.16:1 against the near road — effectively invisible in the last second before
+impact — and no rule test could catch it, because the rules were correct.
 
 **Play**: https://levananhduc.github.io/web-game-duck-runner/
 
@@ -19,8 +26,12 @@ blindness. The one silhouette with a rim light is you.
 
 ## Features
 
-- **Three lanes, three actions.** Change lane, jump over what is low, duck under what
-  is high — which is where the name comes from.
+- **Three lanes, three actions.** Change lane, jump the fallen log, duck under the
+  hanging vines — which is where the name comes from.
+- **A chasm on both sides, and a jungle beyond it.** Trunks scroll past, a leaf canopy
+  moves overhead at its own speed, and bright mist fills every gap. The mist is not
+  decoration: it is what guarantees every object has a light backdrop to read against,
+  at every distance.
 - **A charge meter, not a cooldown.** Coins you pick up fill it; when it is full you
   choose the moment to spend it. Coins go to your wallet either way, so using the
   most enjoyable mechanic in the game never costs you progress.
@@ -36,8 +47,15 @@ blindness. The one silhouette with a rim light is you.
   killing a player unfairly.
 - **Difficulty that scales with speed while your reaction window stays constant.**
   Spacing is reaction time × current speed, never a fixed distance.
-- **Four ducks, told apart by silhouette.** Backlighting hides colour and texture, so
-  identity has to live in proportion and shape: broad, lean, crested, capped.
+- **Four ducks, told apart by silhouette.** Flat unlit rendering hides colour and
+  texture, so identity has to live in proportion and shape: broad, lean, crested,
+  capped.
+- **Real photography where it earns its place, and nowhere else.** Two public-domain
+  images — the far canopy and the menu backdrop — load *after* the first frame, so the
+  page is playable before a single image byte arrives, and skip entirely when the
+  browser reports data saver. The road texture is drawn in code, because the contrast
+  budget caps its amplitude at ±8% and at that amplitude a photograph and a noise
+  function are indistinguishable.
 - **Sound with no audio files.** Every effect and the music bed are synthesised in the
   browser. The coin pickup rises in pitch across a streak, which a fixed set of files
   could not do.
@@ -87,7 +105,8 @@ production build.
 
 Vite · TypeScript · Three.js for the scene · React for the screens only · Vitest.
 No audio library and no 3D model files — see the ADRs below for why each of those was
-dropped rather than added.
+dropped rather than added. Every texture in the 3D scene is drawn with canvas at
+startup, which costs 3.9 ms and 3.5 KB gzip.
 
 | Folder | Holds | May depend on |
 | --- | --- | --- |
@@ -104,18 +123,26 @@ the entire rule set be tested in Node, and it is the reason deterministic replay
 possible at all: the same seed and the same input sequence produce the same run, which
 catches more gameplay regressions than any other single test here.
 
-Three decisions dropped things the plan had originally included, each for the same
+Several decisions dropped things the plan had originally included, each for the same
 reason — the art direction made them contribute nothing:
 
 - [`ADR-0001`](docs/decisions/0001-dung-three-js-thay-phaser.md) chose Three.js over
   Phaser/PixiJS. Right for a side-view runner; wrong once the camera looks into depth,
   because faking perspective needs front-facing artwork the free 2D packs do not have.
-- [`ADR-0007`](docs/decisions/0007-dung-hinh-khoi-thay-model-tai-ve.md) dropped the
-  downloaded 3D models. Every object is painted one flat colour, so a model file
-  contributes no texture, no palette and no surface detail that survives a silhouette.
 - [`ADR-0008`](docs/decisions/0008-am-thanh-tong-hop-thay-file.md) dropped Howler and
   the audio files. A runner needs four short sounds and a pad, and an oscillator
   produces those exactly.
+- [`ADR-0009`](docs/decisions/0009-rung-suong-som-thay-nguoc-sang-hoang-hon.md) replaced
+  the original backlit-dusk direction after measuring that its central premise held for
+  only half the scene. It supersedes `ADR-0006`, which stays in the repo unedited
+  because it is the reasoning behind everything built before it.
+- [`ADR-0010`](docs/decisions/0010-anh-cc0-that-tai-sau-frame-dau.md) allows real CC0
+  images, but only in the two places they contribute anything, and never on the path to
+  the first frame. It supersedes `ADR-0007` while keeping that ADR's argument intact for
+  objects in the run: below the horizon what decides legibility is silhouette, so the
+  player and the obstacles are still built from primitives.
+
+Image sources and licences: [`docs/assets/CREDITS.md`](docs/assets/CREDITS.md).
 
 ## Releases and versioning
 
@@ -163,15 +190,15 @@ Both scripts run locally against the real history, so a release can be previewed
 before anyone relies on it:
 
 ```bash
-yarn release:next     # which tag the next release would get
-yarn release:notes    # what its notes would say
+npm run release:next     # which tag the next release would get
+npm run release:notes    # what its notes would say
 ```
 
 ## Documentation
 
 [`docs/README.md`](docs/README.md) is the map, and the only file that talks about other
 files. Read [`docs/03-design/invariants.md`](docs/03-design/invariants.md) before
-changing any code — it lists the thirteen things that break **silently**, where the code
+changing any code — it lists the fourteen things that break **silently**, where the code
 still runs and the tests still pass.
 
 Measured performance figures live in

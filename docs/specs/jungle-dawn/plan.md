@@ -27,30 +27,30 @@
 - [x] **T11 · Màn hình 2D** — `styles.css`: token mới, scrim 0.55, gradient đặc trưng
       đổi màu. Bố cục không đổi.
 - [x] **T12 · Tagline và chuỗi** — `strings.ts`.
-- [ ] **T13 · Đo lại** — draw call, fps, bundle, thời gian tới lúc chơi được. Ghi số
+- [x] **T13 · Đo lại** — draw call, fps, bundle, thời gian tới lúc chơi được. Ghi số
       thật vào `nfr.md`. Không được ghi số chưa chạy ra.
-- [ ] **T14 · Xem bằng mắt** — chụp 375 / 768 / 1024 / 1440 trên app thật, kiểm cả
+- [x] **T14 · Xem bằng mắt** — chụp 375 / 768 / 1024 / 1440 trên app thật, kiểm cả
       `prefers-reduced-motion`.
 
 ## Đợt 2 — ảnh CC0 thật
 
-- [ ] **T15 · Tìm nguồn** — chỉ CC0 / phạm vi công cộng. Ghi
+- [x] **T15 · Tìm nguồn** — chỉ CC0 / phạm vi công cộng. Ghi
       `docs/assets/CREDITS.md`: nguồn, tác giả, giấy phép, kích thước.
-- [ ] **T16 · Tải sau frame đầu** — `src/render/TextureStream.ts`: chỉ chạy sau khi
+- [x] **T16 · Tải sau frame đầu** — `src/render/TextureStream.ts`: chỉ chạy sau khi
       frame đầu đã vẽ, thay `map` vào vật liệu đang chạy, bỏ qua khi
       `navigator.connection.saveData`.
-- [ ] **T17 · Ảnh nền cho màn 2D.**
-- [ ] **T18 · Đo lại `NFR-PERF-07`** — phải chứng minh ảnh KHÔNG nằm trên đường tải
+- [x] **T17 · Ảnh nền cho màn 2D.**
+- [x] **T18 · Đo lại `NFR-PERF-07`** — phải chứng minh ảnh KHÔNG nằm trên đường tải
       tới frame đầu, không chỉ nói vậy.
 
 ## Tài liệu — viết ngay lúc làm, không để cuối
 
-- [ ] `ADR-0009` hướng nghệ thuật mới, `ADR-0006` → `superseded`
-- [ ] `ADR-0010` ảnh thật tải sau, `ADR-0007` → `superseded`
-- [ ] `MASTER.md` bảng màu, scrim 0.55, yếu tố đặc trưng, luật hai lớp
-- [ ] `scope.md` FR-34 … FR-40, mốc M5
-- [ ] `nfr.md` thêm `NFR-A11Y-07`, `NFR-PERF-10`, cập nhật số đo
-- [ ] `invariants.md` bất biến #14 (luật hai lớp)
-- [ ] `glossary.md` sương · vực · tán · gờ đường · cạnh sáng
-- [ ] `README.md` đầu đề, `## Features`, ảnh chụp mới
-- [ ] `backlog.md` §Đang làm
+- [x] `ADR-0009` hướng nghệ thuật mới, `ADR-0006` → `superseded`
+- [x] `ADR-0010` ảnh thật tải sau, `ADR-0007` → `superseded`
+- [x] `MASTER.md` bảng màu, scrim 0.55, yếu tố đặc trưng, luật hai lớp
+- [x] `scope.md` FR-34 … FR-40, mốc M5
+- [x] `nfr.md` thêm `NFR-A11Y-07`, `NFR-PERF-10`, cập nhật số đo
+- [x] `invariants.md` bất biến #14 (luật hai lớp)
+- [x] `glossary.md` sương · vực · tán · gờ đường · cạnh sáng
+- [x] `README.md` đầu đề, `## Features`, ảnh chụp mới
+- [x] `backlog.md` §Đang làm
