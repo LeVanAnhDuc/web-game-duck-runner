@@ -61,10 +61,35 @@ dưới ưu tiên **cao**: không có test nào thay được việc ngồi chơ
 tên **sản phẩm**. Script `capture-screenshots.mjs` lấy tên repo từ `git remote` chứ
 không từ basename, nên nó xử lý đúng trường hợp này.
 
+**Lượt review UX bằng persona đầu tiên: xong (2026-09-11).** Skill workspace `ux-persona-lab`
+đã sinh skill con `ux-persona-review` vào `.claude/skills/` — 5 Red Route (RR-01…RR-05, người
+dùng duyệt 2026-09-11) và 6 persona. Chạy **7 phiên tuần tự** trên **bản live**, không phải
+dev server. Báo cáo: [`docs/ux-reviews/2026-09-11-lan-chay-dau.md`](../ux-reviews/2026-09-11-lan-chay-dau.md)
+· log từng phiên nằm cạnh nó · 54 ảnh thô chỉ còn ở
+`.claude/skills/ux-persona-review/runs/2026-09-11-run1/anh-tho/` (gitignored, **chỉ trên máy này**).
+
+Kết quả: **RR-01 3/4 · RR-02 4/4 · RR-03 0/4 · RR-04 1/1 · RR-05 1/1**. Chín phát hiện —
+1 Critical, 3 High, 2 Medium, 3 Low — cộng 13 kết quả dương có cùng chất lượng dẫn chứng.
+
+Ba điều lượt này **không** đóng được, đừng nhầm:
+
+- Nó **không** thay được việc *"cho 5 người chơi thử"* ở mục dưới. Độ trễ tool khiến persona
+  không chơi giỏi được, nên mọi kết luận về **độ khó** và về `REACTION_MIN_MS = 620` đều vô
+  hiệu. Nó chỉ thu hẹp việc đó lại: 5 người thật không nên tiêu lượt thử vào thứ persona đã
+  tìm ra. Báo cáo §Ghi chú mục 2 liệt kê đúng những câu đã bị **cố ý loại bỏ** vì lý do này.
+- Phát hiện **chưa được cấp `FR-`/`NFR-` nào** — cấp ID là quyết định phạm vi, thuộc về người
+  làm sản phẩm, không thuộc về một lượt đo. Bốn việc dưới đây là đề xuất, chưa phải cam kết.
+- Dàn persona là **proto-persona**, chưa dựng từ nghiên cứu thật. Khi 5 người thật chơi xong,
+  việc đầu tiên là **sửa dàn persona theo họ**, không phải viết thêm persona mới.
+
 ## Việc tiếp theo
 
 | Việc | Liên quan | Ưu tiên | Vì sao ưu tiên đó |
 | --- | --- | --- | --- |
+| **Ảnh nền 404 trên bản live** — cùng một ảnh tải bằng hai đường dẫn, đường thừa tầng `assets/` trả 404 | FR-40 · ADR-0010 | cao | Khuyết tật **cứng** duy nhất lượt review xác nhận được: 4/7 phiên ghi được, cộng `curl` kiểm lại. Không persona nào *cảm* thấy, nên báo cáo xếp Low — nhưng đó là mức trải nghiệm, không phải mức kỹ thuật |
+| **Không ai nhận ra kỹ năng tồn tại** — 4/4 persona ở trong một lượt chơi | FR-14 · FR-15 · overview.md §1 | cao | Phát hiện Critical F-01. Đây là **lý do sản phẩm tồn tại**; một người sống tới 202 m vẫn không thấy nó. Hướng: khoảnh khắc chuyển sang *sẵn sàng* phải là sự kiện không bỏ lỡ được, không phải nhãn to hơn |
+| **Màn kết thúc không nói vừa vấp cái gì** — 3/4 persona | FR-09 · journeys.md US-01 | trung bình | Phát hiện High F-02. Thiếu **nguyên nhân**, không phải thiếu số liệu — đó là thứ biến chuỗi thua thành vòng học |
+| **Nói ra những thứ cố ý KHÔNG làm** (điểm chỉ so với chính mình · xu không phải tiền thật) | overview.md §Non-Goals | trung bình | Phát hiện High F-04, và là việc **rẻ nhất** cả báo cáo: một câu chữ đóng được cả hai hướng hại. Một người sợ mất tiền thật nên không dám bấm mua; một người tưởng có bảng xếp hạng nên đi tìm rồi kết luận game "chưa hoàn chỉnh" |
 | Chơi thật trên một điện thoại | NFR-PERF-05 · NFR-A11Y-03 · NFR-A11Y-06 | cao | Vuốt, vùng bấm 44px và fps đều chỉ đúng khi thử trên ngón tay thật |
 | Cho 5 người chơi thử, không giải thích trước | overview.md §6 | cao | Tiêu chí thành công số 1 nói rõ phải đo bằng cách này |
 | Rà lại `REACTION_MIN_MS = 620` | invariants.md §3 | trung bình | Con số chọn, chưa đo. Autopilot cho trung vị 6.4 giây/lượt — có thể là bot yếu, có thể là game khó |

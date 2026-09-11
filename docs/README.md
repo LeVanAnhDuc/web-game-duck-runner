@@ -15,6 +15,15 @@
 | [`04-state/backlog.md`](04-state/backlog.md) | Đang làm gì, tiếp theo làm gì, và đang nợ những gì? | 🟢 đủ | bắt đầu/kết thúc một việc · brainstorm ra việc mới · cố ý … |
 | [`assets/CREDITS.md`](assets/CREDITS.md) | Mỗi file ảnh trong repo này từ đâu ra, giấy phép gì, và đã… | 🟢 đủ | thêm, đổi hoặc bỏ một file tài nguyên nhị phân |
 | [`design-system/endless-runner/MASTER.md`](design-system/endless-runner/MASTER.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau.md`](ux-reviews/2026-09-11-lan-chay-dau.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/00-cau-hinh-lan-chay.md`](ux-reviews/2026-09-11-lan-chay-dau/00-cau-hinh-lan-chay.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p01-mai-RR-01.md`](ux-reviews/2026-09-11-lan-chay-dau/p01-mai-RR-01.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p01-mai-RR-02.md`](ux-reviews/2026-09-11-lan-chay-dau/p01-mai-RR-02.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p02-tuan-RR-05.md`](ux-reviews/2026-09-11-lan-chay-dau/p02-tuan-RR-05.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p03-hanh-RR-03.md`](ux-reviews/2026-09-11-lan-chay-dau/p03-hanh-RR-03.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p04-ba-lien-mu.md`](ux-reviews/2026-09-11-lan-chay-dau/p04-ba-lien-mu.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p05-daniel-RR-04.md`](ux-reviews/2026-09-11-lan-chay-dau/p05-daniel-RR-04.md) | — | — | — |
+| [`ux-reviews/2026-09-11-lan-chay-dau/p06-vu-mu.md`](ux-reviews/2026-09-11-lan-chay-dau/p06-vu-mu.md) | — | — | — |
 | [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 11 ADR | mỗi quyết định kỹ thuật |
 | [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | ⚪ chưa áp dụng — dự án KHÔNG có biến môi trư… | code đọc một biến mới (process.env.X / import.meta.env.X d… |
 <!-- END:auto -->
