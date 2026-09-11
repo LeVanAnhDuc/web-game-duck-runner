@@ -9,9 +9,19 @@ constraints, routing, and where things live. Procedures live in skills.
 | --- | --- | --- |
 | Building a user-facing feature | skill `feature-flow` | per feature |
 | First UI work, no `MASTER.md` yet | skill `design-bootstrap` | once per project |
+| Asking how a stranger experiences the game | skill `ux-persona-review` | per review |
 | Scaffolding a **new** project in this workspace | workspace skill `scaffold-webapp-project` | once |
 
 Do not re-derive those flows from this file — they are not here. Invoke the skill.
+
+`ux-persona-review` was generated on 2026-09-11 by the workspace skill `ux-persona-lab`
+and is **personalised to this game** — its `references/red-routes.md` and
+`references/personas/` are the only copies that exist, and losing them loses the ability
+to compare one run against the next. Two limits are load-bearing, both stated in its
+own `SKILL.md`: tool latency means a persona **cannot play well**, so a persona session
+never settles a question about difficulty or pacing; and it does not close
+`backlog.md` §Việc tiếp theo *"cho 5 người chơi thử"* — it only narrows what those five
+people have to spend their attempts on.
 
 ## Document layout
 
@@ -41,7 +51,16 @@ docs/
   design-system/endless-runner/MASTER.md   design-bootstrap output, committed
   specs/<feature>/                 NOT pre-created — the flow creates it
     design.md · plan.md
+  ux-reviews/                      NOT pre-created — `ux-persona-review` creates it
+    YYYY-MM-DD-<scope>.md          one run's report + the session logs it cites
 ```
+
+`docs/ux-reviews/` is **neither tier**: it is the measured output of one run at one
+moment, not a permanent answer and not a feature's document. So it carries no 4-line
+header, no fill state, and no new ID series. A finding heavy enough to act on becomes a
+new `FR-` or `NFR-` in `scope.md` / `nfr.md`, and the report is then only its evidence.
+Raw logs and screenshots live in the skill's own gitignored `runs/`; only what a
+finding cites gets copied next to the report.
 
 One folder per feature under `docs/specs/<feature>/` — not the superpowers defaults.
 Their `docs/superpowers/specs/` + `docs/superpowers/plans/` split scatters one

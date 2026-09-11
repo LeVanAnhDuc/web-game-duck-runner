@@ -5,7 +5,6 @@ coverage/
 .env.local
 *.local
 .DS_Store
-.claude/.doc-state/
 .playwright-mcp/
 # Anh chup thu o goc repo (tu Playwright/devtools) khong duoc vao git...
 /*.png
@@ -14,3 +13,10 @@ coverage/
 # ...nhung anh cua README thi PHAI vao. `readme-game` sinh no tu site live,
 # va README tro thang toi duong dan nay.
 !docs/assets/screenshot.png
+
+# --- Claude Code: theo doi config + skills, bo qua worktrees/doc-state ---
+/.claude/*
+!/.claude/CLAUDE.md
+!/.claude/settings.local.json
+!/.claude/skills/
+!/.claude/scripts/
