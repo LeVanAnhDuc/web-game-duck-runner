@@ -1,10 +1,10 @@
-import { CHARACTERS, type CharacterDef } from '../../data/catalog'
-import type { SaveData } from '../../data/save'
-import { cardState, shortfall } from '../../data/shop'
-import { S, fmt } from '../../data/strings'
-import { SILHOUETTES } from '../../render/Shapes'
-import { IconCoin } from '../icons'
-import { ScreenHeader } from './Screens'
+import { CHARACTERS, type CharacterDef } from '@/data/catalog'
+import type { SaveData } from '@/data/save'
+import { cardState, shortfall } from '@/data/shop'
+import { S, fmt } from '@/data/strings'
+import { SILHOUETTES } from '@/render/Shapes'
+import { IconCoin } from '@/components/icons'
+import { ScreenHeader } from '../ScreenHeader'
 
 /**
  * Hình bóng của nhân vật, vẽ bằng SVG.

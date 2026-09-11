@@ -29,7 +29,12 @@ export class AudioEngine {
   private master: GainNode | null = null
   private musicGain: GainNode | null = null
   private sfxGain: GainNode | null = null
-  private musicTimer: number | null = null
+  /**
+   * Id cua setInterval. KHONG dung number: kieu tra ve khac nhau giua lib DOM va
+   * @types/node, va repo nay co ca hai (cau hinh Vite can node:url). ReturnType
+   * dung o ca hai nen tang, va no dung hon number o ca hai.
+   */
+  private musicTimer: ReturnType<typeof setInterval> | null = null
   private nextNoteTime = 0
   private step = 0
   private coinStreak = 0

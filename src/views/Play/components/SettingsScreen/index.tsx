@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import type { SaveData } from '../../data/save'
-import { S } from '../../data/strings'
-import { ScreenHeader } from './Screens'
+import type { SaveData } from '@/data/save'
+import { S } from '@/data/strings'
+import { ScreenHeader } from '../ScreenHeader'
 
 export function SettingsScreen({
   save, reducedMotion, onChange, onReset, onBack,

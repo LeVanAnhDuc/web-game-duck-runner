@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useRef } from 'react'
-import { S, fmt } from '../../data/strings'
-import { IconBolt, IconCoin, IconPause } from '../icons'
+import { S, fmt } from '@/data/strings'
+import { IconBolt, IconCoin, IconPause } from '@/components/icons'
 
 /**
  * HUD lúc chơi.

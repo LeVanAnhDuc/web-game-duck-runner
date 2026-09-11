@@ -1,12 +1,12 @@
-import { FixedStepAccumulator } from '../core/loop'
-import { InputController } from '../core/input'
-import { Game } from '../game/Game'
-import { GameRenderer } from '../render/Renderer'
-import { streamTextures } from '../render/TextureStream'
-import type { AudioEngine } from '../audio/Audio'
-import { S } from '../data/strings'
-import type { EffectKind } from '../game/ActiveEffects'
-import type { HudHandle } from './hud/Hud'
+import { FixedStepAccumulator } from '@/core/loop'
+import { InputController } from '@/core/input'
+import { Game } from '@/game/Game'
+import { GameRenderer } from '@/render/Renderer'
+import { streamTextures } from '@/render/TextureStream'
+import type { AudioEngine } from '@/audio/Audio'
+import { S } from '@/data/strings'
+import type { EffectKind } from '@/game/ActiveEffects'
+import type { HudHandle } from './mains/Hud'
 
 const EFFECT_LABELS: Record<EffectKind, string> = {
   magnet: S.hud.magnet,

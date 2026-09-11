@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { hasWebGL, prefersReducedMotion } from '../core/input'
-import { DEFAULT_SAVE, load as loadSave, save as writeSave, type SaveData } from '../data/save'
-import { S } from '../data/strings'
-import { Hud, type HudHandle } from './hud/Hud'
+import { hasWebGL, prefersReducedMotion } from '@/core/input'
+import { DEFAULT_SAVE, load as loadSave, save as writeSave, type SaveData } from '@/data/save'
+import { S } from '@/data/strings'
+import { Hud, type HudHandle } from './mains/Hud'
 import { GameHost, type RunResult } from './GameHost'
-import {
-  ErrorScreen, GameOverScreen, LoadingScreen, MenuScreen, PauseScreen,
-} from './screens/Screens'
-import { ShopScreen } from './screens/Shop'
-import { SettingsScreen } from './screens/Settings'
-import { AudioEngine } from '../audio/Audio'
-import { buy as buyCharacter, equip as equipCharacter } from '../data/shop'
+import { ErrorScreen } from './components/ErrorScreen'
+import { GameOverScreen } from './components/GameOverScreen'
+import { LoadingScreen } from './components/LoadingScreen'
+import { MenuScreen } from './components/MenuScreen'
+import { PauseScreen } from './components/PauseScreen'
+import { ShopScreen } from './components/ShopScreen'
+import { SettingsScreen } from './components/SettingsScreen'
+import { AudioEngine } from '@/audio/Audio'
+import { buy as buyCharacter, equip as equipCharacter } from '@/data/shop'
 
 type Screen = 'loading' | 'menu' | 'playing' | 'paused' | 'over' | 'shop' | 'settings' | 'error'
 
-export function App() {
+export function Play() {
   const [screen, setScreen] = useState<Screen>('loading')
   const [saveData, setSaveData] = useState<SaveData>(() => loadSave())
   const [result, setResult] = useState<RunResult & { isRecord: boolean }>({

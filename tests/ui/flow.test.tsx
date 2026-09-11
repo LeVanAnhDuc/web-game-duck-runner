@@ -20,15 +20,15 @@ beforeEach(() => {
 
 describe('Khong co WebGL — NFR-REL-04, FR-32', () => {
   it('hien man bao loi bang chu, khong de canvas den', async () => {
-    const { App } = await import('../../src/ui/App')
-    render(<App />)
+    const { Play } = await import('../../src/views/Play')
+    render(<Play />)
     expect(await screen.findByText(S.error.title)).toBeTruthy()
     expect(screen.getByRole('button', { name: new RegExp(S.error.retry, 'i') })).toBeTruthy()
   })
 
   it('man bao loi giai thich duoc nguyen nhan, khong chi noi "loi"', async () => {
-    const { App } = await import('../../src/ui/App')
-    render(<App />)
+    const { Play } = await import('../../src/views/Play')
+    render(<Play />)
     const body = await screen.findByText(new RegExp('WebGL'))
     expect(body.textContent?.length ?? 0).toBeGreaterThan(40)
   })
@@ -36,7 +36,7 @@ describe('Khong co WebGL — NFR-REL-04, FR-32', () => {
 
 describe('Man hinh chinh — FR-11', () => {
   it('hien ky luc va vi da luu, va ba loi di', async () => {
-    const { MenuScreen } = await import('../../src/ui/screens/Screens')
+    const { MenuScreen } = await import('../../src/views/Play/components/MenuScreen')
     render(
       <MenuScreen bestDistanceM={1482} coins={382} onPlay={() => {}} onShop={() => {}} onSettings={() => {}} />,
     )
@@ -48,7 +48,7 @@ describe('Man hinh chinh — FR-11', () => {
   })
 
   it('bam Choi goi dung mot lan', async () => {
-    const { MenuScreen } = await import('../../src/ui/screens/Screens')
+    const { MenuScreen } = await import('../../src/views/Play/components/MenuScreen')
     const onPlay = vi.fn()
     render(
       <MenuScreen bestDistanceM={0} coins={0} onPlay={onPlay} onShop={() => {}} onSettings={() => {}} />,
@@ -58,7 +58,7 @@ describe('Man hinh chinh — FR-11', () => {
   })
 
   it('NFR-A11Y-06: di het duoc bang ban phim', async () => {
-    const { MenuScreen } = await import('../../src/ui/screens/Screens')
+    const { MenuScreen } = await import('../../src/views/Play/components/MenuScreen')
     const onPlay = vi.fn()
     render(
       <MenuScreen bestDistanceM={0} coins={0} onPlay={onPlay} onShop={() => {}} onSettings={() => {}} />,
@@ -76,7 +76,7 @@ describe('Man hinh chinh — FR-11', () => {
 
 describe('Man ket thuc luot — FR-09, FR-10', () => {
   it('bao ky luc moi khi pha ky luc', async () => {
-    const { GameOverScreen } = await import('../../src/ui/screens/Screens')
+    const { GameOverScreen } = await import('../../src/views/Play/components/GameOverScreen')
     render(
       <GameOverScreen
         distanceM={1482}
@@ -92,7 +92,7 @@ describe('Man ket thuc luot — FR-09, FR-10', () => {
   })
 
   it('khi chua pha ky luc thi hien ky luc cu, khong hien nhan ky luc moi', async () => {
-    const { GameOverScreen } = await import('../../src/ui/screens/Screens')
+    const { GameOverScreen } = await import('../../src/views/Play/components/GameOverScreen')
     render(
       <GameOverScreen
         distanceM={210}
@@ -109,7 +109,7 @@ describe('Man ket thuc luot — FR-09, FR-10', () => {
   })
 
   it('Choi lai va Ve man chinh deu bam duoc', async () => {
-    const { GameOverScreen } = await import('../../src/ui/screens/Screens')
+    const { GameOverScreen } = await import('../../src/views/Play/components/GameOverScreen')
     const onRetry = vi.fn()
     const onHome = vi.fn()
     render(
@@ -132,9 +132,9 @@ describe('Man ket thuc luot — FR-09, FR-10', () => {
 
 describe('HUD — BAT BIEN #7: khong re-render React trong luc choi', () => {
   it('cap nhat quang duong qua ref, khong qua state', async () => {
-    const { Hud } = await import('../../src/ui/hud/Hud')
+    const { Hud } = await import('../../src/views/Play/mains/Hud')
     const { createRef } = await import('react')
-    const ref = createRef<import('../../src/ui/hud/Hud').HudHandle>()
+    const ref = createRef<import('../../src/views/Play/mains/Hud').HudHandle>()
 
     let renders = 0
     function Probe() {
@@ -157,9 +157,9 @@ describe('HUD — BAT BIEN #7: khong re-render React trong luc choi', () => {
   })
 
   it('thanh nap day thi nut ky nang chuyen sang trang thai san sang', async () => {
-    const { Hud } = await import('../../src/ui/hud/Hud')
+    const { Hud } = await import('../../src/views/Play/mains/Hud')
     const { createRef } = await import('react')
-    const ref = createRef<import('../../src/ui/hud/Hud').HudHandle>()
+    const ref = createRef<import('../../src/views/Play/mains/Hud').HudHandle>()
     const { container } = render(
       <Hud ref={ref} onPause={() => {}} onSkill={() => {}} skillEnabled />,
     )
