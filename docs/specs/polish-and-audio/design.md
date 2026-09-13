@@ -56,7 +56,7 @@ kèm **điều kiện đo** — một con số không có điều kiện thì kh
 
 Công cụ: `__duskrun.stats()` (chỉ có ở bản dev) cho fps và draw call ·
 `performance.memory` cho heap · `MutationObserver` cài trước khi trang tải cho thời
-gian tới lúc chơi được · `npm run build` cho kích thước bundle.
+gian tới lúc chơi được · `pnpm build` cho kích thước bundle.
 
 **Một giới hạn phải nói ra:** Chrome hạ `requestAnimationFrame` xuống ~1fps khi cửa sổ
 bị che, kể cả khi `visibilityState` vẫn báo `visible`. Số fps chỉ có nghĩa khi tab
