@@ -21,6 +21,8 @@ coverage/
 !/.claude/skills/
 !/.claude/scripts/
 
-# Repo nay dung npm (package-lock.json). Mot yarn.lock lot vao la hai lockfile
-# trong mot repo: CI cai bang mot cai, nguoi dev cai bang cai kia.
+# Repo nay dung pnpm (pnpm-lock.yaml). Mot yarn.lock hay package-lock.json lot
+# vao la hai lockfile trong mot repo: CI cai bang mot cai, nguoi dev cai bang
+# cai kia.
 yarn.lock
+package-lock.json

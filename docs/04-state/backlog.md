@@ -43,10 +43,14 @@ tải ở **198 ms**, sau FCP **196 ms**.
 3. **Đo lại `NFR-PERF-07`** trên Slow 4G + CPU 4×. Phần việc mới trên đường tới frame
    đầu đã đo riêng: **3.9 ms** sinh texture, tức ~16 ms ở throttle 4×, trong 321 ms dư.
 
-**Job `audit` trong CI đang đỏ, và đỏ từ trước PR #1** — 5 advisory của
+**Job `audit` trong CI đang đỏ, và đỏ từ trước PR #1** — advisory của
 `vite`/`vitest`/`esbuild`, toàn bộ là devDependency, và bản vá là major breaking.
 Không phải do PR nào gây ra; `verify` (lint · test · build · chặn ranh giới
 ADR-0002) vẫn xanh. Đừng coi nó là hồi quy của thay đổi kế tiếp.
+
+Sau khi chuyển sang pnpm, `pnpm audit --audit-level=high` đếm **7** (5 moderate ·
+1 high · 1 critical) thay vì 5 như `npm audit`. Vẫn đúng những gói đó — hai công cụ
+gộp advisory theo đường dẫn phụ thuộc khác nhau, không phải có lỗ hổng mới.
 
 **Bài học từ hai lỗi hình ảnh liên tiếp (PR #2 và M5):** cả hai đều do người chơi thật
 tìm ra, và cả 121 test đều không bắt được, vì tất cả đều đo **luật chơi** — mà luật

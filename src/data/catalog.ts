@@ -36,7 +36,7 @@ export const CHARGE_COINS = 18
 /**
  * Giá được ĐẶT TỪ SỐ ĐO, không từ cảm giác.
  *
- * `npx vite-node scripts/measure-economy.ts` (2026-09-08, 120 lượt, autopilot tham
+ * `pnpm exec vite-node scripts/measure-economy.ts` (2026-09-08, 120 lượt, autopilot tham
  * lam) cho **29.8 xu/phút** và 5.9 xu/lượt. Quy ra:
  *
  *   Thợ ủi   80 xu → ~2.7 phút  ~14 lượt

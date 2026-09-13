@@ -9,7 +9,7 @@ description: Use when you want to know how a real stranger experiences Duck Runn
 
 - Thư mục: `D:/Learn/web-app-ecosystem/web-game/web-game-endless-runner`
 - Port: **`:5173`** — mặc định của Vite, `vite.config.ts` không đặt `server.port`
-- Bật app: `npm ci` rồi `npm run dev` (**npm, không phải yarn**)
+- Bật app: `pnpm install --frozen-lockfile` rồi `pnpm dev` (**pnpm, không phải npm hay yarn**)
 - Bản live, không cần bật gì: <https://levananhduc.github.io/web-game-duck-runner/>
 - Dấu hiệu nhận biết đúng app: wordmark **DUCK / RUNNER** hai dòng, dưới nó là câu
   *"Ba làn. Một kỹ năng. Một con đường qua vực."*, rồi ba nút **CHƠI · CỬA HÀNG · CÀI ĐẶT**.
