@@ -19,7 +19,7 @@ Các dòng `~~(bỏ)~~` là ngưỡng mặc định của bộ khung, không áp
 **không có backend** (xem `01-product/overview.md` §Non-Goals). Giữ số ID để không
 tái dùng nhầm.
 
-Lệnh đo lại: `npm run build` cho kích thước bundle · `npx vite-node
+Lệnh đo lại: `pnpm build` cho kích thước bundle · `pnpm exec vite-node
 scripts/measure-economy.ts` cho nhịp kiếm xu · `__duckRunner.stats()` ở bản dev cho fps
 và draw call.
 
@@ -39,7 +39,7 @@ Bốn ngưỡng dưới đã **được đo thật** ngày 2026-09-08, không c�
 | NFR-PERF-07 | Từ lúc mở trang tới lúc bấm chơi được: dưới 3 giây trên mạng 4G mô phỏng | **2 679 ms** (FCP 2 672 ms), tải nguội, Slow 4G + CPU 4×, bản build production, 181.5 KB truyền — **đo trên cảnh hoàng hôn, chưa đo lại**. Phần việc MỚI nằm trên đường tới frame đầu là sinh texture bằng canvas, đo được **3.9 ms** (tán lá 2.1 ms + nhiễu mặt đường 1.8 ms) không throttle, tức ~16 ms ở throttle 4× — trong 321 ms dư | `MutationObserver` cài trước khi trang tải, trong browser context sạch |
 | NFR-PERF-08 | Dưới 100 draw call mỗi frame ở cảnh dày nhất | **28** ở cảnh dày nhất đo được: **14 chướng ngại + 22 xu** cùng lúc, ở 426 m, có rừng · tán lá · thành cầu. Số này gần như **không tăng theo số vật thể** mà theo số LOẠI vật thể, vì mỗi loại là một `InstancedMesh`: trần lý thuyết là 3 loại chướng ngại + 1 xu + 3 power-up cùng xuất hiện, tức ~31 | `renderer.info.render.calls` |
 | NFR-PERF-10 | Ảnh tải về **không được nằm trên đường tới frame đầu**: người chơi bấm chơi được trước khi một byte ảnh nào về. Tổng payload ảnh ≤ 200 KB | **FCP 196 ms, hai ảnh bắt đầu tải ở 198 ms** — sau frame đầu. Tổng **97.3 KB** (31.4 + 65.9). `performance.getEntriesByType('resource')` so với `first-contentful-paint` |
-| NFR-PERF-09 | Bundle JS dưới 250 KB gzip | **184.3 KB gzip** (670 KB thô), gần như toàn bộ là Three.js. Cả cảnh rừng — sương, vực, tán lá, thân cây, texture mặt đường, hai lớp màu — cộng thêm **3.5 KB gzip**, vì mọi texture đều VẼ bằng canvas chứ không tải về | `npm run build` |
+| NFR-PERF-09 | Bundle JS dưới 250 KB gzip | **184.3 KB gzip** (670 KB thô), gần như toàn bộ là Three.js. Cả cảnh rừng — sương, vực, tán lá, thân cây, texture mặt đường, hai lớp màu — cộng thêm **3.5 KB gzip**, vì mọi texture đều VẼ bằng canvas chứ không tải về | `pnpm build` |
 
 **Giới hạn của phép đo fps.** Chrome hạ `requestAnimationFrame` xuống ~1fps khi cửa
 sổ bị che, kể cả khi `visibilityState` vẫn báo `visible`. Số 103–104 fps là lần đo khi
@@ -54,7 +54,7 @@ hồi quy**. Ngưỡng mobile tầm trung vì vậy vẫn cần một lần xác
 | NFR-SEC-02 | ~~(bỏ)~~ — không thu thập PII, không có log phía server | — |
 | NFR-SEC-03 | ~~(bỏ)~~ — không có đăng nhập | — |
 | NFR-SEC-04 | ~~(bỏ)~~ — không có secret nào trong dự án | — |
-| NFR-SEC-05 | Dependency không có lỗ hổng mức high trở lên | `npm audit`, chạy trong CI |
+| NFR-SEC-05 | Dependency không có lỗ hổng mức high trở lên | `pnpm audit`, chạy trong CI |
 | NFR-SEC-06 | ~~(bỏ)~~ — không có lỗi phía server để rò rỉ | — |
 | NFR-SEC-07 | Không nhúng script bên thứ ba (analytics, quảng cáo) vào trang chơi | review `index.html` |
 

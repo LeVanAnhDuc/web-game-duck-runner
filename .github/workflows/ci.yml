@@ -18,20 +18,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Phai dung TRUOC setup-node: `cache: pnpm` can binary pnpm da co san de
+      # doc duong dan store. Khong khai bao `version:` — no lay tu truong
+      # `packageManager` trong package.json, nen CI va may deu chay dung mot ban.
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: pnpm
 
-      # `npm ci` chu khong `npm install`: lockfile la cau tra loi, va workspace
-      # nay da tung bi mot cay dependency khac lam hong (xem CLAUDE.md cua workspace).
-      - run: npm ci
+      # `--frozen-lockfile` chu khong `pnpm install` tran: lockfile la cau tra
+      # loi, va workspace nay da tung bi mot cay dependency khac lam hong (xem
+      # CLAUDE.md cua workspace).
+      - run: pnpm install --frozen-lockfile
 
-      - run: npm run lint
-      - run: npm test
+      - run: pnpm lint
+      - run: pnpm test
 
-      # `npm run build` la `tsc --noEmit && vite build`, nen buoc nay bao luon typecheck.
-      - run: npm run build
+      # `pnpm build` la `tsc --noEmit && vite build`, nen buoc nay bao luon typecheck.
+      - run: pnpm build
 
       # Chuong nay bao ve bien gioi cua ADR-0002: `src/game/` khong duoc phu thuoc
       # Three.js, DOM, hay dong ho thuc. ESLint da chan bang `no-restricted-imports`,
@@ -56,27 +61,28 @@ jobs:
             printf '  %-40s %s\n' "$(basename "$f")" "$(gzip -c "$f" | wc -c | awk '{printf "%.1f kB", $1/1024}')"
           done
 
-  # Mot job RIENG, de audit chay CANH cac test thay vi dung truoc chung. `npm audit`
-  # doc package-lock.json roi hoi registry — no khong can node_modules, nen job nay
-  # bo qua buoc cai dat hoan toan.
+  # Mot job RIENG, de audit chay CANH cac test thay vi dung truoc chung. `pnpm audit`
+  # doc pnpm-lock.yaml roi hoi registry — no khong can node_modules, nen job nay
+  # bo qua buoc cai dat hoan toan. (Van can pnpm/action-setup@v4 de CO lenh pnpm.)
   #
   # NFR-SEC-05 chi dinh CI la noi kiem nguong nay; day la cho do.
   audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       # Co thu lai, va registry khong voi tra duoc thi KHONG tinh la that bai. Mot
       # su co ben ngoai khong duoc bien mot cong bao mat thanh mot cai chan gop
       # ngau nhien. Mot canh bao that thi van lam do job.
-      - name: npm audit (high tro len)
+      - name: pnpm audit (high tro len)
         run: |
           for attempt in 1 2 3; do
-            out=$(npm audit --audit-level=high 2>&1) && { echo "$out"; exit 0; }
+            out=$(pnpm audit --audit-level=high 2>&1) && { echo "$out"; exit 0; }
             code=$?
-            if echo "$out" | grep -qiE 'audit endpoint returned an error|Service Unavailable|ENOTFOUND|ETIMEDOUT|ECONNRESET'; then
+            if echo "$out" | grep -qiE 'audit endpoint returned an error|The registry .* returned|Service Unavailable|ENOTFOUND|ETIMEDOUT|ECONNRESET'; then
               echo "::warning::lan thu $attempt khong voi duoc registry"
               sleep $((attempt * 15))
               continue
@@ -84,4 +90,4 @@ jobs:
             echo "$out"
             exit $code
           done
-          echo "::warning::npm audit khong voi duoc registry sau 3 lan; khong lam do build vi su co cua ben khac"
+          echo "::warning::pnpm audit khong voi duoc registry sau 3 lan; khong lam do build vi su co cua ben khac"

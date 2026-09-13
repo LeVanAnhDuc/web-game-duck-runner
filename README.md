@@ -81,15 +81,15 @@ lane every time you used a skill.
 ## Commands
 
 ```bash
-npm ci
-npm run dev          # http://localhost:5173
-npm test             # Vitest — the game rules run in Node, no browser needed
-npm run typecheck
-npm run lint
-npm run build
+pnpm install --frozen-lockfile
+pnpm dev             # http://localhost:5173
+pnpm test            # Vitest — the game rules run in Node, no browser needed
+pnpm typecheck
+pnpm lint
+pnpm build
 
 # Re-measure the coin economy before changing any character price
-npx vite-node scripts/measure-economy.ts
+pnpm exec vite-node scripts/measure-economy.ts
 ```
 
 There is no `.env` to copy: nothing in the code reads an environment variable. See
@@ -190,8 +190,8 @@ Both scripts run locally against the real history, so a release can be previewed
 before anyone relies on it:
 
 ```bash
-npm run release:next     # which tag the next release would get
-npm run release:notes    # what its notes would say
+pnpm release:next     # which tag the next release would get
+pnpm release:notes    # what its notes would say
 ```
 
 ## Documentation

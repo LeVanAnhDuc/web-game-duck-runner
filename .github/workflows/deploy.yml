@@ -19,18 +19,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Phai dung TRUOC setup-node, va khong khai bao `version:` — ban pnpm lay
+      # tu truong `packageManager` trong package.json.
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm test
       # Khong co bien GITHUB_PAGES o day: `vite.config.ts` dat `base: './'` nen
       # cung mot ban build chay duoc ca o goc ten mien va duoi duong dan con cua
       # Pages. Do cung la ly do `.env.example` noi du an khong doc bien moi truong
       # nao — `base` la cau hinh build, khong phai bien moi truong.
-      - run: npm run build
+      - run: pnpm build
       # `enablement` KHONG thay cho viec bat Pages mot lan cho repo. GITHUB_TOKEN
       # khong tao duoc Pages site. Giu lai vi no khong ton gi va giup mot fork ma
       # chu no da bat Pages san. Buoc bat mot lan nam o README §Releases and versioning.

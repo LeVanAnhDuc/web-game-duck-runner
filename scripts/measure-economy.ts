@@ -1,7 +1,7 @@
 /**
  * Đo nhịp kiếm xu để đặt giá nhân vật.
  *
- *   npx vite-node scripts/measure-economy.ts
+ *   pnpm exec vite-node scripts/measure-economy.ts
  *
  * Vì sao cần: giá trong `data/catalog.ts` quyết định người chơi phải chơi bao lâu mới
  * mở được nhân vật thứ hai. Đặt số bằng cảm giác thì hoặc mở ngay sau một lượt (cửa
