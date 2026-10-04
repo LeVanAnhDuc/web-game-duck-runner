@@ -52,7 +52,7 @@ hồi quy**. Ngưỡng mobile tầm trung vì vậy vẫn cần một lần xác
 | --- | --- | --- |
 | NFR-SEC-01 | ~~(bỏ)~~ — không có mutation phía server | — |
 | NFR-SEC-02 | ~~(bỏ)~~ — không thu thập PII, không có log phía server | — |
-| NFR-SEC-03 | ~~(bỏ)~~ — không có đăng nhập | — |
+| NFR-SEC-03 | Game không sở hữu tài khoản hay mật khẩu. **Ngoại lệ có giới hạn (`ADR-0012`):** đăng nhập Ducker ID tuỳ chọn là public client PKCE, không secret, profile chỉ trong bộ nhớ; chỉ bật khi cờ + đủ biến môi trường, bản deploy không bật | `tests/auth/*` · review `deploy.yml` không truyền cờ |
 | NFR-SEC-04 | ~~(bỏ)~~ — không có secret nào trong dự án | — |
 | NFR-SEC-05 | Dependency không có lỗ hổng mức high trở lên | `pnpm audit`, chạy trong CI |
 | NFR-SEC-06 | ~~(bỏ)~~ — không có lỗi phía server để rò rỉ | — |
@@ -92,11 +92,11 @@ hồi quy**. Ngưỡng mobile tầm trung vì vậy vẫn cần một lần xác
 
 | ID | Ngưỡng | Cách kiểm |
 | --- | --- | --- |
-| NFR-DATA-01 | ~~(bỏ)~~ — dự án không thu thập PII nào | — |
+| NFR-DATA-01 | ~~(bỏ)~~ — game không thu thập PII nào (tên/email của đăng nhập Ducker ID chỉ ở bộ nhớ, không ghi đi đâu — `ADR-0012`) | — |
 | NFR-DATA-02 | ~~(bỏ)~~ — không có tài khoản để xoá | — |
 | NFR-DATA-03 | ~~(bỏ)~~ — dữ liệu chỉ nằm trên máy người chơi, không có backup | — |
 | NFR-DATA-04 | Dữ liệu lưu có `version`; đọc phải validate, hỏng hoặc thiếu thì về mặc định thay vì crash | unit test với JSON hỏng, thiếu field, và version cũ |
-| NFR-DATA-05 | Không gửi bất kỳ dữ liệu nào ra khỏi máy người chơi | review network tab: không có request nào ngoài tài nguyên tĩnh |
+| NFR-DATA-05 | Không gửi bất kỳ dữ liệu nào ra khỏi máy người chơi. **Ngoại lệ có giới hạn (`ADR-0012`), chỉ khi cờ đăng nhập bật:** key `sessionStorage` `ducker.pkce` (xoá khi quay về); mạng chỉ tới issuer đã cấu hình, chỉ sau khi người chơi bấm "Đăng nhập". Cờ tắt: không storage, không request | review network tab: bản build deploy không có request nào ngoài tài nguyên tĩnh |
 
 **Trường PII trong dự án này:** không có. Toàn bộ dữ liệu lưu là điểm cao, ví xu,
 quyền sở hữu nhân vật và cài đặt âm thanh — không có gì định danh được người chơi.

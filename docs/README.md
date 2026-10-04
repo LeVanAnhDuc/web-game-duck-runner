@@ -24,8 +24,8 @@
 | [`ux-reviews/2026-09-11-lan-chay-dau/p04-ba-lien-mu.md`](ux-reviews/2026-09-11-lan-chay-dau/p04-ba-lien-mu.md) | — | — | — |
 | [`ux-reviews/2026-09-11-lan-chay-dau/p05-daniel-RR-04.md`](ux-reviews/2026-09-11-lan-chay-dau/p05-daniel-RR-04.md) | — | — | — |
 | [`ux-reviews/2026-09-11-lan-chay-dau/p06-vu-mu.md`](ux-reviews/2026-09-11-lan-chay-dau/p06-vu-mu.md) | — | — | — |
-| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 11 ADR | mỗi quyết định kỹ thuật |
-| [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | ⚪ chưa áp dụng — dự án KHÔNG có biến môi trư… | code đọc một biến mới (process.env.X / import.meta.env.X d… |
+| [`decisions/`](decisions/README.md) | Tại sao lại làm thế này? | 12 ADR | mỗi quyết định kỹ thuật |
+| [`../.env.example`](../.env.example) | cần biến nào để chạy được dự án này? | 🟢 đủ — 6 biến VITE_*, tất cả đều TÙY CHỌN k… | code đọc một biến mới (process.env.X / import.meta.env.X d… |
 <!-- END:auto -->
 
 🔴 chưa điền · 🟡 một phần · 🟢 đủ · ⚪ chưa áp dụng
