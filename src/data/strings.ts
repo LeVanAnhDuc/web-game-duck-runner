@@ -78,6 +78,15 @@ export const S = {
     resetNo: 'HUỶ',
   },
 
+  /** Dang nhap Ducker ID — tuy chon, sau co tinh nang (ADR-0012). */
+  account: {
+    signIn: 'Đăng nhập',
+    signingIn: 'Đang đăng nhập…',
+    menuLabel: 'Tài khoản Ducker ID',
+    openProfile: 'Mở hồ sơ Ducker ID',
+    signOut: 'Đăng xuất',
+  },
+
   loading: {
     title: 'ĐANG TẢI',
   },

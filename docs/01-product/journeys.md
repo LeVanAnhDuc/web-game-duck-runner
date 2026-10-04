@@ -136,3 +136,22 @@ trang; lựa chọn tắt tiếng được nhớ.
   trí mà không làm hỏng vòng chơi.
 
 **Chức năng liên quan:** FR-27 · FR-28 · FR-29 · FR-30
+
+## US-06 · Đăng nhập bằng Ducker ID (tuỳ chọn)
+
+**Bối cảnh:** Người chơi đã có tài khoản Ducker ID và muốn game biết mình là ai. Chỉ có ở
+bản build bật cờ; bản deploy hiện tại không có.
+
+**Các bước:**
+1. Ở màn hình chính bấm "Đăng nhập" (dưới hàng Cửa hàng / Cài đặt).
+2. Sang Ducker ID, đăng nhập nếu chưa, đồng ý.
+3. Quay về đúng màn hình; nút đổi thành avatar + tên.
+4. Bấm vào để mở menu: mở hồ sơ Ducker ID, hoặc đăng xuất.
+
+**Kết quả mong đợi:** URL sạch (không còn `code`/`state`), game và tiến độ lưu không đổi.
+
+**Điều gì có thể sai:**
+- Từ chối ở Ducker ID, state sai, đổi code lỗi → về trạng thái chưa đăng nhập, im lặng.
+- Tải lại trang → chưa đăng nhập (profile không được lưu).
+
+**Chức năng liên quan:** FR-41

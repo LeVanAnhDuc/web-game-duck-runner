@@ -4,7 +4,7 @@
 [![Deploy](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml/badge.svg)](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml)
 [![Release](https://img.shields.io/github/v/release/LeVanAnhDuc/web-game-duck-runner?sort=semver)](https://github.com/LeVanAnhDuc/web-game-duck-runner/releases)
 
-A three-lane endless runner, played entirely in the browser. No backend, no account,
+A three-lane endless runner, played entirely in the browser. No backend, no game accounts,
 no install — open the page and run. Your best distance, your coins and the ducks you
 have unlocked live in that browser's `localStorage` and nowhere else.
 
@@ -62,6 +62,9 @@ impact — and no rule test could catch it, because the rules were correct.
 - **Pause that stops the simulation clock**, so timed effects stop with it rather than
   expiring while you read a menu.
 - **Respects `prefers-reduced-motion`**: decoration stops, the run does not.
+- **Optional sign-in with Ducker ID** (behind a feature flag, off in the deployed
+  build): identity only — name, email, a link to your profile, sign out. Nothing is
+  stored and saves are untouched.
 
 ## Controls
 
@@ -92,9 +95,12 @@ pnpm build
 pnpm exec vite-node scripts/measure-economy.ts
 ```
 
-There is no `.env` to copy: nothing in the code reads an environment variable. See
-[`.env.example`](.env.example), which explains that in more detail than an empty file
-could.
+Nothing needs configuring to play. Optionally `cp .env.example .env`: it sets
+`VITE_BASE_PATH` and, with `VITE_FEATURE_DUCKER_SIGN_IN=true` plus the four
+`VITE_DUCKER_*` values, turns on the Ducker ID sign-in button. There are no defaults in
+code, and the deployed build deliberately sets none of them. See
+[`.env.example`](.env.example) for the redirect URI to register and the origin to allow
+in Ducker ID `CORS_ORIGINS`.
 
 In a dev build, `window.__duckRunner.stats()` reports fps, draw calls and live object
 counts; `__duckRunner.immortal()` and `__duckRunner.warp(seconds)` exist so the densest
@@ -198,7 +204,7 @@ pnpm release:notes    # what its notes would say
 
 [`docs/README.md`](docs/README.md) is the map, and the only file that talks about other
 files. Read [`docs/03-design/invariants.md`](docs/03-design/invariants.md) before
-changing any code — it lists the fourteen things that break **silently**, where the code
+changing any code — it lists the fifteen things that break **silently**, where the code
 still runs and the tests still pass.
 
 Measured performance figures live in

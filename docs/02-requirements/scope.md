@@ -97,3 +97,9 @@ Cột **Mốc** chia công việc thành bốn giai đoạn, mỗi giai đoạn 
 | FR-38 | Texture mặt đường | US-01 | M5 | xong |
 | FR-39 | Ảnh CC0 tải sau frame đầu, bỏ qua khi `saveData` | US-01 | M5 | xong |
 | FR-40 | Ảnh nền rừng cho các màn hình 2D | US-02 | M5 | xong |
+
+## Đăng nhập Ducker ID (tuỳ chọn, phát hành tối)
+
+| ID | Chức năng | Thuộc luồng | Mốc | Trạng thái |
+| --- | --- | --- | --- | --- |
+| FR-41 | Nút "Đăng nhập" + menu tài khoản (tên, email, hồ sơ, đăng xuất), chỉ hiện khi cờ + đủ biến môi trường; chỉ định danh | US-06 | M6 | xong (tắt ở bản deploy) |
