@@ -128,6 +128,21 @@ describe('AccountButton — Ducker ID sign-in', () => {
     expect(out).toHaveFocus()
   })
 
+  it('keeps menu keys away from a game keydown listener on window, only while open', () => {
+    const game = vi.fn()
+    window.addEventListener('keydown', game)
+    const trigger = openMenu()
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowUp' })
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'ArrowDown' })
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Escape' })
+    expect(game).not.toHaveBeenCalled()
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.keyDown(document.body, { key: 'ArrowUp' })
+    fireEvent.keyDown(document.body, { key: 'Escape' })
+    expect(game).toHaveBeenCalledTimes(2)
+    window.removeEventListener('keydown', game)
+  })
+
   it('Tab closes the menu without stealing focus back', () => {
     const trigger = openMenu()
     fireEvent.keyDown(document, { key: 'Tab' })

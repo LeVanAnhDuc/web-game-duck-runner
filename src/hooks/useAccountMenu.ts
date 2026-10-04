@@ -14,16 +14,23 @@ export function useAccountMenu() {
   useEffect(() => {
     if (!open) return
     const onKey = (event: KeyboardEvent) => {
+      // Bat o capture tren window: game nghe keydown o window (core/input.ts), nen phim cua
+      // menu phai bi chan truoc khi toi do.
       if (event.key === 'Escape') {
+        event.stopPropagation()
         close(true)
         return
       }
       if (event.key === 'Tab') {
+        event.stopPropagation()
         close(false)
         return
       }
       const items = Array.from(menuRef.current?.querySelectorAll<HTMLElement>('a,button') ?? [])
-      if (!items.length) return
+      if (!items.length) {
+        if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) event.stopPropagation()
+        return
+      }
       const at = items.indexOf(document.activeElement as HTMLElement)
       let next = -1
       if (event.key === 'ArrowDown') next = (at + 1) % items.length
@@ -31,6 +38,7 @@ export function useAccountMenu() {
       else if (event.key === 'Home') next = 0
       else if (event.key === 'End') next = items.length - 1
       if (next >= 0) {
+        event.stopPropagation()
         event.preventDefault()
         items[next]?.focus()
       }
@@ -45,12 +53,12 @@ export function useAccountMenu() {
       const target = event.target as Node
       if (!menuRef.current?.contains(target) && !triggerRef.current?.contains(target)) close(false)
     }
-    document.addEventListener('keydown', onKey)
+    window.addEventListener('keydown', onKey, true)
     document.addEventListener('pointerdown', onPointer)
     document.addEventListener('focusout', onFocusOut)
     menuRef.current?.querySelector<HTMLElement>('a,button')?.focus()
     return () => {
-      document.removeEventListener('keydown', onKey)
+      window.removeEventListener('keydown', onKey, true)
       document.removeEventListener('pointerdown', onPointer)
       document.removeEventListener('focusout', onFocusOut)
     }
