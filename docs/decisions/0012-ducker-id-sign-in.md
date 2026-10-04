@@ -23,8 +23,8 @@ Profile chỉ nằm trong bộ nhớ (tải lại = đăng xuất). `vite.config
 `VITE_BASE_PATH` thay cho `'./'` (redirect_uri cần đường dẫn gốc xác định).
 
 **Ngoại lệ NFR có giới hạn** (chỉ khi cờ bật): chỉ dùng key `sessionStorage`
-`ducker.pkce`, xoá khi quay về; mạng chỉ tới issuer đã cấu hình, chỉ sau khi người
-chơi bấm đăng nhập; cờ tắt thì không đọc URL, không chạm storage, không request.
+`ducker.pkce`, xoá khi quay về; mạng chỉ tới issuer đã cấu hình, và tới URL ảnh đại diện
+mà issuer trả về (có thể ở host khác, ảnh không bị giới hạn), chỉ sau khi đăng nhập; cờ tắt thì không đọc URL, không chạm storage, không request.
 
 ## 3. Phương án đã loại
 

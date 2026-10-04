@@ -41,6 +41,7 @@ export async function startLogin(config: DuckerConfig): Promise<void> {
   try {
     await redirectToIssuer(config)
   } catch (error) {
+    clearPending() // dong ducker.pkce vua ghi neu buoc sau do (vd challengeOf) nem loi
     starting = false
     throw error
   }
