@@ -103,4 +103,60 @@ describe('AccountButton — Ducker ID sign-in', () => {
     fireEvent.pointerDown(document.body)
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
   })
+
+  const openMenu = () => {
+    auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', name: 'Đức', email: 'duc@ducker.id' } }
+    render(<AccountButton />)
+    const trigger = screen.getByRole('button', { name: 'Tài khoản Ducker ID' })
+    fireEvent.click(trigger)
+    return trigger
+  }
+
+  it('moves focus with arrows, wraps, and Home/End jump', () => {
+    openMenu()
+    const [profile, out] = screen.getAllByRole('menuitem')
+    expect(profile).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'ArrowDown' })
+    expect(out).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'ArrowDown' })
+    expect(profile).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'ArrowUp' })
+    expect(out).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'Home' })
+    expect(profile).toHaveFocus()
+    fireEvent.keyDown(document, { key: 'End' })
+    expect(out).toHaveFocus()
+  })
+
+  it('Tab closes the menu without stealing focus back', () => {
+    const trigger = openMenu()
+    fireEvent.keyDown(document, { key: 'Tab' })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    expect(trigger).not.toHaveFocus()
+  })
+
+  it('closes when focus leaves to an outside element, but not on relatedTarget null', () => {
+    const trigger = openMenu()
+    const [profile] = screen.getAllByRole('menuitem')
+    fireEvent.focusOut(profile!, { relatedTarget: null })
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    const outside = document.createElement('button')
+    document.body.appendChild(outside)
+    fireEvent.focusOut(profile!, { relatedTarget: outside })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    outside.remove()
+  })
+
+  it('renders no email line when missing, and the email as main line without a name', () => {
+    auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', name: 'Đức' } }
+    const { container, unmount } = render(<AccountButton />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tài khoản Ducker ID' }))
+    expect(container.querySelector('.account-email')).toBeNull()
+    unmount()
+    auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', email: 'a@x.vn' } }
+    const second = render(<AccountButton />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tài khoản Ducker ID' }))
+    expect(second.container.querySelector('.account-name')?.textContent).toBe('a@x.vn')
+    expect(second.container.querySelector('.account-email')).toBeNull()
+  })
 })

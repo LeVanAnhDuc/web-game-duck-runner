@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
     // Doc tu env, khong co gia tri mac dinh trong code: de trong = goc ten mien.
     // Deploy dat VITE_BASE_PATH=/<ten-repo>/ (deploy.yml). redirect_uri cua Ducker ID
     // dua vao dung gia tri nay (import.meta.env.BASE_URL).
-    base: env.VITE_BASE_PATH,
+    base: env.VITE_BASE_PATH ? env.VITE_BASE_PATH : undefined,
     build: { target: 'es2022' },
   }
 })

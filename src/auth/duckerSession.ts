@@ -56,7 +56,11 @@ export function startSession(
 }
 
 export function signIn(): void {
-  if (DUCKER_CONFIG) void startLogin(DUCKER_CONFIG)
+  if (DUCKER_CONFIG) {
+    void startLogin(DUCKER_CONFIG).catch(() => {
+      // im lang: dang nhap la tuy chon
+    })
+  }
 }
 
 /** Quen profile trong bo nho. Phien o Ducker ID van con — dung nghia SSO. */

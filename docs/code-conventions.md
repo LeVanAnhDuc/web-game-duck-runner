@@ -326,7 +326,7 @@ cả repo, đừng đếm một thư mục.
 | stack | Vite | ✅ | ⏸ | ✅ | ✅ | ⏸ | ✅ | ✅ | ⏸ R-04: view không có test hành vi. ⏸ R-12/21: repo chưa có ESLint. ADR-0015 |
 | stomp | Phaser | ➖ | ➖ | ➖ | ➖ | ➖ | ➖ | ✅ | KHÔNG React — rule component không có đối tượng áp (ADR-0009). Đã có bộ gác riêng `check-core-boundary.mjs` |
 | defense | Vite | ✅ | 🟡 | 🟡 | ✅ | ✅ | ✅ | ✅ | 21 test (`tests/`) + 5 e2e. Tách `parts.tsx` 14 export → 16 file. 🟡 R-04: 1 effect giữ lại có lý do; 🟡 R-05: bộ Icon giữ một file (ADR-0008) |
-| runner | Vite | ✅ | ➖ | 🟡 | ✅ | ✅ | ➖ | ✅ | R-04 ➖: 1 effect là vòng đời mount engine. R-18 ➖: không có hook. 🟡 R-05: bộ icon giữ một module (ADR-0011) |
+| runner | Vite | ✅ | ➖ | 🟡 | ✅ | ✅ | ✅ | ✅ | R-04 ➖: 1 effect là vòng đời mount engine. R-18 ✅: `src/hooks/` có barrel (`useDuckerAuth`, `useAccountMenu`, ADR-0012). 🟡 R-05: bộ icon giữ một module (ADR-0011) |
 
 **Thứ tự làm** đi theo rủi ro tăng dần: flap → mines → push → drift → solitaire →
 match → stack → stomp → defense → runner. Hai project cuối phải qua R-07 trước.

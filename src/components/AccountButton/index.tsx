@@ -68,8 +68,8 @@ export function AccountButton() {
       {menu.open && (
         <div ref={menu.menuRef} role="menu" className="account-menu">
           <div className="account-who">
-            <p className="account-name">{profile.name}</p>
-            <p className="account-email">{profile.email}</p>
+            <p className="account-name">{profile.name || profile.email}</p>
+            {profile.name && profile.email && <p className="account-email">{profile.email}</p>}
           </div>
           <div className="rule" />
           <a

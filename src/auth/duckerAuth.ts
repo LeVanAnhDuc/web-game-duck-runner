@@ -25,8 +25,28 @@ function clearPending(): void {
   }
 }
 
-/** Dung URL authorize roi chuyen ca trang sang Ducker ID. */
+let starting = false
+
+// Back tu Ducker ID khoi phuc trang tu bfcache: co "dang di" se ket o true.
+if (typeof window !== 'undefined') {
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) starting = false
+  })
+}
+
+/** Dung URL authorize roi chuyen ca trang sang Ducker ID. Bo qua neu dang di. */
 export async function startLogin(config: DuckerConfig): Promise<void> {
+  if (starting) return
+  starting = true
+  try {
+    await redirectToIssuer(config)
+  } catch (error) {
+    starting = false
+    throw error
+  }
+}
+
+async function redirectToIssuer(config: DuckerConfig): Promise<void> {
   const verifier = randomUrlSafeToken()
   const state = randomUrlSafeToken()
   const pending: PendingAuth = {
@@ -37,6 +57,7 @@ export async function startLogin(config: DuckerConfig): Promise<void> {
   try {
     sessionStorage.setItem(DUCKER_PKCE_KEY, JSON.stringify(pending))
   } catch {
+    starting = false
     return // khong cat duoc verifier thi dung di, se ket o callback
   }
   const url = new URL('/oauth/authorize', config.issuer)
@@ -107,6 +128,7 @@ export function capturedCallback(): CallbackResult | null {
 
 /** Chi danh cho test. */
 export function resetCaptureForTests(): void {
+  starting = false
   captured = null
   didCapture = false
 }
