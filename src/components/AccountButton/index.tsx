@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAccountMenu, useDuckerAuth } from '@/hooks'
 import { IconExternal, IconSignOut, IconUser } from '@/components/icons'
 import { initialOf } from '@/auth/initials'
@@ -13,6 +13,7 @@ export function AccountButton() {
   const menu = useAccountMenu()
   const signInRef = useRef<HTMLButtonElement>(null)
   const focusSignIn = useRef(false)
+  const [brokenPicture, setBrokenPicture] = useState<string | null>(null)
 
   // Sau "Dang xuat" nut menu bi go khoi DOM: tra focus ve nut dang nhap o cung cho,
   // khong de roi ve <body>.
@@ -26,7 +27,9 @@ export function AccountButton() {
   if (!auth.enabled) return null
 
   if (auth.status !== 'signed-in' || !auth.profile) {
+    // idle (truoc khi client chay) cung la nut vo hieu cung kich thuoc: khong bam duoc truoc luc do.
     const loading = auth.status === 'loading'
+    const inert = loading || auth.status === 'idle'
     return (
       <div className="account">
         <button
@@ -34,7 +37,7 @@ export function AccountButton() {
           type="button"
           className="btn btn-ghost account-signin"
           onClick={auth.signIn}
-          disabled={loading}
+          disabled={inert}
           aria-busy={loading}
         >
           <IconUser />
@@ -56,8 +59,16 @@ export function AccountButton() {
         aria-expanded={menu.open}
         aria-label={S.account.menuLabel}
       >
-        {profile.picture ? (
-          <img className="account-avatar" src={profile.picture} alt="" width={32} height={32} />
+        {profile.picture && profile.picture !== brokenPicture ? (
+          <img
+            className="account-avatar"
+            src={profile.picture}
+            alt=""
+            width={32}
+            height={32}
+            referrerPolicy="no-referrer"
+            onError={() => setBrokenPicture(profile.picture ?? null)}
+          />
         ) : (
           <span className="account-avatar" aria-hidden="true">
             {initialOf(profile)}
@@ -67,7 +78,7 @@ export function AccountButton() {
       </button>
       {menu.open && (
         <div ref={menu.menuRef} role="menu" className="account-menu">
-          <div className="account-who">
+          <div className="account-who" role="none">
             <p className="account-name">{profile.name || profile.email}</p>
             {profile.name && profile.email && <p className="account-email">{profile.email}</p>}
           </div>

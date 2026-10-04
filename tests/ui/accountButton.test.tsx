@@ -33,10 +33,20 @@ describe('AccountButton — Ducker ID sign-in', () => {
     expect(base.signIn).toHaveBeenCalledOnce()
   })
 
-  it('shows the sign-in button before the client has started (idle)', () => {
+  it('shows an inert sign-in button of the same slot before the client has started (idle)', () => {
     auth.value = { ...base, status: 'idle', profile: null }
     render(<AccountButton />)
-    expect(screen.getByRole('button', { name: S.account.signIn })).toBeEnabled()
+    expect(screen.getByRole('button', { name: S.account.signIn })).toBeDisabled()
+  })
+
+  it('falls back to the initial when the picture fails, and sends no referrer', () => {
+    auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', name: 'Đức', picture: 'http://x/p.png' } }
+    const { container } = render(<AccountButton />)
+    const img = container.querySelector('img')!
+    expect(img).toHaveAttribute('referrerpolicy', 'no-referrer')
+    fireEvent.error(img)
+    expect(container.querySelector('img')).toBeNull()
+    expect(screen.getByText('Đ')).toBeInTheDocument()
   })
 
   it('disables the button while signing in', () => {
