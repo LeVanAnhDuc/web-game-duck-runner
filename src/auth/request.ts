@@ -34,5 +34,23 @@ export async function fetchProfile(config: DuckerConfig, accessToken: string): P
     signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   })
   if (!response.ok) throw new Error(`userinfo_failed_${response.status}`)
-  return (await response.json()) as DuckerProfile
+  const data: unknown = await response.json()
+  if (!isProfile(data)) throw new Error('userinfo_invalid')
+  return data
+}
+
+const optString = (v: unknown) => v === undefined || v === null || typeof v === 'string'
+
+/** Userinfo sai hinh thi that bai o day, khong de no lam hong luc render. */
+function isProfile(v: unknown): v is DuckerProfile {
+  if (typeof v !== 'object' || v === null) return false
+  const p = v as Record<string, unknown>
+  return (
+    typeof p.sub === 'string' &&
+    p.sub !== '' &&
+    optString(p.name) &&
+    optString(p.email) &&
+    optString(p.picture) &&
+    (p.email_verified === undefined || typeof p.email_verified === 'boolean')
+  )
 }

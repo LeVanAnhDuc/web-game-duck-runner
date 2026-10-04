@@ -4,7 +4,7 @@
 [![Deploy](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml/badge.svg)](https://github.com/LeVanAnhDuc/web-game-duck-runner/actions/workflows/deploy.yml)
 [![Release](https://img.shields.io/github/v/release/LeVanAnhDuc/web-game-duck-runner?sort=semver)](https://github.com/LeVanAnhDuc/web-game-duck-runner/releases)
 
-A three-lane endless runner, played entirely in the browser. No backend, no account,
+A three-lane endless runner, played entirely in the browser. No backend, no game accounts,
 no install — open the page and run. Your best distance, your coins and the ducks you
 have unlocked live in that browser's `localStorage` and nowhere else.
 

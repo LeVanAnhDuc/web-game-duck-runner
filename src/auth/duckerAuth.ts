@@ -102,7 +102,7 @@ export function consumeCallback(): CallbackResult | null {
 
 /** Chi duong dan cung origin moi duoc dua vao replaceState ("//evil" se nem loi luc nap). */
 function isSafeReturnTo(value: unknown): value is string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')
+  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') && !value.includes('\\')
 }
 
 let captured: CallbackResult | null = null

@@ -63,7 +63,7 @@ describe('returnTo handling', () => {
     expect(consumeCallback()).toEqual({ error: 'state_mismatch' })
   })
 
-  it.each(['//evil.example/x', 'https://evil.example/', 'javascript:1', 42])('unsafe returnTo dropped: %s', (bad) => {
+  it.each(['//evil.example/x', 'https://evil.example/', 'javascript:1', 42, '/\\evil'])('unsafe returnTo dropped: %s', (bad) => {
     sessionStorage.setItem('ducker.pkce', JSON.stringify({ state: 's1', verifier: 'v1', returnTo: bad }))
     window.history.replaceState(null, '', '/?code=c1&state=s1')
     expect(consumeCallback()).toEqual({ code: 'c1', verifier: 'v1', returnTo: undefined })
