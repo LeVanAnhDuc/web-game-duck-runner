@@ -71,9 +71,17 @@ export function consumeCallback(): CallbackResult | null {
     window.location.pathname + (query ? `?${query}` : '') + window.location.hash,
   )
 
-  if (error) return { error }
+  // returnTo duoc khoi phuc ca khi thanh cong LAN khi loi: redirect_uri la goc app tran,
+  // nen huy dang nhap ma khong co no se mat ?level... cua game.
+  const returnTo = pending && isSafeReturnTo(pending.returnTo) ? pending.returnTo : undefined
+  if (error) return { error, returnTo }
   if (!pending || pending.state !== state) return { error: 'state_mismatch' }
-  return { code: code ?? undefined, verifier: pending.verifier, returnTo: pending.returnTo }
+  return { code: code ?? undefined, verifier: pending.verifier, returnTo }
+}
+
+/** Chi duong dan cung origin moi duoc dua vao replaceState ("//evil" se nem loi luc nap). */
+function isSafeReturnTo(value: unknown): value is string {
+  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//')
 }
 
 let captured: CallbackResult | null = null
@@ -84,7 +92,13 @@ export function captureCallback(): void {
   if (didCapture) return
   didCapture = true
   captured = consumeCallback()
-  if (captured?.returnTo) window.history.replaceState(window.history.state, '', captured.returnTo)
+  if (captured?.returnTo) {
+    try {
+      window.history.replaceState(window.history.state, '', captured.returnTo)
+    } catch {
+      // URL khong dung duoc — giu URL da don
+    }
+  }
 }
 
 export function capturedCallback(): CallbackResult | null {

@@ -83,6 +83,18 @@ describe('AccountButton — Ducker ID sign-in', () => {
     expect(base.signOut).toHaveBeenCalledOnce()
   })
 
+  it('moves focus to the sign-in button after sign out, never to body', () => {
+    auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', name: 'Đức' } }
+    const { rerender } = render(<AccountButton />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tài khoản Ducker ID' }))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Đăng xuất' }))
+    auth.value = { ...base, status: 'signed-out', profile: null }
+    rerender(<AccountButton />)
+    const signIn = screen.getByRole('button', { name: 'Đăng nhập' })
+    expect(signIn).toHaveFocus()
+    expect(document.activeElement).not.toBe(document.body)
+  })
+
   it('closes on an outside pointer down', () => {
     auth.value = { ...base, status: 'signed-in', profile: { sub: 'u1', name: 'Đức' } }
     render(<AccountButton />)

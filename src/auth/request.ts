@@ -1,6 +1,9 @@
 import type { DuckerConfig, DuckerProfile } from './types'
 import { redirectUri } from './duckerAuth'
 
+// Issuer treo thi ket thuc o signed-out, khong de nut ket vinh vien.
+const REQUEST_TIMEOUT_MS = 15_000
+
 /** Doi code lay token. Public client — khong co client_secret. */
 export async function exchangeCode(
   config: DuckerConfig,
@@ -9,6 +12,7 @@ export async function exchangeCode(
 ): Promise<{ accessToken: string }> {
   const response = await fetch(new URL('/oauth/token', config.issuer), {
     method: 'POST',
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       grant_type: 'authorization_code',
@@ -26,6 +30,7 @@ export async function exchangeCode(
 export async function fetchProfile(config: DuckerConfig, accessToken: string): Promise<DuckerProfile> {
   const response = await fetch(new URL('/oauth/userinfo', config.issuer), {
     headers: { Authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   })
   if (!response.ok) throw new Error(`userinfo_failed_${response.status}`)
   return (await response.json()) as DuckerProfile

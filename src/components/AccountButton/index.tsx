@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useAccountMenu, useDuckerAuth } from '@/hooks'
 import { IconExternal, IconSignOut, IconUser } from '@/components/icons'
 import { initialOf } from '@/auth/initials'
@@ -10,6 +11,18 @@ import { S } from '@/data/strings'
 export function AccountButton() {
   const auth = useDuckerAuth()
   const menu = useAccountMenu()
+  const signInRef = useRef<HTMLButtonElement>(null)
+  const focusSignIn = useRef(false)
+
+  // Sau "Dang xuat" nut menu bi go khoi DOM: tra focus ve nut dang nhap o cung cho,
+  // khong de roi ve <body>.
+  useEffect(() => {
+    if (focusSignIn.current && signInRef.current) {
+      signInRef.current.focus()
+      focusSignIn.current = false
+    }
+  }, [auth.status])
+
   if (!auth.enabled) return null
 
   if (auth.status !== 'signed-in' || !auth.profile) {
@@ -17,6 +30,7 @@ export function AccountButton() {
     return (
       <div className="account">
         <button
+          ref={signInRef}
           type="button"
           className="btn btn-ghost account-signin"
           onClick={auth.signIn}
@@ -74,7 +88,8 @@ export function AccountButton() {
             type="button"
             className="btn btn-ghost account-item"
             onClick={() => {
-              menu.close(true)
+              menu.close(false)
+              focusSignIn.current = true
               auth.signOut()
             }}
           >
