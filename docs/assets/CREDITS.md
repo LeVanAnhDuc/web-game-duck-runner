@@ -10,7 +10,7 @@ Chỉ nhận **CC0 hoặc phạm vi công cộng** — `overview.md` đặt tr�
 mà không phải CC0 (Unsplash, Pexels) **không** được nhận: điều kiện của họ có thể đổi,
 phạm vi công cộng thì không.
 
-## `public/textures/jungle-far.webp` · 640×288 · 31.4 KB
+## `client/public/textures/jungle-far.webp` · 640×288 · 31.4 KB
 
 Tầng lá xa trong cảnh 3D, vẽ **trên** đường chân trời — xem `ADR-0010`.
 
@@ -20,7 +20,7 @@ Tầng lá xa trong cảnh 3D, vẽ **trên** đường chân trời — xem `AD
 | Giấy phép | Phạm vi công cộng (public domain) |
 | Bản gốc | 960×960 JPEG, lấy qua bản thumbnail 960px của Wikimedia |
 
-## `public/textures/jungle-screen.webp` · 512×512 · 65.9 KB
+## `client/public/textures/jungle-screen.webp` · 512×512 · 65.9 KB
 
 Nền các màn hình 2D đặc (cửa hàng, cài đặt) — `FR-40`.
 

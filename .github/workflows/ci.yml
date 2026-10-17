@@ -13,6 +13,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# App nam trong client/; moi buoc `run:` chay tu do.
+defaults:
+  run:
+    working-directory: client
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -20,12 +25,16 @@ jobs:
       - uses: actions/checkout@v4
       # Phai dung TRUOC setup-node: `cache: pnpm` can binary pnpm da co san de
       # doc duong dan store. Khong khai bao `version:` — no lay tu truong
-      # `packageManager` trong package.json, nen CI va may deu chay dung mot ban.
+      # `packageManager` trong client/package.json, nen CI va may deu chay dung mot ban.
       - uses: pnpm/action-setup@v4
+        with:
+          # Khong co package.json o goc: app nam trong client/.
+          package_json_file: client/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
+          cache-dependency-path: client/pnpm-lock.yaml
 
       # `--frozen-lockfile` chu khong `pnpm install` tran: lockfile la cau tra
       # loi, va workspace nay da tung bi mot cay dependency khac lam hong (xem
@@ -62,7 +71,7 @@ jobs:
           done
 
   # Mot job RIENG, de audit chay CANH cac test thay vi dung truoc chung. `pnpm audit`
-  # doc pnpm-lock.yaml roi hoi registry — no khong can node_modules, nen job nay
+  # doc client/pnpm-lock.yaml roi hoi registry — no khong can node_modules, nen job nay
   # bo qua buoc cai dat hoan toan. (Van can pnpm/action-setup@v4 de CO lenh pnpm.)
   #
   # NFR-SEC-05 chi dinh CI la noi kiem nguong nay; day la cho do.
@@ -71,6 +80,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: client/package.json
       - uses: actions/setup-node@v4
         with:
           node-version: 22

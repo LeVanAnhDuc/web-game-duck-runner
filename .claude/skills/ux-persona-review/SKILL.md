@@ -8,8 +8,8 @@ description: Use when you want to know how a real stranger experiences Duck Runn
 ## Sản phẩm này
 
 - Thư mục: `D:/Learn/web-app-ecosystem/web-game/web-game-endless-runner`
-- Port: **`:5173`** — mặc định của Vite, `vite.config.ts` không đặt `server.port`
-- Bật app: `pnpm install --frozen-lockfile` rồi `pnpm dev` (**pnpm, không phải npm hay yarn**)
+- Port: **`:5173`** — mặc định của Vite, `client/vite.config.ts` không đặt `server.port`
+- Bật app: `cd client` rồi `pnpm install --frozen-lockfile` và `pnpm dev` (**pnpm, không phải npm hay yarn**)
 - Bản live, không cần bật gì: <https://levananhduc.github.io/web-game-duck-runner/>
 - Dấu hiệu nhận biết đúng app: wordmark **DUCK / RUNNER** hai dòng, dưới nó là câu
   *"Ba làn. Một kỹ năng. Một con đường qua vực."*, rồi ba nút **CHƠI · CỬA HÀNG · CÀI ĐẶT**.
@@ -94,7 +94,7 @@ localStorage.setItem('duck-runner.save.v1', JSON.stringify({
 Chạy trước khi điều hướng, và **ghi vào log của phiên đó** là ví đã được nạp sẵn. Persona nào
 không cần xu thì mở context sạch — mặc định là ví 0 xu, kỷ lục 0 m.
 
-Khoá và schema lấy từ `src/data/save.ts`. Đổi ở đó thì sửa lại đoạn trên; ghi sai schema thì
+Khoá và schema lấy từ `client/src/data/save.ts`. Đổi ở đó thì sửa lại đoạn trên; ghi sai schema thì
 `readSave()` trả về mặc định và persona sẽ báo cáo một cửa hàng trống rỗng một cách hợp lý.
 
 ## Hai agent

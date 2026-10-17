@@ -11,7 +11,7 @@
  *    roi chup — nen setup phai KET THUC dung tai khung hinh muon chup, khong the
  *    tra ve som roi tin la script se doi.
  *
- *    Cho 2.6 giay la an toan: co mot test trong `tests/game/rules.test.ts` chay
+ *    Cho 2.6 giay la an toan: co mot test trong `client/tests/game/rules.test.ts` chay
  *    40 seed va khang dinh nguoi choi khong chet trong ba giay dau (cum chuong
  *    ngai dau tien luon de trong lan giua). Neu test do do, con so nay phai doi.
  *
