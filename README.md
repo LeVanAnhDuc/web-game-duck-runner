@@ -99,6 +99,19 @@ pnpm build
 pnpm exec vite-node scripts/measure-economy.ts
 ```
 
+The end-to-end regression suite is its own package in `automation-testing/`
+(Playwright): it builds the game, serves the production build, and runs every
+feature against it — including a second build with Ducker ID sign-in switched on
+against a fake issuer. Runs are seeded and driven by a fake clock, so the same
+inputs always produce the same run.
+
+```bash
+cd automation-testing
+pnpm install && pnpm exec playwright install chromium
+pnpm test             # builds ../client, serves it on :5283 (and :5285), runs the suite
+pnpm coverage:check   # requirement ↔ test case ↔ spec ↔ bug traceability
+```
+
 Nothing needs configuring to play. Optionally `cp client/.env.example client/.env`: it sets
 `VITE_BASE_PATH` and, with `VITE_FEATURE_DUCKER_SIGN_IN=true` plus the four
 `VITE_DUCKER_*` values, turns on the Ducker ID sign-in button. There are no defaults in
@@ -126,6 +139,8 @@ startup, which costs 3.9 ms and 3.5 KB gzip.
 | `client/src/render/` | Three.js scene, shapes, per-frame sync | `game/` (read-only) |
 | `client/src/audio/` | every sound, synthesised | `data/` |
 | `client/src/views/` | React screens and the HUD | everything above |
+| `client/tests/` | unit and component tests (Vitest), no browser | — |
+| `automation-testing/` | the end-to-end regression suite (Playwright) | — |
 
 **`client/src/game/` may not import `three`, touch the DOM, or read the wall clock.** That
 boundary is enforced by lint and by a grep in CI, not by convention — it is what lets
