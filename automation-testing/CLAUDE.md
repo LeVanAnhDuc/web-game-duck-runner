@@ -19,9 +19,15 @@ Mỗi thư mục trong `src/` có `README.md` nói rõ chứa gì, không chứa
   Tiến trình có sẵn thì gieo vào `localStorage` trước khi tải trang (`BasePage.seedSave`).
 - **Lượt chơi là canvas Three.js.** HUD (quãng đường, xu, thanh nạp, nhãn kỹ năng, chip hiệu ứng) là DOM thật ghi
   thẳng qua ref — test chỉ đọc DOM, không đọc state trong canvas.
-- **Lượt chơi tất định.** Seed của lượt lấy từ `Math.random()` lúc bấm chơi; `GamePage.fixSeed(n)` thay `Math.random`
-  trước khi tải trang để cùng một seed cho cùng một đường chạy. Thời gian: `page.clock` (install trước khi tải trang
-  → `runFor`), không chờ thời gian thật — mô phỏng chạy fixed-step theo timestamp của rAF.
+- **Lượt chơi tất định.** Seed của lượt lấy từ `Math.random()` lúc bấm chơi. Fixture `startRun(seed)` thay
+  `Math.random` bằng bộ sinh có seed (`BasePage.fixSeed`), bật `saveData` để hai ảnh CC0 không giành `Math.random` với
+  seed, cài đồng hồ giả vẽ một khung mỗi 64 ms (`slowFrames` — luật vẫn bước 60 Hz, tối đa 5 bước/khung), dừng thời
+  gian (`freezeClock`) rồi bấm CHƠI. Từ đó chỉ `playPage.advance(ms)` làm thời gian trôi; `runUntilOver()` chạy tới màn
+  kết thúc. Cùng seed + cùng input ở cùng thời điểm → cùng quãng đường, cùng xu. Mốc input của từng seed nằm ở `RUNS`
+  (`src/data/test-data.ts`), học từ bản build và gắn với số liệu cân bằng hiện tại.
+- **Hành động trong canvas đọc qua kết quả lượt.** Đổi làn / nhảy / trượt / vuốt không thấy được trong DOM: test so kết
+  quả (quãng đường, xu) của cùng seed có và không có input, và phím chữ / cử chỉ phải cho **đúng** kết quả của phím mũi
+  tên. Cử chỉ là chạm thật qua CDP (`PlayPage.swipe`).
 - **Project:** `app` (Desktop Chrome, viewport đặt trong từng test khi cần), `app-auth` (bản bật cờ, chỉ
   `tests/e2e/ducker-id/sign-in.e2e.ts`, chỉ có trên dev).
 
