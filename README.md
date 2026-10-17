@@ -175,7 +175,7 @@ Every push to `main` creates a GitHub Release by itself
 ([`release.yml`](.github/workflows/release.yml)) and deploys to
 **<https://levananhduc.github.io/web-game-duck-runner/>**
 ([`deploy.yml`](.github/workflows/deploy.yml)). Pull requests run lint, tests, a
-build, the ADR-0002 boundary check and an audit first
+build, the ADR-0002 boundary check, the end-to-end regression suite and an audit first
 ([`ci.yml`](.github/workflows/ci.yml)).
 
 Pages has to be enabled **once per repository** before the first deploy can succeed —
