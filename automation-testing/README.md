@@ -5,7 +5,8 @@ Quy ước đầy đủ (cấu trúc, phân lớp, tag, format, luật cứng): 
 
 ## Bắt đầu
 
-1. `pnpm install && pnpm exec playwright install chromium`
+1. Cài client trước, vì `webServer` của Playwright build và chạy `../client`:
+   `cd client && pnpm install --frozen-lockfile`, rồi `cd ../automation-testing && pnpm install && pnpm exec playwright install chromium`
 2. `cp .env.example .env` (không cần tài khoản: game tĩnh, không backend)
 3. `pnpm test:unit && pnpm test:smoke`
 4. Viết test cho một module: mở Claude Code trong thư mục này rồi gõ `/write-tests <module>`
