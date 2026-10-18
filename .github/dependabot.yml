@@ -1,0 +1,19 @@
+version: 2
+# The game app lives in client/ and the Playwright suite in automation-testing/, each with its own pnpm lockfile;
+# the workflows sit at the repository root.
+updates:
+  - package-ecosystem: npm
+    directory: /client
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: npm
+    directory: /automation-testing
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

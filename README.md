@@ -83,7 +83,11 @@ lane every time you used a skill.
 
 ## Commands
 
+The game app lives in `client/`; run these from there. The exact pnpm version comes
+from `packageManager` in `client/package.json`.
+
 ```bash
+cd client
 pnpm install --frozen-lockfile
 pnpm dev             # http://localhost:5173
 pnpm test            # Vitest — the game rules run in Node, no browser needed
@@ -95,11 +99,24 @@ pnpm build
 pnpm exec vite-node scripts/measure-economy.ts
 ```
 
-Nothing needs configuring to play. Optionally `cp .env.example .env`: it sets
+The end-to-end regression suite is its own package in `automation-testing/`
+(Playwright): it builds the game, serves the production build, and runs every
+feature against it — including a second build with Ducker ID sign-in switched on
+against a fake issuer. Runs are seeded and driven by a fake clock, so the same
+inputs always produce the same run.
+
+```bash
+cd automation-testing
+pnpm install && pnpm exec playwright install chromium
+pnpm test             # builds ../client, serves it on :5283 (and :5285), runs the suite
+pnpm coverage:check   # requirement ↔ test case ↔ spec ↔ bug traceability
+```
+
+Nothing needs configuring to play. Optionally `cp client/.env.example client/.env`: it sets
 `VITE_BASE_PATH` and, with `VITE_FEATURE_DUCKER_SIGN_IN=true` plus the four
 `VITE_DUCKER_*` values, turns on the Ducker ID sign-in button. There are no defaults in
 code, and the deployed build deliberately sets none of them. See
-[`.env.example`](.env.example) for the redirect URI to register and the origin to allow
+[`client/.env.example`](client/.env.example) for the redirect URI to register and the origin to allow
 in Ducker ID `CORS_ORIGINS`.
 
 In a dev build, `window.__duckRunner.stats()` reports fps, draw calls and live object
@@ -116,14 +133,16 @@ startup, which costs 3.9 ms and 3.5 KB gzip.
 
 | Folder | Holds | May depend on |
 | --- | --- | --- |
-| `src/core/` | loop, input, seeded RNG, simulation clock, event bus | nothing above it |
-| `src/game/` | **all game rules, as plain numbers** | `core/`, `data/` |
-| `src/data/` | save file, obstacle catalogue, duck catalogue, strings | nothing |
-| `src/render/` | Three.js scene, shapes, per-frame sync | `game/` (read-only) |
-| `src/audio/` | every sound, synthesised | `data/` |
-| `src/ui/` | React screens and the HUD | everything above |
+| `client/src/core/` | loop, input, seeded RNG, simulation clock, event bus | nothing above it |
+| `client/src/game/` | **all game rules, as plain numbers** | `core/`, `data/` |
+| `client/src/data/` | save file, obstacle catalogue, duck catalogue, strings | nothing |
+| `client/src/render/` | Three.js scene, shapes, per-frame sync | `game/` (read-only) |
+| `client/src/audio/` | every sound, synthesised | `data/` |
+| `client/src/views/` | React screens and the HUD | everything above |
+| `client/tests/` | unit and component tests (Vitest), no browser | — |
+| `automation-testing/` | the end-to-end regression suite (Playwright) | — |
 
-**`src/game/` may not import `three`, touch the DOM, or read the wall clock.** That
+**`client/src/game/` may not import `three`, touch the DOM, or read the wall clock.** That
 boundary is enforced by lint and by a grep in CI, not by convention — it is what lets
 the entire rule set be tested in Node, and it is the reason deterministic replay is
 possible at all: the same seed and the same input sequence produce the same run, which
@@ -156,7 +175,7 @@ Every push to `main` creates a GitHub Release by itself
 ([`release.yml`](.github/workflows/release.yml)) and deploys to
 **<https://levananhduc.github.io/web-game-duck-runner/>**
 ([`deploy.yml`](.github/workflows/deploy.yml)). Pull requests run lint, tests, a
-build, the ADR-0002 boundary check and an audit first
+build, the ADR-0002 boundary check, the end-to-end regression suite and an audit first
 ([`ci.yml`](.github/workflows/ci.yml)).
 
 Pages has to be enabled **once per repository** before the first deploy can succeed —
@@ -192,7 +211,7 @@ the bodies here run long and discuss releases, which would otherwise trigger the
   would be noise. Never use it on a push that also carries a `feat:`, or you cancel
   that feature's release too.
 
-Both scripts run locally against the real history, so a release can be previewed
+Both scripts run locally (from `client/`) against the real history, so a release can be previewed
 before anyone relies on it:
 
 ```bash

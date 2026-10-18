@@ -1,14 +1,26 @@
+# App nam o client/, bo hoi quy o automation-testing/. Khong neo `/` de pattern
+# khop o ca hai thu muc con.
 node_modules/
 dist/
+dist-auth/
 coverage/
 .env
 .env.local
 *.local
 .DS_Store
 .playwright-mcp/
-# Anh chup thu o goc repo (tu Playwright/devtools) khong duoc vao git...
+# Anh chup thu o goc repo hay goc app (tu Playwright/devtools) khong duoc vao git...
 /*.png
+/client/*.png
 .vite/
+*.tsbuildinfo
+
+# Playwright (automation-testing/ va phien MCP o may)
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+.auth/
 
 # ...nhung anh cua README thi PHAI vao. `readme-game` sinh no tu site live,
 # va README tro thang toi duong dan nay.

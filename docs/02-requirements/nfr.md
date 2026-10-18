@@ -19,7 +19,7 @@ Các dòng `~~(bỏ)~~` là ngưỡng mặc định của bộ khung, không áp
 **không có backend** (xem `01-product/overview.md` §Non-Goals). Giữ số ID để không
 tái dùng nhầm.
 
-Lệnh đo lại: `pnpm build` cho kích thước bundle · `pnpm exec vite-node
+Lệnh đo lại (chạy trong `client/`): `pnpm build` cho kích thước bundle · `pnpm exec vite-node
 scripts/measure-economy.ts` cho nhịp kiếm xu · `__duckRunner.stats()` ở bản dev cho fps
 và draw call.
 

@@ -39,7 +39,7 @@ Ba lý do chọn hướng này, theo thứ tự quan trọng:
    cuối. Xem `ADR-0009`.
 2. **Nguy hiểm mã hoá bằng độ sáng, không bằng sắc màu** — đúng với mọi loại mù màu, và
    giờ đúng ở **cả hai** loại nền. 13 cặp đo đạt, cặp yếu nhất 3.32:1;
-   `tests/render/contrast.test.ts` giữ nó không tụt.
+   `client/tests/render/contrast.test.ts` giữ nó không tụt.
 3. **Ăn ảnh.** Một dải sương sáng, một hàng thân cây tối, một con đường bắc qua vực —
    khác hẳn ảnh chụp một runner sáng đều.
 
@@ -110,7 +110,7 @@ cùng lý do.
 
 Mười ba cặp đo đạt, cặp yếu nhất **3.32:1** (kỹ năng trên mặt đường). Cặp từng hỏng —
 chướng ngại trên mặt đường gần — từ **1.16:1** lên **3.39:1**.
-`tests/render/contrast.test.ts` giữ cả mười ba cặp không tụt.
+`client/tests/render/contrast.test.ts` giữ cả mười ba cặp không tụt.
 
 ### 2.2 Giao diện
 
@@ -150,7 +150,7 @@ sáng lên: trên dải sương, alpha `0.45` chỉ còn **3.75:1** — dưới 
 `0.55` đạt **4.99:1**. Dùng dạng gradient từ scrim ở mép xuống trong suốt để không
 thành một thanh đen cứng.
 
-`tests/render/contrast.test.ts` kiểm **cả hai chiều**: 0.55 phải đạt, và 0.45 phải
+`client/tests/render/contrast.test.ts` kiểm **cả hai chiều**: 0.55 phải đạt, và 0.45 phải
 trượt. Cái thứ hai quan trọng hơn — nó là thứ ghi lại *vì sao* con số đổi, ở dạng chạy
 được.
 

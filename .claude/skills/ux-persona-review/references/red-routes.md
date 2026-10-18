@@ -120,7 +120,7 @@ Nếu sau này thêm `FR-` mới, route của nó vào file này với `status: 
 - **measurable:** full — toàn bộ là màn hình 2D, không dính phản xạ.
 - **derived_from:** `docs/01-product/journeys.md:94` (US-04) · `docs/02-requirements/scope.md:74`
   (FR-24) · `docs/02-requirements/scope.md:75` (FR-25) · `docs/02-requirements/scope.md:76`
-  (FR-26) · `src/data/catalog.ts` (giá và nhịp xu)
+  (FR-26) · `client/src/data/catalog.ts` (giá và nhịp xu)
 
 ## RR-05 · Tắt tiếng, và tin rằng nó nhớ
 
@@ -142,7 +142,7 @@ Nếu sau này thêm `FR-` mới, route của nó vào file này với `status: 
 - **travis_rank:** amber
 - **measurable:** full
 - **derived_from:** `docs/01-product/journeys.md:119` (US-05) · `docs/02-requirements/scope.md:84`
-  (FR-29) · `src/data/strings.ts` (`settings`)
+  (FR-29) · `client/src/data/strings.ts` (`settings`)
 
 ---
 
