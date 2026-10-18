@@ -115,3 +115,24 @@ export const IconRush = ({ size = 16 }: Props) => (
     <path d="m17 6 4 6-4 6" />
   </svg>
 )
+
+export const IconUser = ({ size = 20 }: Props) => (
+  <svg {...base(size)}>
+    <circle cx="12" cy="8" r="3.5" />
+    <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+  </svg>
+)
+
+export const IconExternal = ({ size = 20 }: Props) => (
+  <svg {...base(size)}>
+    <path d="M14 4h6v6M20 4l-9 9" />
+    <path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />
+  </svg>
+)
+
+export const IconSignOut = ({ size = 20 }: Props) => (
+  <svg {...base(size)}>
+    <path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" />
+    <path d="M16 8l4 4-4 4M20 12H9" />
+  </svg>
+)

@@ -1,5 +1,6 @@
 import { S, fmt } from '@/data/strings'
 import { IconPlay, IconCoin, IconTrophy, IconCart, IconGear } from '@/components/icons'
+import { AccountButton } from '@/components/AccountButton'
 
 export function MenuScreen({
   bestDistanceM, coins, onPlay, onShop, onSettings,
@@ -50,6 +51,8 @@ export function MenuScreen({
             {S.menu.settings}
           </button>
         </div>
+
+        <AccountButton />
 
         <p className="lbl" style={{ letterSpacing: '.06em', textAlign: 'center', margin: 0 }}>
           {S.menu.hint}

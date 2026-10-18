@@ -19,6 +19,7 @@
 | [ADR-0009](0009-rung-suong-som-thay-nguoc-sang-hoang-hon.md) | Rừng sương sớm, và luật hai lớp thay quy tắc in bóng một chiều | 2026-09-10 | accepted |
 | [ADR-0010](0010-anh-cc0-that-tai-sau-frame-dau.md) | Ảnh CC0 thật, tải sau frame đầu — và chỗ nào thì ảnh vô dụng | 2026-09-10 | accepted |
 | [ADR-0011](0011-nhan-bo-quy-uoc-view-dung-chung.md) | Nhận bộ quy ước view dùng chung của workspace `web-game` | 2026-09-11 | accepted |
+| [ADR-0012](0012-ducker-id-sign-in.md) | Đăng nhập Ducker ID tuỳ chọn, phát hành "tối" sau cờ tính năng | 2026-10-04 | accepted |
 <!-- END:auto -->
 
 Trạng thái: `accepted` · `superseded by ADR-00xx` · `deprecated`

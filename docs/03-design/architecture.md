@@ -71,6 +71,7 @@ mỗi frame — HUD tự đọc trạng thái qua ref, xem `invariants.md` §7.
 | `render/Effects` | Hiệu ứng trang trí: vệt tốc độ, particle, rung camera | `three` | `game/` (ghi) |
 | `audio/Audio` | Phát và tắt âm, nhớ trạng thái tắt tiếng | `howler` · `data/save` | `game/` · `render/` |
 | `data/save` | Đọc/ghi/validate/migrate trạng thái lưu | `localStorage` | `game/` · `render/` · `ui/` |
+| `auth/` | Đăng nhập Ducker ID tuỳ chọn: cấu hình từ env, PKCE, store phiên ngoài React (`ADR-0012`) | `sessionStorage` · `fetch` tới issuer | `game/` · `render/` · `data/` |
 | `data/catalog` | Danh mục nhân vật, kỹ năng và giá — **dữ liệu, không phải code** | — | mọi thứ khác |
 | `data/patterns` | Catalog pattern chướng ngại — dữ liệu | — | mọi thứ khác |
 | `ui/screens` | Các màn hình React ngoài lúc chơi | `data/*` · `core/events` | `three` · `render/` |

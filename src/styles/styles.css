@@ -731,6 +731,97 @@ a:hover {
   overflow: hidden;
 }
 
+/* ── Tai khoan Ducker ID — tuy chon, sau co tinh nang (ADR-0012) ───────────
+ * Duoi hang CUA HANG / CAI DAT. Panel --surface-raised bo 16, nut bo 12, cao
+ * >= 48px. Vang chi cho xu / CTA chinh, aqua chi cho ky nang (vong focus van la
+ * aqua theo MASTER), nen avatar dung --text lam nen va --ink lam chu. */
+.account {
+  position: relative;
+  width: 100%;
+}
+
+/* Ba nut khong vua mot hang o khung 375 (CUA HANG + CAI DAT + Dang nhap rong ~410px),
+ * nen nut tai khoan nam ngay duoi hang do, rong bang hang. */
+.account > .btn {
+  width: 100%;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.account-trigger {
+  justify-content: flex-start;
+  padding: 0 var(--space-md);
+}
+
+.account-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0;
+  object-fit: cover;
+}
+
+/* Menu nam o day man hinh nen mo len tren, khong xuong duoi. */
+.account-menu {
+  position: absolute;
+  bottom: calc(100% + var(--space-sm));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  left: 0;
+  right: 0;
+  padding: var(--space-md);
+  border-radius: 16px;
+  background: var(--surface-raised);
+  border: 1px solid rgba(157, 174, 163, 0.35);
+  box-shadow: var(--elev-overlay);
+}
+
+.account-who {
+  min-width: 0;
+}
+
+.account-name,
+.account-email {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.account-email {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.account-item {
+  width: 100%;
+  justify-content: flex-start;
+  font-size: 15px;
+  text-decoration: none;
+}
+
 /* NFR-A11Y-05 — vong choi giu nguyen, chi tat trang tri */
 @media (prefers-reduced-motion: reduce) {
   * {

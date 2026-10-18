@@ -11,11 +11,28 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    // Mac dinh la node: game/ va data/ khong duoc cham DOM (invariants.md §4).
-    // Chi test UI moi can jsdom, khai bao bang docblock o dau file.
-    environment: 'node',
-    environmentMatchGlobs: [['tests/ui/**', 'jsdom']],
     setupFiles: ['tests/setup.ts'],
-    include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
+    // Mac dinh la node: game/ va data/ khong duoc cham DOM (invariants.md §4).
+    // Chi test UI moi can jsdom. Vitest 4 bo `environmentMatchGlobs`, nen hai moi
+    // truong tach thanh hai project; `extends: true` giu alias, globals, setupFiles.
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'node',
+          environment: 'node',
+          include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
+          exclude: ['tests/ui/**'],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'ui',
+          environment: 'jsdom',
+          include: ['tests/ui/**/*.test.ts', 'tests/ui/**/*.test.tsx'],
+        },
+      },
+    ],
   },
 })

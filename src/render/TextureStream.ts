@@ -11,7 +11,7 @@
  * chay TRUOC khi frame duoc trinh bay, rAF thu hai chay sau do.
  */
 
-/** Duong dan tuong doi so voi trang. `vite.config.ts` dung `base: './'`. */
+/** Duong dan tuong doi so voi trang; `base` cua Vite lay tu VITE_BASE_PATH (vite.config.ts). */
 const FAR_FOLIAGE = 'textures/jungle-far.webp'
 const SCREEN_PHOTO = 'textures/jungle-screen.webp'
 

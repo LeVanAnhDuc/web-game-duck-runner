@@ -50,8 +50,9 @@ chính mình.
   Điểm cao chỉ so với chính mình, lưu trên máy.
 - **Không chống gian lận điểm số.** Không có server để xác thực, nên mọi nỗ lực làm
   khó việc sửa `localStorage` chỉ tốn công mà không đạt được gì.
-- **Không có tài khoản, đăng nhập, hay đồng bộ nhiều thiết bị.** Không có gì cần
-  bảo vệ; đổi máy là mất tiến độ, và điều đó chấp nhận được.
+- **Không có tài khoản do game sở hữu; chỉ có đăng nhập Ducker ID tuỳ chọn, chỉ định
+  danh, không backend, không đồng bộ** (`ADR-0012`, phát hành tối sau cờ tính năng).
+  Không đồng bộ nhiều thiết bị: đổi máy là mất tiến độ, và điều đó chấp nhận được.
 - **Không có mua bán bằng tiền thật.** Xu chỉ kiếm được bằng cách chơi.
 - **Không có chế độ nhiều người chơi.** Đồng bộ thời gian thực là một dự án khác.
 - **Không có trình soạn màn chơi hay nội dung do người dùng tạo.**
