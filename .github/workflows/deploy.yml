@@ -23,7 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Phai dung TRUOC setup-node, va khong khai bao `version:` — ban pnpm lay
       # tu truong `packageManager` trong client/package.json.
       - uses: pnpm/action-setup@v4
