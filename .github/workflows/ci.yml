@@ -26,7 +26,7 @@ jobs:
       # Phai dung TRUOC setup-node: `cache: pnpm` can binary pnpm da co san de
       # doc duong dan store. Khong khai bao `version:` — no lay tu truong
       # `packageManager` trong client/package.json, nen CI va may deu chay dung mot ban.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           # Khong co package.json o goc: app nam trong client/.
           package_json_file: client/package.json
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           # Khong co package.json o goc: app nam trong client/.
           package_json_file: client/package.json
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           package_json_file: client/package.json
       - uses: actions/setup-node@v4
