@@ -25,6 +25,8 @@ Mỗi thư mục trong `src/` có `README.md` nói rõ chứa gì, không chứa
   gian (`freezeClock`) rồi bấm CHƠI. Từ đó chỉ `playPage.advance(ms)` làm thời gian trôi; `runUntilOver()` chạy tới màn
   kết thúc. Cùng seed + cùng input ở cùng thời điểm → cùng quãng đường, cùng xu. Mốc input của từng seed nằm ở `RUNS`
   (`src/data/test-data.ts`), học từ bản build và gắn với số liệu cân bằng hiện tại.
+  Lượt phải tới power-up (~35 s chơi) phát lại chuỗi phím học trước `POWERUP_RUNS` bằng `playPage.playFrames(khung,
+  inputs)` (một khung = 64 ms); chuỗi do `scripts/learn-powerup-runs.ts` sinh từ chính luật chơi của `../client`.
 - **Hành động trong canvas đọc qua kết quả lượt.** Đổi làn / nhảy / trượt / vuốt không thấy được trong DOM: test so kết
   quả (quãng đường, xu) của cùng seed có và không có input, và phím chữ / cử chỉ phải cho **đúng** kết quả của phím mũi
   tên. Cử chỉ là chạm thật qua CDP (`PlayPage.swipe`).
@@ -36,6 +38,7 @@ Mỗi thư mục trong `src/` có `README.md` nói rõ chứa gì, không chứa
 ```
 web-game-duck-runner-automation-testing/
 ├── scripts/coverage-check.ts      REQ ↔ TC ↔ spec ↔ bug, sinh traceability matrix
+├── scripts/learn-powerup-runs.ts  học chuỗi phím tới power-up (POWERUP_RUNS), chạy từ ../client bằng vite-node
 ├── playwright.config.ts           project app (test), provision (tạo dữ liệu), unit
 └── src/
     ├── docs/

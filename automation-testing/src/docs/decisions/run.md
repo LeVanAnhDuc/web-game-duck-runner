@@ -25,7 +25,7 @@ Không có: game tĩnh, không backend, không tài khoản game. Tiến trình 
 ## Ngoài phạm vi
 
 - Tốc độ trần 26 m/s, khoảng cách chướng ngại theo phản xạ, pattern có đường đi — unit test `client/tests/game/rules.test.ts` (cần chạy hàng phút, e2e không đáng).
-- Power-up nam châm/khiên/tua nhanh (FR-19…21): xuất hiện sau ~300 m, lượt e2e không tới được nếu không có autopilot đọc state — unit test `client/tests/game/effects.test.ts`.
+- Power-up nam châm/khiên/tua nhanh (FR-19…21): xuất hiện sau ~300 m — phủ riêng ở module `power-up` (2026-10-18) bằng kế hoạch phím học trước (`decisions/power-up.md` Q1).
 
 ## Tech debt liên quan
 

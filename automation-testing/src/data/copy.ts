@@ -19,6 +19,10 @@ export const copy = {
     skill: "Dùng kỹ năng",
     skillReady: "SẴN SÀNG",
     skillCharging: "ĐANG NẠP",
+    // S.hud.magnet / S.hud.rush / S.hud.shield — effect chips; GameHost.effectLabels() adds " <seconds>s" to timed ones
+    magnet: "Nam châm",
+    rush: "Tua nhanh",
+    shield: "Khiên",
   },
   gameOver: {
     newRecord: "KỶ LỤC MỚI",

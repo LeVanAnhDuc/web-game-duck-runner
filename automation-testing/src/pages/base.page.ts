@@ -6,7 +6,7 @@ const CLOCK_START = new Date("2026-10-01T08:00:00Z").getTime();
 /** Where `freezeClock` stops time: far enough past CLOCK_START that page load never gets there first. */
 const FROZEN_AFTER_MS = 10 * 60 * 1000;
 /** Frame interval of `slowFrames`: 4 rule steps a frame (the loop allows 5). */
-const FRAME_MS = 64;
+export const FRAME_MS = 64;
 
 /**
  * Shared parts of every screen. Duck Runner is a single-URL SPA: every screen lives at "./" (relative, so the same

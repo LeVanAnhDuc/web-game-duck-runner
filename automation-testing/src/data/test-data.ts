@@ -79,3 +79,70 @@ export const DUCKER = {
   profilePath: "/profile",
   user: { sub: "u-1", name: "Vịt Thử", email: "vit@example.com", email_verified: true },
 } as const;
+
+/** A key pressed just before run frame `frame` (frame 1 = first frame after PLAY): see PlayPage.playFrames. */
+export type PlannedInput = readonly [frame: number, key: "ArrowLeft" | "ArrowRight" | "ArrowUp" | "ArrowDown"];
+
+/**
+ * Runs that reach a power-up. The first power-up spawns 310–620 m in (Game.start: POWERUP_EVERY_M × 0.5–1) and is
+ * picked up ~95 m later, i.e. after ~35 s of play, so a run gets there only when someone steers. These plans were
+ * learned by `scripts/learn-powerup-runs.ts`, which plays the client's own rules (client/src/game) frame by frame the
+ * way the shipped build does under `startRun` (PLAY draws Math.random call #627 as the run seed; first frame 64 ms
+ * after PLAY; FixedStepAccumulator fed 64 ms a frame) and searches for key presses that survive to the power-up.
+ * Every frame number below is an output of that script (2026-10-18 balance). If a balance or build change makes a
+ * spec fail before the pickup ("chip never appeared"), re-run the script and paste its output here — the expectations
+ * (what a power-up does) stay.
+ */
+export const POWERUP_RUNS = {
+  /** Seed 215: picks up a magnet at frame 563 (7 s → chip gone at frame 673). */
+  magnet: {
+    seed: 215,
+    inputs: [
+      [135, "ArrowRight"], [311, "ArrowLeft"], [320, "ArrowDown"], [353, "ArrowUp"], [392, "ArrowLeft"],
+      [412, "ArrowUp"], [424, "ArrowUp"], [436, "ArrowUp"], [507, "ArrowRight"], [528, "ArrowLeft"],
+      [537, "ArrowUp"], [563, "ArrowRight"], [572, "ArrowLeft"], [590, "ArrowDown"], [655, "ArrowRight"],
+      [663, "ArrowLeft"],
+    ] as readonly PlannedInput[],
+    pickupFrame: 563,
+    /** First frame with no magnet chip. */
+    expiredFrame: 673,
+    /** Coins at the pickup frame — the same with or without the magnet. */
+    coinsAtPickup: 24,
+    /** Coins the same inputs collect by frame 673 when the magnet is ignored (the script's counterfactual run). */
+    coinsWithoutMagnet: 31,
+    /** A frame mid-magnet where the chip reads "6s", used to pause on. */
+    pauseAfterFrame: 594,
+    /**
+     * First frame with no magnet chip when the run is paused after `pauseAfterFrame` and resumed: the first frame
+     * after CHƠI TIẾP runs no rule step (GameHost.resume zeroes lastMs), so everything lands one frame later.
+     */
+    pausedExpiredFrame: 674,
+  },
+  /** Seed 212: picks up a shield at frame 562; it breaks on an obstacle at frame 575; the next hit ends the run at 620. */
+  shield: {
+    seed: 212,
+    inputs: [
+      [109, "ArrowUp"], [327, "ArrowDown"], [360, "ArrowUp"], [403, "ArrowRight"], [426, "ArrowUp"],
+      [460, "ArrowUp"], [510, "ArrowLeft"], [533, "ArrowRight"],
+    ] as readonly PlannedInput[],
+    pickupFrame: 562,
+    /** Frame of the hit the shield absorbs (without the shield the run ends here). */
+    breakFrame: 575,
+    endFrame: 620,
+  },
+  /** Seed 312: picks up a speed rush at frame 556 (4.5 s → chip gone at frame 626); no input after frame 534. */
+  rush: {
+    seed: 312,
+    inputs: [
+      [84, "ArrowRight"], [296, "ArrowLeft"], [308, "ArrowUp"], [321, "ArrowUp"], [344, "ArrowLeft"],
+      [400, "ArrowUp"], [448, "ArrowUp"], [523, "ArrowRight"], [534, "ArrowLeft"],
+    ] as readonly PlannedInput[],
+    pickupFrame: 556,
+    /** First frame with no rush chip. */
+    expiredFrame: 626,
+    /** Without the rush the same run hits an obstacle and ends at this frame. */
+    endWithoutRushFrame: 566,
+    /** With the rush, the first hit after it ran out ends the run here. */
+    endFrame: 661,
+  },
+} as const;

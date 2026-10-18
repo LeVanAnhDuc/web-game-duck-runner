@@ -1,6 +1,7 @@
 import type { CDPSession, Locator } from "@playwright/test";
 import { copy } from "@/data/copy";
-import { BasePage } from "./base.page";
+import type { PlannedInput } from "@/data/test-data";
+import { BasePage, FRAME_MS } from "./base.page";
 
 type TouchType = "touchStart" | "touchMove" | "touchEnd";
 
@@ -10,6 +11,8 @@ type TouchType = "touchStart" | "touchMove" | "touchEnd";
  */
 export class PlayPage extends BasePage {
   private cdp: CDPSession | null = null;
+  /** Run frames drawn so far, as counted by `playFrames` (a run frame is FRAME_MS of simulated time). */
+  private framesPlayed = 0;
 
   canvas(): Locator {
     return this.page.getByRole("img", { name: copy.a11y.canvas });
@@ -58,6 +61,11 @@ export class PlayPage extends BasePage {
     return this.page.locator(".charge-fill");
   }
 
+  /** The chips of running effects (power-ups, skills) in the HUD, in the order GameHost writes them. */
+  effectChips(): Locator {
+    return this.page.locator(".effect-chip");
+  }
+
   /** The HUD (hidden outside a run). */
   hud(): Locator {
     return this.page.locator(".hud");
@@ -79,6 +87,28 @@ export class PlayPage extends BasePage {
   /** True when the skill button carries the "not ready yet" nudge (MASTER §7.5). */
   async isNudged(): Promise<boolean> {
     return this.skillZone().evaluate((el) => el.classList.contains("nudge"));
+  }
+
+  /**
+   * Plays the run up to the end of frame `to` (frame 1 is the first one drawn after PLAY), pressing each planned key
+   * just before its frame. Frames are FRAME_MS apart (BasePage.slowFrames) and a key lands on the first rule step of
+   * the next frame, so a plan learned against the shipped rules replays step for step (data/test-data.ts POWERUP_RUNS).
+   * Only for runs started with `startRun` and driven by this method alone — `advance` does not move the frame count.
+   */
+  async playFrames(to: number, inputs: readonly PlannedInput[] = []): Promise<void> {
+    for (const [at, key] of inputs) {
+      if (at <= this.framesPlayed || at > to) continue;
+      await this.advance((at - 1 - this.framesPlayed) * FRAME_MS);
+      this.framesPlayed = at - 1;
+      await this.press(key);
+    }
+    await this.advance((to - this.framesPlayed) * FRAME_MS);
+    this.framesPlayed = to;
+  }
+
+  /** Lets `frames` frames of time pass without counting them as run frames: the run is paused meanwhile. */
+  async waitFrames(frames: number): Promise<void> {
+    await this.advance(frames * FRAME_MS);
   }
 
   async press(key: string): Promise<void> {
