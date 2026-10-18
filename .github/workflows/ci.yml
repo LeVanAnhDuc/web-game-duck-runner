@@ -30,7 +30,7 @@ jobs:
         with:
           # Khong co package.json o goc: app nam trong client/.
           package_json_file: client/package.json
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -87,7 +87,7 @@ jobs:
         with:
           # Khong co package.json o goc: app nam trong client/.
           package_json_file: client/package.json
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
@@ -134,7 +134,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           package_json_file: client/package.json
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       # Co thu lai, va registry khong voi tra duoc thi KHONG tinh la that bai. Mot
