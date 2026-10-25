@@ -16,8 +16,8 @@
     "release:notes": "pnpm dlx git-cliff@2.13.1 --workdir .. --unreleased --tag $(pnpm dlx git-cliff@2.13.1 --workdir .. --bumped-version) --strip all"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "three": "^0.169.0"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/node": "20.19.9",
-    "@types/react": "^18.3.11",
+    "@types/react": "^19.3.0",
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.169.0",
     "@vitejs/plugin-react": "^6.1.2",
